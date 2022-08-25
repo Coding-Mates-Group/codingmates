@@ -4,6 +4,8 @@ import com.gbc.codingmates.domain.project.Project;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,7 +19,9 @@ public class Member {
     @Column(name="member_id")
     private Long id;
 
-    @Column(length=10, nullable = false)
+    @NotBlank(message = "Your id:")
+    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "3~12 in length, with no special characters")
+    @Column(length=15, nullable = false)
     private String username;
 
     @Column(length =30, nullable = false)
