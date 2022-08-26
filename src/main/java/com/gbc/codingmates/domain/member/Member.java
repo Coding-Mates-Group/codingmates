@@ -35,8 +35,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @OneToMany(mappedBy = "member")
-    private List<Project> project = new ArrayList<>();
+    @ManyToOne(fetch =FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @Builder
     public Member(String username, String email, String password){
