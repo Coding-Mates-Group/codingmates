@@ -1,6 +1,7 @@
 package com.gbc.codingmates.domain.member;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
+import com.gbc.codingmates.domain.CommentsManager;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.project.Project;
 import lombok.*;
@@ -38,8 +39,8 @@ public class Member extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "member")
 //    private List<Member> members1 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Comment> comments = new ArrayList<>();
+    @Embedded
+    private CommentsManager commentsManager = new CommentsManager();
 
     @Builder
     public Member(String username, String email, String password){
@@ -48,6 +49,8 @@ public class Member extends BaseTimeEntity {
         this.password = password;
     }
 
-
+    public List<Comment> getComments(){
+        return commentsManager.getComments();
+    }
 
 }

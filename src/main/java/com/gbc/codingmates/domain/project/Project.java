@@ -1,6 +1,7 @@
 package com.gbc.codingmates.domain.project;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
+import com.gbc.codingmates.domain.CommentsManager;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
 import lombok.AccessLevel;
@@ -24,8 +25,8 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "project")
-    private List<Comment> comments = new ArrayList<>();
+    @Embedded
+    private CommentsManager commentsManager = new CommentsManager();
 
     @Column(nullable = false)
     private String title;
@@ -35,5 +36,7 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, dueDate;
 
-
+    public List<Comment> getComments(){
+        return commentsManager.getComments();
+    }
 }
