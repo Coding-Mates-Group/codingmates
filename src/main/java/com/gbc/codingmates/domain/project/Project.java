@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.project;
 
+import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,12 +15,16 @@ import java.util.List;
 @Getter
 @Entity
 public class Project {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
     private Long id;
 
-    @OneToMany(mappedBy = "project")
-    List<Member> members = new ArrayList<>();
+    @ManyToOne(fetch =FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @OneToMany(mappedBy = "comment")
+    private List<Project> projects = new ArrayList<>();
 
     private String title;
 

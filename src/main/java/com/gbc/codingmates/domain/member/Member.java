@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.member;
 
+import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.project.Project;
 import lombok.*;
 
@@ -35,9 +36,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @ManyToOne(fetch =FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @OneToMany(mappedBy = "project")
+    private List<Member> members1 = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment")
+    private List<Member> members2 = new ArrayList<>();
 
     @Builder
     public Member(String username, String email, String password){
