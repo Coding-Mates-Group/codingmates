@@ -24,8 +24,8 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "comment")
-    private List<Project> projects = new ArrayList<>();
+    @OneToMany(mappedBy = "project")
+    private List<Comment> comments = new ArrayList<>();
 
     @Column(nullable = false)
     private String title;
