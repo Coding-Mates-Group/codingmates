@@ -35,11 +35,11 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @OneToMany(mappedBy = "member")
-    private List<Member> members1 = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<Member> members1 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment")
-    private List<Member> members2 = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Member(String username, String email, String password){
