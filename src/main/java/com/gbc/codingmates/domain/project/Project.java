@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.project;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Project {
+public class Project extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id")
     private Long id;
@@ -32,7 +33,7 @@ public class Project {
     @Column
     private String category;
 
-    private LocalDateTime created_time, updated_time;
+    private LocalDateTime startDate, dueDate;
 
 
 }

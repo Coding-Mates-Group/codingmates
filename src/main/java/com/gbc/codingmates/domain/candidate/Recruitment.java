@@ -4,6 +4,7 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.project.Project;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Recruitment {
+public class Recruitment extends BaseTimeEntity {
 
     @Id
     @Column(name = "recruitment_id")

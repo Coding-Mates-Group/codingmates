@@ -4,6 +4,7 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.member.Member;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class InterestProject {
+public class InterestProject extends BaseTimeEntity {
 
     @Id
     @Column(name = "INTEREST_PROJECT_ID")

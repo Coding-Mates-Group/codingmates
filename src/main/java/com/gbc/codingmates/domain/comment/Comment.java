@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.comment;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.project.Project;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Comment {
+public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
@@ -23,11 +24,5 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
-
-    private LocalDateTime created_time,updated_time;
-
-
-
-
 
 }

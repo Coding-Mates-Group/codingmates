@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.member;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.project.Project;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
@@ -30,8 +31,6 @@ public class Member {
 
     @Column(length = 30, nullable = false)
     private String password;
-
-    private LocalDateTime created_time, updated_time;
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
