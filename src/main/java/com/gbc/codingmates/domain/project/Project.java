@@ -20,14 +20,16 @@ public class Project {
     private Long id;
 
     @ManyToOne(fetch =FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "comment")
     private List<Project> projects = new ArrayList<>();
 
+    @Column(nullable = false)
     private String title;
 
+    @Column
     private String category;
 
     private LocalDateTime created_time, updated_time;

@@ -36,7 +36,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "member")
     private List<Member> members1 = new ArrayList<>();
 
     @OneToMany(mappedBy = "comment")
