@@ -1,5 +1,7 @@
 package com.gbc.codingmates.domain.member;
 
+import com.gbc.codingmates.domain.BaseTimeEntity;
+import com.gbc.codingmates.domain.CommentsManager;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.project.Project;
 import lombok.*;
@@ -15,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long id;
@@ -31,16 +33,14 @@ public class Member {
     @Column(length = 30, nullable = false)
     private String password;
 
-    private LocalDateTime created_time, updated_time;
-
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-    @OneToMany(mappedBy = "member")
-    private List<Member> members1 = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<Member> members1 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment")
-    private List<Member> members2 = new ArrayList<>();
+    @Embedded
+    private CommentsManager commentsManager = new CommentsManager();
 
     @Builder
     public Member(String username, String email, String password){
@@ -49,6 +49,8 @@ public class Member {
         this.password = password;
     }
 
-
+    public List<Comment> getComments(){
+        return commentsManager.getComments();
+    }
 
 }
