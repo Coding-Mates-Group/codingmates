@@ -1,5 +1,7 @@
 package com.gbc.codingmates.domain.member;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import java.util.Objects;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 public class OAuthEmail {
 
     private String emailGoogle;
