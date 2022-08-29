@@ -36,21 +36,11 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Member> members1 = new ArrayList<>();
-
-    @Embedded
-    private CommentsManager commentsManager = new CommentsManager();
-
     @Builder
     public Member(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public List<Comment> getComments(){
-        return commentsManager.getComments();
     }
 
 }

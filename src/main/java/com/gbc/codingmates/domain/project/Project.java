@@ -25,9 +25,6 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Embedded
-    private CommentsManager commentsManager = new CommentsManager();
-
     @Column(nullable = false)
     private String title;
 
@@ -36,7 +33,4 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, dueDate;
 
-    public List<Comment> getComments(){
-        return commentsManager.getComments();
-    }
 }
