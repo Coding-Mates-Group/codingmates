@@ -44,6 +44,8 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private OAuthEmail oAuthEmail = new OAuthEmail();
 
+    @Embedded
+    private Resume resume = new Resume();
 
     @Builder
     public Member(String username, String email, String password) {
