@@ -6,6 +6,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -39,6 +40,10 @@ public class Member extends BaseTimeEntity {
 
     @Enumerated(STRING)
     private MemberStatus status;
+
+    @Embedded
+    private OAuthEmail oAuthEmail = new OAuthEmail();
+
 
     @Builder
     public Member(String username, String email, String password) {
