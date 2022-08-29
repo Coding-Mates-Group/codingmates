@@ -6,12 +6,14 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.member.Member;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,4 +40,11 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, dueDate;
 
+    @Lob
+    @Column(name = "subject")
+    private Blob subject;
+
+    private Long hit;
+
+    private String recruitmentStatus;
 }
