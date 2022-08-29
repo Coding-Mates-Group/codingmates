@@ -48,10 +48,13 @@ public class Member extends BaseTimeEntity {
     private Resume resume = new Resume();
 
     @Builder
-    public Member(String username, String email, String password) {
+    public Member(String username, String email, String password, MemberStatus status,
+        OAuthEmail oAuthEmail, Resume resume) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.status = status;
+        this.oAuthEmail = oAuthEmail;
+        this.resume = resume;
     }
-
 }
