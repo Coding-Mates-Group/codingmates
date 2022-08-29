@@ -25,4 +25,6 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    private String title;
+
 }
