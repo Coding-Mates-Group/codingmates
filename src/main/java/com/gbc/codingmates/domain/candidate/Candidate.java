@@ -19,11 +19,11 @@ public class Candidate extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "FK_candidate_member_can"))
     private Member member_can;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name= "FK_candidate_project_can"))
     private Project project_can;
 
     @Column(nullable = false)

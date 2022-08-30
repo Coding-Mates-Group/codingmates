@@ -18,9 +18,9 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = PROTECTED)
-@Getter
 @Entity
+@Getter
+@NoArgsConstructor(access = PROTECTED)
 public class Project extends BaseTimeEntity {
 
     @Id
@@ -38,13 +38,13 @@ public class Project extends BaseTimeEntity {
     @Column
     private String category;
 
-    private LocalDateTime startDate, dueDate;
-
     @Lob
-    @Column(name = "subject")
-    private Blob subject;
+    @Column(nullable = false)
+    private Blob content;
 
-    private Long hit;
+    private Long views;
+
+    private LocalDateTime startDate,endDate;
 
     private String recruitmentStatus;
 }

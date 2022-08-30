@@ -31,6 +31,8 @@ public class Recruitment extends BaseTimeEntity {
     private Project project;
 
     private String recruitmentType;
+
     private String recruitmentCount;
+
     private String recruitmentStatus;
 }
