@@ -1,32 +1,36 @@
 package com.gbc.codingmates.domain.project;
 
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
+
 import com.gbc.codingmates.domain.BaseTimeEntity;
-import com.gbc.codingmates.domain.CommentsManager;
-import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
-import lombok.AccessLevel;
+import java.sql.Blob;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
 public class Project extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "project_id")
     private Long id;
 
-    @ManyToOne(fetch =FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @Embedded
-    private CommentsManager commentsManager = new CommentsManager();
 
     @Column(nullable = false)
     private String title;
@@ -36,7 +40,11 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, dueDate;
 
-    public List<Comment> getComments(){
-        return commentsManager.getComments();
-    }
+    @Lob
+    @Column(name = "subject")
+    private Blob subject;
+
+    private Long hit;
+
+    private String recruitmentStatus;
 }
