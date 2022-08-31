@@ -1,50 +1,42 @@
-package com.gbc.codingmates.domain.project;
+package com.gbc.codingmates.domain.skill;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.member.Member;
-import java.sql.Blob;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Project extends BaseTimeEntity {
+public class MemberSkill {
 
     @Id
+    @Column(name = "MEMBER_SKILL_ID")
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "project_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "MEMBER_ID", foreignKey = @ForeignKey(name = "FK_MEMBERSKILL_MEMBER"))
     private Member member;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "SKILL_ID", foreignKey = @ForeignKey(name = "FK_MEMBERSKILL_SKILL"))
+    private Skill skill;
 
-    @Column
-    private String category;
-
-    @Lob
-    @Column(nullable = false)
-    private Blob content;
-
-    private Long views;
-
-    private LocalDateTime startDate,endDate;
-
-    private String recruitmentStatus;
+    @Builder
+    public MemberSkill(Member member, Skill skill) {
+        this.member = member;
+        this.skill = skill;
+    }
 }

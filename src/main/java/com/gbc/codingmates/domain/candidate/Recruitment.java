@@ -1,19 +1,17 @@
-package com.gbc.codingmates.domain.project;
+package com.gbc.codingmates.domain.candidate;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
-import com.gbc.codingmates.domain.member.Member;
-import java.sql.Blob;
-import java.time.LocalDateTime;
+import com.gbc.codingmates.domain.project.Project;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,30 +19,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Project extends BaseTimeEntity {
+public class Recruitment extends BaseTimeEntity {
 
     @Id
+    @Column(name = "recruitment_id")
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "project_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_recruitment_project"))
+    private Project project;
 
-    @Column(nullable = false)
-    private String title;
+    private String recruitmentType;
 
-    @Column
-    private String category;
-
-    @Lob
-    @Column(nullable = false)
-    private Blob content;
-
-    private Long views;
-
-    private LocalDateTime startDate,endDate;
+    private String recruitmentCount;
 
     private String recruitmentStatus;
 }

@@ -1,54 +1,56 @@
 package com.gbc.codingmates.domain.member;
 
-import com.gbc.codingmates.domain.comment.Comment;
-import com.gbc.codingmates.domain.project.Project;
-import lombok.*;
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
+
+import com.gbc.codingmates.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="member_id")
+@NoArgsConstructor(access = PROTECTED)
+public class Member extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @NotBlank(message = "Your id:")
     @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "3~12 in length, with no special characters")
-    @Column(length=15, nullable = false)
+    @Column(length = 15, nullable = false)
     private String username;
 
-    @Column(length =30, nullable = false)
+    @Column(length = 30, nullable = false)
     private String email;
 
     @Column(length = 30, nullable = false)
     private String password;
 
-    private LocalDateTime created_time, updated_time;
-
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private MemberStatus status;
 
-    @OneToMany(mappedBy = "member")
-    private List<Member> members1 = new ArrayList<>();
+    @Embedded
+    private OAuthEmail oAuthEmail = new OAuthEmail();
 
-    @OneToMany(mappedBy = "comment")
-    private List<Member> members2 = new ArrayList<>();
+    @Embedded
+    private Resume resume = new Resume();
 
     @Builder
-    public Member(String username, String email, String password){
+    public Member(String username, String email, String password, MemberStatus status,
+        OAuthEmail oAuthEmail, Resume resume) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.status = status;
+        this.oAuthEmail = oAuthEmail;
+        this.resume = resume;
     }
-
-
-
 }

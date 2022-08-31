@@ -6,45 +6,41 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.member.Member;
-import java.sql.Blob;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Project extends BaseTimeEntity {
+public class InterestProject extends BaseTimeEntity {
 
     @Id
+    @Column(name = "INTEREST_PROJECT_ID")
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "project_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_InterestProject_Project"))
+    private Project project;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "FK_InterestProject_Member"))
     private Member member;
 
-    @Column(nullable = false)
-    private String title;
+    private Boolean acceptInfo;
 
-    @Column
-    private String category;
-
-    @Lob
-    @Column(nullable = false)
-    private Blob content;
-
-    private Long views;
-
-    private LocalDateTime startDate,endDate;
-
-    private String recruitmentStatus;
+    @Builder
+    public InterestProject(Project project, Member member, Boolean acceptInfo) {
+        this.project = project;
+        this.member = member;
+        this.acceptInfo = acceptInfo;
+    }
 }
