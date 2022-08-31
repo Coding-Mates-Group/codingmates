@@ -1,10 +1,10 @@
-package com.gbc.codingmates.filter;
+package com.gbc.codingmates.config;
 
-import com.gbc.codingmates.config.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
+
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

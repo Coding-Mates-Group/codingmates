@@ -2,7 +2,8 @@ package com.gbc.codingmates.config;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.Authentication;
+
 
 import java.util.Date;
 
