@@ -1,5 +1,6 @@
 package com.gbc.codingmates.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,15 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request); //request에서 jwt 토큰을 꺼낸다.
-            if (StringUtils.isNotEmpty(jwt) && JwtTokenProvider.validateToken(jwt)) {
+            if (jwt!=null && JwtTokenProvider.validateToken(jwt)) {
                 String userId = JwtTokenProvider.getUserIdFromJWT(jwt); //jwt에서 사용자 id를 꺼낸다.
 
                 UserAuthentication authentication = new UserAuthentication(userId, null, null); //id를 인증한다.
@@ -30,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication); //세션에서 계속 사용하기 위해 securityContext에 Authentication 등록
             } else {
-                if (StringUtils.isEmpty(jwt)) {
+                if (jwt==null) {
                     request.setAttribute("unauthorization", "401 인증키 없음.");
                 }
 
@@ -47,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.isNotEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if ((bearerToken!=null) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring("Bearer ".length());
         }
         return null;

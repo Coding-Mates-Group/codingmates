@@ -24,8 +24,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,22 +34,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf() //(2)
                 .disable()
                 .exceptionHandling() //(3)
-                .authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .sessionManagement() //(4)
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests() // (5)
-                .antMatchers(RestControllerBase.API_URI_PREFIX + "/auth/**")
-                .permitAll()
-                .antMatchers(RestControllerBase.API_URI_PREFIX + "/**")
-                .authenticated()
+                .antMatchers("/login**").permitAll()
+                .antMatchers( "/admin/**").hasAnyRole("ADMIN")
+                .antMatchers("/member/**").hasAnyRole("MEMBER")
+                .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().disable().headers().frameOptions().disable();
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

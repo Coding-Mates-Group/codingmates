@@ -1,18 +1,22 @@
 package com.gbc.codingmates.config;
 
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Date;
 
 @Slf4j
+@RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
     private static final String JWT_SECRET = "secretKey";
 
-    // 토큰 유효시간
-    private static final int JWT_EXPIRATION_MS = 604800000;
+    // 토큰 유효시간 = 30mins
+    private static long JWT_EXPIRATION_MS = 30*60*1000L;
 
     // jwt 토큰 생성
     public static String generateToken(Authentication authentication) {

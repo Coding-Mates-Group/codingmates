@@ -1,6 +1,7 @@
 package com.gbc.codingmates.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.h2.api.ErrorCode;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
