@@ -15,21 +15,22 @@ import java.util.Date;
 public class JwtTokenProvider {
     private static final String JWT_SECRET = "secretKey";
 
-    // 토큰 유효시간 = 30mins
-    private static long JWT_EXPIRATION_MS = 30*60*1000L;
+    // token TTL = 30mins
+    private static final long JWT_EXPIRATION_MS = 30*60*1000L;
 
-    // jwt 토큰 생성
+    // generate jwt token
     public static String generateToken(Authentication authentication) {
-
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_MS);
 
         return Jwts.builder()
-                .setSubject((String) authentication.getPrincipal()) // 사용자
-                .setIssuedAt(new Date()) // 현재 시간 기반으로 생성
-                .setExpiration(expiryDate) // 만료 시간 세팅
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET) // 사용할 암호화 알고리즘, signature에 들어갈 secret 값 세팅
-                .compact();
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) //seting header type as jwt
+                .setIssuer("coding_mates") //iss = token issuer
+//                .setSubject((String) authentication.getPrincipal()) // 사용자
+                .setIssuedAt(now) // iat = date at which token is issued
+                .setExpiration(expiryDate) // exp = date at which token expires
+                .signWith(SignatureAlgorithm.HS256, JWT_SECRET) // HS256 used for encryption, secret key
+                .compact(); //compact to make jwt token
     }
 
     // Jwt 토큰에서 아이디 추출
@@ -54,7 +55,7 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            log.error("Unsupported JWT token");
+            log.error("Unsupported JWT token - Wrong jwt template");
         } catch (IllegalArgumentException ex) {
             log.error("JWT claims string is empty.");
         }

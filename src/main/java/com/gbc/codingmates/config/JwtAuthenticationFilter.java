@@ -20,39 +20,48 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    //authenticate token of its validity
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String jwt = getJwtFromRequest(request); //request에서 jwt 토큰을 꺼낸다.
+            //retrieve jwt token from http request
+            String jwt = getJwtFromRequest(request);
             if (jwt!=null && JwtTokenProvider.validateToken(jwt)) {
-                String userId = JwtTokenProvider.getUserIdFromJWT(jwt); //jwt에서 사용자 id를 꺼낸다.
-
-                UserAuthentication authentication = new UserAuthentication(userId, null, null); //id를 인증한다.
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); //기본적으로 제공한 details 세팅
-
-                SecurityContextHolder.getContext().setAuthentication(authentication); //세션에서 계속 사용하기 위해 securityContext에 Authentication 등록
+                //retrieve member id from jwt token
+                String userId = JwtTokenProvider.getUserIdFromJWT(jwt);
+                //authenticate member id
+                UserAuthentication authentication = new UserAuthentication(userId, null, null);
+                //set the details
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                //to continue to allow connection via session, save Authentication in securityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 if (jwt==null) {
-                    request.setAttribute("unauthorization", "401 인증키 없음.");
+                    request.setAttribute("Unauthorisation", "401 No Authentication key");
                 }
 
                 if (JwtTokenProvider.validateToken(jwt)) {
-                    request.setAttribute("unauthorization", "401-001 인증키 만료.");
+                    request.setAttribute("Unauthorisation", "401-001 Authentication key expired");
                 }
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
-
         filterChain.doFilter(request, response);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if ((bearerToken!=null) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring("Bearer ".length());
+        String bearerToken = request.getHeader("Authorisation");
+        try{
+            if ((bearerToken!=null) && bearerToken.startsWith("Bearer ")) {
+                return bearerToken.substring("Bearer ".length());
+            } else{
+                return null;
+            }
+        } catch (Exception ex){
+            throw new IllegalArgumentException();
         }
-        return null;
     }
 }
+
