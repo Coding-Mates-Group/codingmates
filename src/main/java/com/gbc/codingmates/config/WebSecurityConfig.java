@@ -2,16 +2,13 @@ package com.gbc.codingmates.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -39,9 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests() // (5)
-                .antMatchers("/login**").permitAll()
                 .antMatchers( "/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/member/**").hasAnyRole("MEMBER")
+                .antMatchers("/**").permitAll()
+                //any other requests need to be authenticated
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class)
@@ -50,6 +48,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable().headers().frameOptions().disable();
 
 //        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers(
+                        "h2-console/**"
+                        ,"/favicon.ico")
+                .antMatchers("/front/auth/**")
+                .antMatchers("/favicon.ico")
+                .antMatchers("/swagger-ui.html")
+                .antMatchers("/css/**")
+                .antMatchers("/fonts/**")
+                .antMatchers("/images/**")
+                .antMatchers("/js/**");
     }
 
     @Bean

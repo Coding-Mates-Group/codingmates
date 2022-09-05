@@ -26,14 +26,15 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) //seting header type as jwt
                 .setIssuer("coding_mates") //iss = token issuer
-//                .setSubject((String) authentication.getPrincipal()) // 사용자
+                .setSubject((String) authentication.getPrincipal()) // 사용자
                 .setIssuedAt(now) // iat = date at which token is issued
                 .setExpiration(expiryDate) // exp = date at which token expires
+                .claim("testing member", authentication)
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET) // HS256 used for encryption, secret key
                 .compact(); //compact to make jwt token
     }
 
-    // Jwt 토큰에서 아이디 추출
+    // getting info out of the Jwt (토큰에서 아이디 추출)
     public static String getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
