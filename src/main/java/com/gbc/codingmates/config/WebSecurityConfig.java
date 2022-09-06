@@ -1,5 +1,6 @@
 package com.gbc.codingmates.config;
 
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-
 @Slf4j
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,26 +25,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors() //(1)
-                .and()
-                .csrf() //(2)
-                .disable()
-                .exceptionHandling() //(3)
-                .and()
-                .sessionManagement() //(4)
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests() // (5)
-                .antMatchers( "/admin/**").hasAnyRole("ADMIN")
-                .antMatchers("/member/**").hasAnyRole("MEMBER")
-                .antMatchers("/**").permitAll()
-                //any other requests need to be authenticated
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class)
+            .cors() //(1)
+            .and()
+            .csrf() //(2)
+            .disable()
+            .exceptionHandling() //(3)
+            .and()
+            .sessionManagement() //(4)
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests() // (5)
+            .antMatchers("/admin/**").hasAnyRole("ADMIN")
+            .antMatchers("/member/**").hasAnyRole("MEMBER")
+            .antMatchers("/**").permitAll()
+            //any other requests need to be authenticated
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class)
 //                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .formLogin().disable().headers().frameOptions().disable();
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .formLogin().disable().headers().frameOptions().disable();
 
 //        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
@@ -53,17 +53,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers(
-                        "h2-console/**"
-                        ,"/favicon.ico")
-                .antMatchers("/front/auth/**")
-                .antMatchers("/favicon.ico")
-                .antMatchers("/swagger-ui.html")
-                .antMatchers("/css/**")
-                .antMatchers("/fonts/**")
-                .antMatchers("/images/**")
-                .antMatchers("/js/**");
+            .ignoring()
+            .antMatchers(
+                "h2-console/**"
+                , "/favicon.ico")
+            .antMatchers("/front/auth/**")
+            .antMatchers("/favicon.ico")
+            .antMatchers("/swagger-ui.html")
+            .antMatchers("/css/**")
+            .antMatchers("/fonts/**")
+            .antMatchers("/images/**")
+            .antMatchers("/js/**");
     }
 
     @Bean

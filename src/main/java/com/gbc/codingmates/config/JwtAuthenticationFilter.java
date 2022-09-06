@@ -1,18 +1,15 @@
 package com.gbc.codingmates.config;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-
-import org.springframework.web.filter.OncePerRequestFilter;
-
+import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,22 +19,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     //authenticate token of its validity
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain)
+        throws ServletException, IOException {
         try {
             //retrieve jwt token from http request
             String jwt = getJwtFromRequest(request);
-            if (jwt!=null && JwtTokenProvider.validateToken(jwt)) {
+            if (jwt != null && JwtTokenProvider.validateToken(jwt)) {
                 //retrieve member id from jwt token
                 String userId = JwtTokenProvider.getUserIdFromJWT(jwt);
                 //authenticate member id
                 UserAuthentication authentication = new UserAuthentication(userId, null, null);
                 //set the details
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request));
                 //to continue to allow connection via session, save Authentication in securityContext
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                if (jwt==null) {
+                if (jwt == null) {
                     request.setAttribute("Unauthorisation", "401 No Authentication key");
                 }
 
@@ -53,13 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorisation");
-        try{
-            if ((bearerToken!=null) && bearerToken.startsWith("Bearer ")) {
+        try {
+            if ((bearerToken != null) && bearerToken.startsWith("Bearer ")) {
                 return bearerToken.substring("Bearer ".length());
-            } else{
+            } else {
                 return null;
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new IllegalArgumentException();
         }
     }
