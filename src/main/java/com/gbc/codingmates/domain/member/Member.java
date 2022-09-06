@@ -22,6 +22,7 @@ public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "member_id")
+    @JsonIgnore
     private Long id;
 
     @NotBlank(message = "Your id:")
@@ -45,6 +46,12 @@ public class Member extends BaseTimeEntity {
 
     @Embedded
     private Resume resume = new Resume();
+
+    @Builder
+    public Member(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
 
     @Builder
     public Member(String username, String email, String password, MemberStatus status,

@@ -54,9 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers(
-                        "h2-console/**"
-                        ,"/favicon.ico")
+                .antMatchers("h2-console/**","/favicon.ico")
                 .antMatchers("/front/auth/**")
                 .antMatchers("/favicon.ico")
                 .antMatchers("/swagger-ui.html")
