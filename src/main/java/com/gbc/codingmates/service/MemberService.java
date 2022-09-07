@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -19,5 +21,9 @@ public class MemberService {
                 .password(memberDTO.getPassword())
                 .build();
         return memberRepository.save(member);
+    }
+
+    public Optional<Member> findByIdPw(Long id){
+        return memberRepository.findById(id);
     }
 }
