@@ -1,28 +1,28 @@
 package com.gbc.codingmates.controller.auth;
 
-import com.gbc.codingmates.config.JwtAuthenticationFilter;
-import com.gbc.codingmates.config.JwtTokenProvider;
-import com.gbc.codingmates.config.UserAuthentication;
-import com.gbc.codingmates.dto.LoginDTO;
-import com.gbc.codingmates.dto.TokenDTO;
+import com.gbc.codingmates.config.oAuth.GoogleAuthService;
+import com.gbc.codingmates.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.Valid;
-
-//@RequiredArgsConstructor
-//@RestController
+@RequiredArgsConstructor
+@Controller
 public class AuthController {
-//    private final JwtTokenProvider jwtTokenProvider;
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<TokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
-//        UserAuthentication authenticationToken = new UserAuthentication(loginDTO.getUsername(), loginDTO.getPassword());
-//
-//    }
+    private final GoogleAuthService googleAuthService;
+
+    @ResponseBody
+    @GetMapping("/login/oauth2/code/google")
+    public String googleAuth(@RequestParam("code") String code) {
+        MemberDTO memberDTO = googleAuthService.getMemberInfoByGoogleToken(code);
+        return memberDTO.getUsername();
+    }
+
+    @GetMapping("/login")
+    public String googleLoginPage() {
+        return "redirect:" + googleAuthService.getGoogleLoginFormURI();
+    }
 }
