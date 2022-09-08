@@ -38,7 +38,8 @@ public class GoogleAuthService {
         queryParams.add("client_id", googleClientId);
         queryParams.add("redirect_uri", googleRedirectURL);
         queryParams.add("response_type", "code");
-        queryParams.add("scope", "https://www.googleapis.com/auth/userinfo.email");
+        queryParams.add("scope",
+            "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile");
         queryParams.add("approval_prompt", "force");
         queryParams.add("access_type", "offline");
 
