@@ -1,6 +1,7 @@
 package com.gbc.codingmates.config.oAuth;
 
 
+import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,21 +45,25 @@ public class GoogleOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public String getEmailByAccessToken(String accessToken) {
+    public GoogleUserInfoDTO getGoogleUserInfoByAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
 
-        ResponseEntity<Map> response = restTemplate.exchange(googleUserInfoURL, HttpMethod.GET,
+        ResponseEntity<GoogleUserInfoDTO> response = restTemplate.exchange(googleUserInfoURL,
+            HttpMethod.GET,
             new HttpEntity<>("", httpHeaders),
-            Map.class);
+            GoogleUserInfoDTO.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalArgumentException();
         }
 
-        return (String)response.getBody().get("email");
+        GoogleUserInfoDTO googleUserInfoDTO = response.getBody();
+        googleUserInfoDTO.checkEmailExist();
+
+        return googleUserInfoDTO;
     }
 
 }
