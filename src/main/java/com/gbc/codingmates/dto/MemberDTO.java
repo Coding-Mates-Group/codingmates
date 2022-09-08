@@ -1,6 +1,5 @@
 package com.gbc.codingmates.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gbc.codingmates.domain.member.Member;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,17 +11,17 @@ import lombok.Getter;
 @Builder
 public class MemberDTO {
 
+    private Long memberId;
     @NotNull
     private String username;
 
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private String gitRepository;
 
     public static MemberDTO from(Member member) {
         return MemberDTO.builder()
-            .username(member.getEmail())
-            .password(member.getPassword())
+            .memberId(member.getId())
+            .username(member.getUsername())
+            .gitRepository(member.getResume().getGitRepository())
             .build();
     }
 }
