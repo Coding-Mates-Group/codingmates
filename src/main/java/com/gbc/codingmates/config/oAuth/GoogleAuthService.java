@@ -1,8 +1,10 @@
 package com.gbc.codingmates.config.oAuth;
 
-import com.gbc.codingmates.domain.member.Member;
-import com.gbc.codingmates.domain.member.MemberRepository;
+import com.gbc.codingmates.domain.member.OAuth;
+import com.gbc.codingmates.domain.member.OAuthRepository;
+import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.dto.MemberDTO;
+import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -12,15 +14,18 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class GoogleAuthService {
+
     private final GoogleOauthRestTemplate googleOauthRestTemplate;
-    private final MemberRepository memberRepository;
+    private final OAuthRepository oAuthRepository;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
@@ -55,13 +60,19 @@ public class GoogleAuthService {
         return loginURL;
     }
 
+
     public MemberDTO getMemberInfoByGoogleToken(String token) {
         String accessToken = googleOauthRestTemplate.getAccessToken(token);
-        String email = googleOauthRestTemplate.getEmailByAccessToken(accessToken);
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if(member.isPresent()){
-            return MemberDTO.from(member.get());
+        GoogleUserInfoDTO googleUserInfo = googleOauthRestTemplate.getGoogleUserInfoByAccessToken(
+            accessToken);
+
+        Optional<OAuth> oAuth = oAuthRepository.findByEmailAndProvider(
+            googleUserInfo.getEmail(), OAuthType.GOOGLE);
+
+        if (oAuth.isPresent()) {
+            return MemberDTO.from(oAuth.get().getMember());
         }
+
         return null;
     }
 }
