@@ -30,30 +30,16 @@ public class Member extends BaseTimeEntity {
     @JsonIgnore
     private String username;
 
-    @Column(length = 30, nullable = false)
-    private String email;
-
-    @Column(length = 30, nullable = false)
-    @JsonIgnore
-    private String password;
-
     @Enumerated(STRING)
     private MemberStatus status;
-
-    @Embedded
-    private OAuthEmail oAuthEmail = new OAuthEmail();
 
     @Embedded
     private Resume resume = new Resume();
 
     @Builder
-    public Member(String username, String email, String password, MemberStatus status,
-        OAuthEmail oAuthEmail, Resume resume) {
+    public Member(String username, MemberStatus status, Resume resume) {
         this.username = username;
-        this.email = email;
-        this.password = password;
         this.status = status;
-        this.oAuthEmail = oAuthEmail;
         this.resume = resume;
     }
 }
