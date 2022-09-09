@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class GoogleOauthRestTemplate {
 
-    @Value("${spring.security.oauth2.client.registration.google.auth-code-url}")
+    @Value("${spring.security.oauth2.client.registration.google.token-endpoint}")
     private String googleAuthCodeURL;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String googleClientSecret;
@@ -24,7 +24,7 @@ public class GoogleOauthRestTemplate {
     @Value("${spring.security.oauth2.client.registration.google.redirect-url}")
     private String googleRedirectURL;
 
-    @Value("${spring.security.oauth2.client.registration.google.userinfo-url}")
+    @Value("${spring.security.oauth2.client.registration.google.fetching_data_endpoint}")
     private String googleUserInfoURL;
 
     public String getAccessToken(String code) {

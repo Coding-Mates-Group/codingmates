@@ -33,7 +33,7 @@ public class GoogleAuthService {
     @Value("${spring.security.oauth2.client.registration.google.redirect-url}")
     private String googleRedirectURL;
 
-    @Value("${spring.security.oauth2.client.registration.google.login-form}")
+    @Value("${spring.security.oauth2.client.registration.google.auth-endpoint}")
     private String loginURL;
 
     @PostConstruct
