@@ -21,7 +21,7 @@ public class AuthController {
         return memberDTO.getUsername();
     }
 
-    @GetMapping("/login/oAuth/google")
+    @GetMapping("/login/oauth2/google")
     public String googleLoginPage() {
         return "redirect:" + googleAuthService.getGoogleLoginFormURI();
     }
