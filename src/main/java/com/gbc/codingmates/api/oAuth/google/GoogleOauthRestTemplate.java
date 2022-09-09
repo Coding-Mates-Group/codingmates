@@ -1,4 +1,4 @@
-package com.gbc.codingmates.config.oAuth;
+package com.gbc.codingmates.api.oAuth.google;
 
 
 import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
