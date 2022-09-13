@@ -22,7 +22,8 @@ spring:
 
 logging:
   level:
-    gbc.codingmates: DEBUG
+#    gbc.codingmates: DEBUG
+    root: info
 
 jwt:
   header: Authorization

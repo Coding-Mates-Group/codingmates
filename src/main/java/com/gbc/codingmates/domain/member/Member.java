@@ -34,10 +34,10 @@ public class Member extends BaseTimeEntity {
     @JsonIgnore
     private String username;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30)
     private String email;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 62, nullable = false)
     @JsonIgnore
     private String password;
 
