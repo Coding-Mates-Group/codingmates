@@ -3,7 +3,6 @@ package com.gbc.codingmates.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,30 +14,26 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-@Slf4j
-//@RequiredArgsConstructor
 @Component
-public class JwtTokenProvider implements InitializingBean {
+public class TokenProvider implements InitializingBean {
 
-    private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
-
-    //declared in yml
     private final String secret;
     private final long tokenValidityInMilliseconds;
+    private Key key;
 
-    private static Key key;
-
-    public JwtTokenProvider(@Value("${jwt.secret}") String secret, @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds) {
+    public TokenProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds *1000;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     @Override
@@ -47,7 +42,6 @@ public class JwtTokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // generate jwt token
     public String createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -57,22 +51,18 @@ public class JwtTokenProvider implements InitializingBean {
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) //seting header type as jwt
                 .setSubject(authentication.getName())
-                .setIssuer("coding_mates") //iss = token issuer
-                .setSubject((String) authentication.getPrincipal()) // 사용자
                 .claim(AUTHORITIES_KEY, authorities)
-                .signWith(SignatureAlgorithm.HS512, key) // HS512 used for encryption, secret key
-                .setIssuedAt(new Date()) // iat = date at which token is issued
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
     }
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
-                .parser()
+                .parserBuilder()
                 .setSigningKey(key)
-//                .build()
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -86,10 +76,9 @@ public class JwtTokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-//     Jwt 토큰 유효성 검사
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             logger.info("잘못된 JWT 서명입니다.");

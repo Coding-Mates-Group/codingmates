@@ -9,7 +9,10 @@ import com.gbc.codingmates.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +40,10 @@ public class Member extends BaseTimeEntity {
     @Column(length = 30, nullable = false)
     @JsonIgnore
     private String password;
+
+//    @NotNull
+//    @Size(min = 3, max= 20)
+//    private String nickname;
 
     @Enumerated(STRING)
     private MemberStatus status;

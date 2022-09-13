@@ -1,8 +1,7 @@
 package com.gbc.codingmates.controller.member;
 
 import com.gbc.codingmates.domain.member.Member;
-import com.gbc.codingmates.domain.member.MemberRepository;
-import com.gbc.codingmates.dto.MemberDTO;
+import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,11 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register")
-    public ResponseEntity<Member> register(@Valid @RequestBody MemberDTO memberDTO){
+    public ResponseEntity<Member> register(@Valid @RequestBody MemberDto memberDTO){
         return ResponseEntity.ok(memberService.register(memberDTO));
     }
 }

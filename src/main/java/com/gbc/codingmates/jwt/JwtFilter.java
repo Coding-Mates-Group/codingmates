@@ -18,22 +18,20 @@ public class JwtFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    private JwtTokenProvider jwtTokenProvider;
+    private TokenProvider tokenProvider;
 
-    public JwtFilter(JwtTokenProvider jwttokenProvider) {
-        this.jwtTokenProvider = jwttokenProvider;
+    public JwtFilter(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
-    //saves jwt token's authentication info to SecurityContext
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
-        if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)
-        ) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
         } else {

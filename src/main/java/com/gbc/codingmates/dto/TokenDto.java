@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class TokenDTO {
+public class TokenDto {
     private String token;
 }
