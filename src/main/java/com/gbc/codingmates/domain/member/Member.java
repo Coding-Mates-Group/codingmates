@@ -9,7 +9,10 @@ import com.gbc.codingmates.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,7 @@ public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "member_id")
+    @JsonIgnore
     private Long id;
 
     @NotBlank(message = "Your id:")
@@ -30,6 +34,13 @@ public class Member extends BaseTimeEntity {
     @JsonIgnore
     private String username;
 
+    @Column(length = 30)
+    private String email;
+
+    @Column(length = 62)
+    @JsonIgnore
+    private String password;
+
     @Enumerated(STRING)
     private MemberStatus status;
 
@@ -37,8 +48,16 @@ public class Member extends BaseTimeEntity {
     private Resume resume = new Resume();
 
     @Builder
-    public Member(String username, MemberStatus status, Resume resume) {
+    public Member(String username, String password){
         this.username = username;
+        this.password = password;
+    }
+
+    @Builder
+    public Member(String username, String email, String password, MemberStatus status, Resume resume) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
         this.status = status;
         this.resume = resume;
     }

@@ -22,4 +22,13 @@ spring:
 
 logging:
   level:
-    me.silvernine: DEBUG
+#    gbc.codingmates: DEBUG
+    root: info
+
+jwt:
+  header: Authorization
+  secret: and0LWdlbmVyYXRpbmctNjRiaXQtc2VjcmV0LWtleQo=
+  token-validity-in-seconds: 86400
+
+
+

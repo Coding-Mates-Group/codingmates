@@ -3,7 +3,7 @@ package com.gbc.codingmates.api.oAuth;
 import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
-import com.gbc.codingmates.dto.MemberDTO;
+import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.oAuth.GithubUserInfoDTO;
 import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
 import java.util.Optional;
@@ -24,7 +24,7 @@ public class AuthService {
         return googleOauthRestTemplate.getAuthEndpointURI();
     }
 
-    public MemberDTO getMemberInfoByGoogleCode(String token) {
+    public MemberDto getMemberInfoByGoogleCode(String token) {
         String accessToken = googleOauthRestTemplate.getAccessToken(token);
         GoogleUserInfoDTO googleUserInfo = googleOauthRestTemplate.getGoogleUserInfoByAccessToken(
             accessToken);
@@ -33,7 +33,7 @@ public class AuthService {
             googleUserInfo.getEmail(), OAuthType.GOOGLE);
 
         if (oAuth.isPresent()) {
-            return MemberDTO.from(oAuth.get().getMember());
+            return MemberDto.from(oAuth.get().getMember());
         }
 
         return null;
@@ -43,7 +43,7 @@ public class AuthService {
         return githubOauthRestTemplate.getAuthEndpointURI();
     }
 
-    public MemberDTO getMemberInfoByGithubCode(String code) {
+    public MemberDto getMemberInfoByGithubCode(String code) {
         String accessToken = githubOauthRestTemplate.getAccessToken(code);
         GithubUserInfoDTO githubUserInfo = githubOauthRestTemplate.getUserInfoByAccessToken(
             accessToken);
@@ -52,7 +52,7 @@ public class AuthService {
             githubUserInfo.getEmail(), OAuthType.GITHUB);
 
         if (oAuth.isPresent()) {
-            return MemberDTO.from(oAuth.get().getMember());
+            return MemberDto.from(oAuth.get().getMember());
         }
 
         return null;

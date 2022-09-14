@@ -1,17 +1,17 @@
 package com.gbc.codingmates.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Builder
 @AllArgsConstructor
-public class LoginDTO {
+@NoArgsConstructor
+public class LoginDto {
     @NotNull
     private String username;
 
     @NotNull
     private String password;
-
 }
