@@ -1,27 +1,20 @@
 package com.gbc.codingmates.dto.oAuth;
 
-import static lombok.AccessLevel.PROTECTED;
-
-import lombok.Getter;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 
-@Getter
-@NoArgsConstructor(access = PROTECTED)
-public class GoogleUserInfoDTO extends AuthInfoDTO {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class GithubAuthInfoDTO extends AuthInfoDTO {
 
     private String email;
-    private String name;
-    private String given_name;
-    private String family_name;
-    private String locale;
     private String id;
     private String accessToken;
 
     @Override
     void checkIdIsNull() {
         if (ObjectUtils.isEmpty(id)) {
-            throw new IllegalArgumentException("Google OAuth User Info don't have id value");
+            throw new IllegalArgumentException("Github OAuth User Info don't have id value");
         }
     }
 
@@ -29,7 +22,7 @@ public class GoogleUserInfoDTO extends AuthInfoDTO {
     void checkAccessTokenIsNull() {
         if (ObjectUtils.isEmpty(accessToken)) {
             throw new IllegalArgumentException(
-                "Google OAuth User Info don't have accessToken value");
+                "Github OAuth User Info don't have accessToken value");
         }
     }
 
