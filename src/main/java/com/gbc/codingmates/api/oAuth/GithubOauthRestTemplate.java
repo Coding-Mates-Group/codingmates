@@ -1,6 +1,6 @@
 package com.gbc.codingmates.api.oAuth;
 
-import com.gbc.codingmates.dto.oAuth.GithubUserInfoDTO;
+import com.gbc.codingmates.dto.oAuth.GithubAuthInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -70,24 +70,24 @@ public class GithubOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public GithubUserInfoDTO getUserInfoByAccessToken(String accessToken) {
+    public GithubAuthInfoDTO getUserInfoByAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
 
-        ResponseEntity<GithubUserInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
+        ResponseEntity<GithubAuthInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
             HttpMethod.GET,
             new HttpEntity<>("", httpHeaders),
-            GithubUserInfoDTO.class);
+            GithubAuthInfoDTO.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalArgumentException();
         }
 
-        GithubUserInfoDTO githubUserInfoDTO = response.getBody();
-        githubUserInfoDTO.checkEmailExist();
+        GithubAuthInfoDTO userInfoDTO = response.getBody();
+        userInfoDTO.saveAccessToken(accessToken);
 
-        return githubUserInfoDTO;
+        return userInfoDTO;
     }
 }
