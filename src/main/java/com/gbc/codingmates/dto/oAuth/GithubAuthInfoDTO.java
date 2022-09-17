@@ -1,9 +1,11 @@
 package com.gbc.codingmates.dto.oAuth;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GithubAuthInfoDTO extends AuthInfoDTO {
 
@@ -29,7 +31,7 @@ public class GithubAuthInfoDTO extends AuthInfoDTO {
     @Override
     public String getAuthUserId() {
         checkIdIsNull();
-        return id;
+        return String.valueOf(id);
     }
 
     @Override
