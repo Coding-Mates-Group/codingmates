@@ -8,7 +8,7 @@ import org.springframework.util.ObjectUtils;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class GoogleUserInfoDTO extends AuthInfoDTO {
+public class GoogleAuthInfoDTO extends AuthInfoDTO {
 
     private String email;
     private String name;
