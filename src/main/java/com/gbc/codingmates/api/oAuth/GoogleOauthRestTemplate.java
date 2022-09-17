@@ -1,7 +1,7 @@
 package com.gbc.codingmates.api.oAuth;
 
 
-import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
+import com.gbc.codingmates.dto.oAuth.GoogleAuthInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -79,23 +79,23 @@ public class GoogleOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public GoogleUserInfoDTO getGoogleUserInfoByAccessToken(String accessToken) {
+    public GoogleAuthInfoDTO getGoogleUserInfoByAccessToken(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
 
-        ResponseEntity<GoogleUserInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
-            HttpMethod.GET, new HttpEntity<>("", httpHeaders), GoogleUserInfoDTO.class);
+        ResponseEntity<GoogleAuthInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
+            HttpMethod.GET, new HttpEntity<>("", httpHeaders), GoogleAuthInfoDTO.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalArgumentException();
         }
 
-        GoogleUserInfoDTO googleUserInfoDTO = response.getBody();
-        googleUserInfoDTO.checkEmailExist();
+        GoogleAuthInfoDTO userInfoDTO = response.getBody();
+        userInfoDTO.saveAccessToken(accessToken);
 
-        return googleUserInfoDTO;
+        return userInfoDTO;
     }
 
 }

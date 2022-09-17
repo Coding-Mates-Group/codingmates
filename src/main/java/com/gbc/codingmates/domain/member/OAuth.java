@@ -28,7 +28,7 @@ public class OAuth extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String email;
+    private String authId;
 
     @Enumerated(STRING)
     private OAuthType provider;
