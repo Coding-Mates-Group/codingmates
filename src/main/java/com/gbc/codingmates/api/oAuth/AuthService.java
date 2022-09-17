@@ -29,8 +29,8 @@ public class AuthService {
         GoogleUserInfoDTO googleUserInfo = googleOauthRestTemplate.getGoogleUserInfoByAccessToken(
             accessToken);
 
-        Optional<OAuth> oAuth = oAuthRepository.findByEmailAndProvider(
-            googleUserInfo.getEmail(), OAuthType.GOOGLE);
+        Optional<OAuth> oAuth = oAuthRepository.findByOAuthIdAndProvider(
+            googleUserInfo.getId(), OAuthType.GOOGLE);
 
         if (oAuth.isPresent()) {
             return MemberDto.from(oAuth.get().getMember());
@@ -48,8 +48,8 @@ public class AuthService {
         GithubUserInfoDTO githubUserInfo = githubOauthRestTemplate.getUserInfoByAccessToken(
             accessToken);
 
-        Optional<OAuth> oAuth = oAuthRepository.findByEmailAndProvider(
-            githubUserInfo.getEmail(), OAuthType.GITHUB);
+        Optional<OAuth> oAuth = oAuthRepository.findByOAuthIdAndProvider(
+            githubUserInfo.getId(), OAuthType.GITHUB);
 
         if (oAuth.isPresent()) {
             return MemberDto.from(oAuth.get().getMember());

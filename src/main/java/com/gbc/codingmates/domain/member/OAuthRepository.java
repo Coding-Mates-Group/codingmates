@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OAuthRepository extends JpaRepository<OAuth, Long> {
 
-    Optional<OAuth> findByEmailAndProvider(String email, OAuthType oAuthType);
+    Optional<OAuth> findByOAuthIdAndProvider(String oAuthId, OAuthType oAuthType);
 }
