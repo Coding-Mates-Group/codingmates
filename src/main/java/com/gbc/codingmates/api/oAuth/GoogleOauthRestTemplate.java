@@ -92,10 +92,10 @@ public class GoogleOauthRestTemplate {
             throw new IllegalArgumentException();
         }
 
-        GoogleUserInfoDTO googleUserInfoDTO = response.getBody();
-        googleUserInfoDTO.checkIdExist();
+        GoogleUserInfoDTO userInfoDTO = response.getBody();
+        userInfoDTO.saveAccessToken(accessToken);
 
-        return googleUserInfoDTO;
+        return userInfoDTO;
     }
 
 }
