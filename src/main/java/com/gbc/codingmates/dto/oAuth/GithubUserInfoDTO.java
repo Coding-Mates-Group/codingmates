@@ -10,9 +10,9 @@ import org.springframework.util.ObjectUtils;
 public class GithubUserInfoDTO {
 
     private String email;
-
-    public void checkEmailExist() {
-        if (ObjectUtils.isEmpty(email)) {
+    private String id;
+    public void checkIdExist() {
+        if (ObjectUtils.isEmpty(id)) {
             throw new IllegalArgumentException();
         }
     }

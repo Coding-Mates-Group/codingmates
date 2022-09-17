@@ -86,7 +86,7 @@ public class GithubOauthRestTemplate {
         }
 
         GithubUserInfoDTO githubUserInfoDTO = response.getBody();
-        githubUserInfoDTO.checkEmailExist();
+        githubUserInfoDTO.checkIdExist();
 
         return githubUserInfoDTO;
     }

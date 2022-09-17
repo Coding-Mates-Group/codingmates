@@ -15,9 +15,10 @@ public class GoogleUserInfoDTO {
     private String given_name;
     private String family_name;
     private String locale;
+    private String id;
 
-    public void checkEmailExist() {
-        if (ObjectUtils.isEmpty(email)) {
+    public void checkIdExist() {
+        if (ObjectUtils.isEmpty(id)) {
             throw new IllegalArgumentException();
         }
     }

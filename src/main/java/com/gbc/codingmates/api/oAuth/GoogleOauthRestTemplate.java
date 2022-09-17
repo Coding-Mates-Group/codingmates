@@ -93,7 +93,7 @@ public class GoogleOauthRestTemplate {
         }
 
         GoogleUserInfoDTO googleUserInfoDTO = response.getBody();
-        googleUserInfoDTO.checkEmailExist();
+        googleUserInfoDTO.checkIdExist();
 
         return googleUserInfoDTO;
     }
