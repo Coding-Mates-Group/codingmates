@@ -36,6 +36,7 @@ public class ProjectDto {
                 .recruitmentStatus(recruitmentStatus)
 //                .member(new ProjectMember(project.getMember()))
                 .build();
+
     }
 
     @Getter
@@ -46,9 +47,9 @@ public class ProjectDto {
         private MemberStatus memberStatus;
 
         public ProjectMember(Member member){
-            this.id= member.getId();
-            this.username= member.getUsername();
-            this.memberStatus=member.getMemberStatus();
+            this.id = member.getId();
+            this.username = member.getUsername();
+            this.memberStatus = member.getMemberStatus();
         }
     }
 }
