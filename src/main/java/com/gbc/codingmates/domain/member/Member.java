@@ -41,12 +41,11 @@ public class Member extends BaseTimeEntity {
     @JsonIgnore
     private String password;
 
-//    @NotNull
-//    @Size(min = 3, max= 20)
+//    @Column(nullable = false, unique = true, length = 20)
 //    private String nickname;
 
     @Enumerated(STRING)
-    private MemberStatus status;
+    private MemberStatus memberStatus;
 
     @Embedded
     private OAuthEmail oAuthEmail = new OAuthEmail();
@@ -61,12 +60,12 @@ public class Member extends BaseTimeEntity {
     }
 
     @Builder
-    public Member(String username, String email, String password, MemberStatus status,
+    public Member(String username, String email, String password, MemberStatus memberStatus,
         OAuthEmail oAuthEmail, Resume resume) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
+        this.memberStatus = memberStatus;
         this.oAuthEmail = oAuthEmail;
         this.resume = resume;
     }
