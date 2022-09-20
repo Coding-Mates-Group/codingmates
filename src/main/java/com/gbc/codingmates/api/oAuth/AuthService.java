@@ -26,6 +26,7 @@ public class AuthService {
 
     private final GoogleOauthRestTemplate googleOauthRestTemplate;
     private final GithubOauthRestTemplate githubOauthRestTemplate;
+    private final FacebookOauthRestTemplate facebookOauthRestTemplate;
     private final OAuthRepository oAuthRepository;
     private final TokenProvider tokenProvider;
 
@@ -36,11 +37,11 @@ public class AuthService {
         } else if (oAuthType == OAuthType.GITHUB) {
             uri = githubOauthRestTemplate.getAuthEndpointURI();
         } else if (oAuthType == OAuthType.FACEBOOK) {
-            // TODO: 2022/09/17 set facebook oAuth Endpoint
-            uri = "FACEBOOK AUTH ENDPOINT";
+            uri = facebookOauthRestTemplate.getAuthEndpointURI();
         } else {
             throw new IllegalArgumentException("Cannot verify oauth Type");
         }
+
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(uri));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
@@ -78,8 +79,9 @@ public class AuthService {
     }
 
     private AuthInfoDTO getMemberInfoByFacebookCode(String code) {
-        // TODO: 2022/09/17 facebookInfo
-        return null;
+        String accessToken = facebookOauthRestTemplate.getAccessToken(code);
+        return facebookOauthRestTemplate.getUserInfoByAccessToken(
+            accessToken);
     }
 
     private AuthInfoDTO getMemberInfoByGithubCode(String code) {

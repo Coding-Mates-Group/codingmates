@@ -55,7 +55,8 @@ public class GithubOauthRestTemplate {
     }
 
     public String getAccessToken(String code) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = settingRestTemplate();
+
         Map<String, String> params = new HashMap<>();
         params.put("client_id", clientId);
         params.put("client_secret", secret);
@@ -71,7 +72,7 @@ public class GithubOauthRestTemplate {
     }
 
     public GithubAuthInfoDTO getUserInfoByAccessToken(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = settingRestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
@@ -89,5 +90,11 @@ public class GithubOauthRestTemplate {
         userInfoDTO.saveAccessToken(accessToken);
 
         return userInfoDTO;
+    }
+
+    private RestTemplate settingRestTemplate(){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new OAuthErrorHandler());
+        return restTemplate;
     }
 }
