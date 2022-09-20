@@ -62,7 +62,8 @@ public class GoogleOauthRestTemplate {
     }
 
     public String getAccessToken(String code) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = settingRestTemplate();
+
         Map<String, String> params = new HashMap<>();
         params.put("grant_type", "authorization_code");
         params.put("client_id", clientId);
@@ -80,7 +81,7 @@ public class GoogleOauthRestTemplate {
     }
 
     public GoogleAuthInfoDTO getGoogleUserInfoByAccessToken(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = settingRestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
@@ -98,4 +99,9 @@ public class GoogleOauthRestTemplate {
         return userInfoDTO;
     }
 
+    private RestTemplate settingRestTemplate(){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new OAuthErrorHandler());
+        return restTemplate;
+    }
 }
