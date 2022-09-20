@@ -1,5 +1,7 @@
 package com.gbc.codingmates.domain.project;
 
+import com.gbc.codingmates.domain.member.Member;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +27,20 @@ class ProjectRepositoryTest {
 //        projectRepository.deleteAll();
 //    }
     @Test
-    public void checkPost(){
+    public void checkPostFull(){
         //given
         LocalDateTime now = LocalDateTime.now();
         projectRepository.save(Project.builder()
                 .title("hi")
                 .content("testing")
+//                .contentBig("hey")
+                .views(30L)
+                .startDate(now)
+                .endDate(now)
+                .recruitmentStatus("complete")
+//                .member(new Member("brian", "testing"))
                 .build());
+
         //when
         List<Project> projectList = projectRepository.findAll();
 
@@ -42,6 +51,25 @@ class ProjectRepositoryTest {
         assertThat(project.getCreatedDate().isAfter(now));
         assertThat(project.getModifiedDate().isAfter(now));
     }
+
+//    @Test
+//    public void checkPost(){
+//        //given
+//        LocalDateTime now = LocalDateTime.now();
+//        projectRepository.save(Project.builder()
+//                .title("hi")
+//                .content("testing")
+//                .build());
+//        //when
+//        List<Project> projectList = projectRepository.findAll();
+//
+//        //then
+//        Project project = projectList.get(0);
+//        assertThat(project.getTitle().equals("hi"));
+//        assertThat(project.getContent().equals("testing"));
+//        assertThat(project.getCreatedDate().isAfter(now));
+//        assertThat(project.getModifiedDate().isAfter(now));
+//    }
 
 
 }

@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class ProjectDto {
     private String title;
     private String content;
-
     private Blob contentBig;
     private Long views;
     private LocalDateTime startDate;
@@ -25,7 +24,19 @@ public class ProjectDto {
     private String recruitmentStatus;
     private ProjectMember member;
 
-    public Project toEntity(Project project){
+    @Builder
+    public ProjectDto(Project project){
+        this.title = project.getTitle();
+        this.content = project.getContent();
+        this.contentBig = project.getContentBig();
+        this.views = project.getViews();
+        this.startDate = project.getStartDate();
+        this.endDate = project.getEndDate();
+        this.recruitmentStatus = project.getRecruitmentStatus();
+        this.member = new ProjectMember(project.getMember());
+    }
+
+    public Project toEntity(){
         return Project.builder()
                 .title(title)
                 .content(content)
@@ -34,9 +45,8 @@ public class ProjectDto {
                 .startDate(startDate)
                 .endDate(endDate)
                 .recruitmentStatus(recruitmentStatus)
-//                .member(new ProjectMember(project.getMember()))
+//                .member(project.getMember())
                 .build();
-
     }
 
     @Getter
@@ -47,7 +57,7 @@ public class ProjectDto {
         private MemberStatus memberStatus;
 
         public ProjectMember(Member member){
-            this.id = member.getId();
+            this.id= member.getId();
             this.username = member.getUsername();
             this.memberStatus = member.getMemberStatus();
         }

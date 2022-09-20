@@ -44,7 +44,8 @@ public class Project extends BaseTimeEntity {
     private String content;
 
     @Lob
-    @Column(nullable = false)
+    @Column
+//    @Column(nullable = false)
     private Blob contentBig;
 
     private Long views;
@@ -66,12 +67,4 @@ public class Project extends BaseTimeEntity {
         this.recruitmentStatus = recruitmentStatus;
         this.member = member;
     }
-
-    @Builder
-    public Project(String title, String content){
-        this.title = title;
-        this.content=content;
-    }
-
-
 }
