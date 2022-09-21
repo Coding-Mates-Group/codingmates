@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: prod
 
   h2:
     console:
@@ -32,7 +32,6 @@ spring:
             client-secret: 279b2d3519d841f59ff33b4a91bbf11c
             auth-endpoint: https://www.facebook.com/dialog/oauth
             token-endpoint: https://graph.facebook.com/oauth/acess_token
-
 
           google:
             client-id: 822931905259-5cu7f4rrlrc02st634a33gjku1sovj47.apps.googleusercontent.com
