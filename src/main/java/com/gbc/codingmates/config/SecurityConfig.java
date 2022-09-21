@@ -64,7 +64,6 @@ public class SecurityConfig {
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/project").permitAll()
-                .antMatchers("/project1").permitAll()
 
                 .anyRequest().authenticated()
 

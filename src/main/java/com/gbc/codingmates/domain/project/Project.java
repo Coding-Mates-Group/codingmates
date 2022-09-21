@@ -52,6 +52,8 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
+    private LocalDateTime modifyToot;
+
     private String recruitmentStatus;
 
 //    @Builder(builderClassName = "createPostWithAll", builderMethodName = "createPostWithAll")
@@ -66,5 +68,11 @@ public class Project extends BaseTimeEntity {
         this.endDate = endDate;
         this.recruitmentStatus = recruitmentStatus;
         this.member = member;
+    }
+
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+        this.modifyToot = LocalDateTime.now();
     }
 }

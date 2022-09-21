@@ -19,10 +19,9 @@ public class ProjectDto {
     private String content;
     private Blob contentBig;
     private Long views;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
     private String recruitmentStatus;
-    private ProjectMember member;
+//    private ProjectMember member;
+//    private Member member;
 
     @Builder
     public ProjectDto(Project project){
@@ -30,10 +29,9 @@ public class ProjectDto {
         this.content = project.getContent();
         this.contentBig = project.getContentBig();
         this.views = project.getViews();
-        this.startDate = project.getStartDate();
-        this.endDate = project.getEndDate();
         this.recruitmentStatus = project.getRecruitmentStatus();
-        this.member = new ProjectMember(project.getMember());
+//        this.member = new ProjectMember(project.getMember());
+//        this.member = project.getMember();
     }
 
     public Project toEntity(){
@@ -42,10 +40,7 @@ public class ProjectDto {
                 .content(content)
                 .contentBig(contentBig)
                 .views(views)
-                .startDate(startDate)
-                .endDate(endDate)
                 .recruitmentStatus(recruitmentStatus)
-//                .member(project.getMember())
                 .build();
     }
 

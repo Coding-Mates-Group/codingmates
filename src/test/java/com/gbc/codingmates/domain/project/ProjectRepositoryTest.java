@@ -33,7 +33,7 @@ class ProjectRepositoryTest {
         projectRepository.save(Project.builder()
                 .title("hi")
                 .content("testing")
-//                .contentBig("hey")
+//                .contentBig()
                 .views(30L)
                 .startDate(now)
                 .endDate(now)
@@ -51,25 +51,4 @@ class ProjectRepositoryTest {
         assertThat(project.getCreatedDate().isAfter(now));
         assertThat(project.getModifiedDate().isAfter(now));
     }
-
-//    @Test
-//    public void checkPost(){
-//        //given
-//        LocalDateTime now = LocalDateTime.now();
-//        projectRepository.save(Project.builder()
-//                .title("hi")
-//                .content("testing")
-//                .build());
-//        //when
-//        List<Project> projectList = projectRepository.findAll();
-//
-//        //then
-//        Project project = projectList.get(0);
-//        assertThat(project.getTitle().equals("hi"));
-//        assertThat(project.getContent().equals("testing"));
-//        assertThat(project.getCreatedDate().isAfter(now));
-//        assertThat(project.getModifiedDate().isAfter(now));
-//    }
-
-
 }
