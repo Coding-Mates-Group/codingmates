@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: prod
+#  profiles:
+#    active: local
 
   h2:
     console:
@@ -14,7 +14,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MongoDBDialect
+#        dialect: org.hibernate.dialect.MongoDBDialect
         #하이버네이트가 실행하는 모든 SQL문을 콘솔로 출력해 준다.
         show_sql: true
         ddl-auto: create-drop
@@ -32,6 +32,8 @@ spring:
             client-secret: 279b2d3519d841f59ff33b4a91bbf11c
             auth-endpoint: https://www.facebook.com/dialog/oauth
             token-endpoint: https://graph.facebook.com/oauth/acess_token
+            redirect-url: https://127.0.0.1/login/oauth2/code/facebook
+            fetching_data_endpoint: https://graph.facebook.com/v15.0/debug_token
 
           google:
             client-id: 822931905259-5cu7f4rrlrc02st634a33gjku1sovj47.apps.googleusercontent.com
@@ -46,39 +48,38 @@ spring:
             auth-endpoint: https://github.com/login/oauth/authorize
             token-endpoint: https://github.com/login/oauth/access_token
             fetching_data_endpoint: https://api.github.com/user
-
     jwt:
       token:
         secret-key: secretKeytestauthorizationjwtmanagetokenjwtmanagetoken
         expire-length: 1800000
 
 
----
-spring:
-  profiles:
-    active: local
-server:
-  port: 8080
-logging:
-  level:
-    root: info
-
----
-spring:
-  profiles:
-    active: dev
-server:
-  port: 8081
-logging:
-  level:
-    root: info
-
----
-spring:
-  profiles:
-    active: prod
-server:
-  port: 80
-logging:
-  level:
-    root: error
+#---
+#spring:
+#  profiles:
+#    active: local
+#server:
+#  port: 8080
+#logging:
+#  level:
+#    root: info
+#
+#---
+#spring:
+#  profiles:
+#    active: dev
+#server:
+#  port: 8081
+#logging:
+#  level:
+#    root: info
+#
+#---
+#spring:
+#  profiles:
+#    active: prod
+#server:
+#  port: 80
+#logging:
+#  level:
+#    root: error

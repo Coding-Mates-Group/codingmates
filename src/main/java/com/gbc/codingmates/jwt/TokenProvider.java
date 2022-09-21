@@ -38,8 +38,8 @@ public class TokenProvider implements InitializingBean {
     private Key key;
 
     public TokenProvider(
-            @Value("${security.jwt.token.secret-key}") String secret,
-            @Value("${security.jwt.token.expire-length}") long tokenValidityInSeconds) {
+            @Value("${spring.security.jwt.token.secret-key}") String secret,
+            @Value("${spring.security.jwt.token.expire-length}") long tokenValidityInSeconds) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
