@@ -1,4 +1,4 @@
-package com.gbc.codingmates.service;
+package com.gbc.codingmates.service.member;
 
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.MemberRepository;

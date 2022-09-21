@@ -42,7 +42,7 @@ public class Member extends BaseTimeEntity {
     private String password;
 
     @Enumerated(STRING)
-    private MemberStatus status;
+    private MemberStatus memberStatus;
 
     @Embedded
     private Resume resume = new Resume();
@@ -54,11 +54,11 @@ public class Member extends BaseTimeEntity {
     }
 
     @Builder
-    public Member(String username, String email, String password, MemberStatus status, Resume resume) {
+    public Member(String username, String email, String password, MemberStatus memberStatus, Resume resume) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
+        this.memberStatus = memberStatus;
         this.resume = resume;
     }
 }
