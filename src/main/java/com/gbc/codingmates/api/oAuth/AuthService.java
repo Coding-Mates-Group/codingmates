@@ -78,7 +78,8 @@ public class AuthService {
     }
 
     private AuthInfoDTO getMemberInfoByFacebookCode(String code) {
-        // TODO: 2022/09/17 facebookInfo
+//        String accessToken = FacebookOauthRestTemplate.getAccessToken(code);
+
         return null;
     }
 
