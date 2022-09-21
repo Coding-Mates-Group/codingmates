@@ -1,44 +1,54 @@
 package com.gbc.codingmates.controller.auth;
 
-import com.gbc.codingmates.dto.LoginDto;
-import com.gbc.codingmates.dto.TokenDto;
-import com.gbc.codingmates.jwt.JwtFilter;
-import com.gbc.codingmates.jwt.TokenProvider;
+import com.gbc.codingmates.api.oAuth.AuthService;
+import com.gbc.codingmates.domain.member.OAuth;
+import com.gbc.codingmates.domain.member.OAuthType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
-@RestController
 @RequiredArgsConstructor
+@RestController
+@RequestMapping("/login")
 public class AuthController {
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    private final AuthService authService;
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+    @GetMapping("/oauth2/code/google")
+    public ResponseEntity googleAuth(@RequestParam("code") String code) {
+        return authService.authorizationByAuthCode(code, OAuthType.GOOGLE);
     }
+
+    @GetMapping("/oauth2/google")
+    private ResponseEntity googleLoginPage() {
+        return authService.getLoginURI(OAuthType.GOOGLE);
+    }
+
+    @GetMapping("/oauth2/github")
+    private ResponseEntity githubLoginPage() {
+        return authService.getLoginURI(OAuthType.GITHUB);
+    }
+
+    @ResponseBody
+    @GetMapping("/oauth2/code/github")
+    public ResponseEntity githubAuth(@RequestParam("code") String code) {
+        return authService.authorizationByAuthCode(code, OAuthType.GITHUB);
+    }
+
+    @GetMapping("/oauth2/facebook")
+    public ResponseEntity facebookLoginPage() {
+        return authService.getLoginURI(OAuthType.FACEBOOK);
+    }
+
+    @ResponseBody
+    @GetMapping("/oauth2/code/facebook")
+    public ResponseEntity facebookAuth(@RequestParam("code") String code) {
+        return authService.authorizationByAuthCode(code, OAuthType.FACEBOOK);
+    }
+
+
 }

@@ -41,34 +41,40 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-                .csrf().disable()
+            // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
+            .csrf().disable()
 
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+            .exceptionHandling()
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                // enable h2-console
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
+            // enable h2-console
+            .and()
+            .headers()
+            .frameOptions()
+            .sameOrigin()
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // 세션을 사용하지 않기 때문에 STATELESS로 설정
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .and()
-                .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers("/register").permitAll()
+
+            .and()
+            //all requests using HTTPServletRequest are restricted via .authorizeRequests()
+            .authorizeRequests()
+            //except
+            .antMatchers("/authenticate").permitAll()
+            .antMatchers("/register").permitAll()
                 .antMatchers("/project").permitAll()
+            .antMatchers("/login/**").permitAll()
 
-                .anyRequest().authenticated()
+            //else any other requests need to be authenticated
+            .anyRequest().authenticated()
 
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+
+            .and()
+            .apply(new JwtSecurityConfig(tokenProvider));
 
         return httpSecurity.build();
     }
