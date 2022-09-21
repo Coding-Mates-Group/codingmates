@@ -49,4 +49,6 @@ public class AuthController {
     public ResponseEntity facebookAuth(@RequestParam("code") String code) {
         return authService.authorizationByAuthCode(code, OAuthType.FACEBOOK);
     }
+
+
 }

@@ -59,15 +59,19 @@ public class SecurityConfig {
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+
             .and()
             //all requests using HTTPServletRequest are restricted via .authorizeRequests()
             .authorizeRequests()
             //except
             .antMatchers("/authenticate").permitAll()
             .antMatchers("/register").permitAll()
+                .antMatchers("/project").permitAll()
             .antMatchers("/login/**").permitAll()
+
             //else any other requests need to be authenticated
             .anyRequest().authenticated()
+
 
             .and()
             .apply(new JwtSecurityConfig(tokenProvider));
