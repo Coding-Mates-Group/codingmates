@@ -30,7 +30,7 @@ public class MemberDto {
             .memberId(member.getId())
             .username(member.getUsername())
             .gitRepository(member.getResume().getGitRepository())
-            .memberStatus(member.getStatus())
+            .memberStatus(member.getMemberStatus())
             .build();
     }
 
