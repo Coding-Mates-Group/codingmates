@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -33,7 +34,13 @@ public class OAuth extends BaseTimeEntity {
     @Enumerated(STRING)
     private OAuthType provider;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_oauth_member"))
     private Member member;
+
+    public OAuth(String authId, OAuthType provider, Member member) {
+        this.authId = authId;
+        this.provider = provider;
+        this.member = member;
+    }
 }
