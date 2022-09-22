@@ -8,6 +8,7 @@ import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
+    private final Mapper mapper;
 
     //list all projects
     @GetMapping("")
@@ -28,6 +30,7 @@ public class ProjectController {
     @PostMapping("")
     public Long save(@RequestBody final ProjectRequestDto projectRequestDto) {
         return projectService.save(projectRequestDto);
+
     }
 
     //edit/update project
