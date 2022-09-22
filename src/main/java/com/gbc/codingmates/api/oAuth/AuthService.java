@@ -7,13 +7,17 @@ import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,36 +33,27 @@ public class AuthService {
     private final FacebookOauthRestTemplate facebookOauthRestTemplate;
     private final OAuthRepository oAuthRepository;
     private final TokenProvider tokenProvider;
+    private Map<OAuthType, OAuthRestTemplate> oauthTemplates;
+
+    @PostConstruct
+    public void init() {
+        oauthTemplates = new HashMap<>();
+        oauthTemplates.put(OAuthType.GOOGLE, googleOauthRestTemplate);
+        oauthTemplates.put(OAuthType.FACEBOOK, facebookOauthRestTemplate);
+        oauthTemplates.put(OAuthType.GITHUB, githubOauthRestTemplate);
+    }
 
     public ResponseEntity getLoginURI(OAuthType oAuthType) {
-        String uri = "";
-        if (oAuthType == OAuthType.GOOGLE) {
-            uri = googleOauthRestTemplate.getAuthEndpointURI();
-        } else if (oAuthType == OAuthType.GITHUB) {
-            uri = githubOauthRestTemplate.getAuthEndpointURI();
-        } else if (oAuthType == OAuthType.FACEBOOK) {
-            uri = facebookOauthRestTemplate.getAuthEndpointURI();
-        } else {
-            throw new IllegalArgumentException("Cannot verify oauth Type");
-        }
-
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(uri));
+        headers.setLocation(URI.create(getOAuthTemplateByType(oAuthType).getAuthEndpointURI()));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
 
     public ResponseEntity authorizationByAuthCode(String code, OAuthType oAuthType) {
-        AuthInfoDTO authInfoDTO = null;
-        if (oAuthType == OAuthType.GOOGLE) {
-            authInfoDTO = getMemberInfoByGoogleCode(code);
-        } else if (oAuthType == OAuthType.GITHUB) {
-            authInfoDTO = getMemberInfoByGithubCode(code);
-        } else if (oAuthType == OAuthType.FACEBOOK) {
-            authInfoDTO = getMemberInfoByFacebookCode(code);
-        } else {
-            throw new IllegalArgumentException("Cannot verify oauth Type");
-        }
+        OAuthRestTemplate oAuthRestTemplate = getOAuthTemplateByType(oAuthType);
+        String accessToken = oAuthRestTemplate.getAccessToken(code);
+        AuthInfoDTO authInfoDTO = oAuthRestTemplate.getUserInfoByAccessToken(accessToken);
 
         Optional<OAuth> oAuth = oAuthRepository.findByAuthIdAndProvider(
             authInfoDTO.getAuthUserId(), oAuthType);
@@ -70,24 +65,6 @@ public class AuthService {
             return getMemberJoinPath(authInfoDTO.getAuthUserId(), authInfoDTO.getAccessToken(),
                 oAuthType);
         }
-    }
-
-    private AuthInfoDTO getMemberInfoByGoogleCode(String code) {
-        String accessToken = googleOauthRestTemplate.getAccessToken(code);
-        return googleOauthRestTemplate.getGoogleUserInfoByAccessToken(
-            accessToken);
-    }
-
-    private AuthInfoDTO getMemberInfoByFacebookCode(String code) {
-        String accessToken = facebookOauthRestTemplate.getAccessToken(code);
-        return facebookOauthRestTemplate.getUserInfoByAccessToken(
-            accessToken);
-    }
-
-    private AuthInfoDTO getMemberInfoByGithubCode(String code) {
-        String accessToken = githubOauthRestTemplate.getAccessToken(code);
-        return githubOauthRestTemplate.getUserInfoByAccessToken(
-            accessToken);
     }
 
     private ResponseEntity getMemberJoinPath(String authId, String accessToken,
@@ -102,5 +79,13 @@ public class AuthService {
 
         headers.setLocation(URI.create(uriComponents.toString()));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    private OAuthRestTemplate getOAuthTemplateByType(OAuthType oAuthType) {
+        OAuthRestTemplate oAuthRestTemplate = oauthTemplates.get(oAuthType);
+        if (ObjectUtils.isEmpty(oAuthRestTemplate)) {
+            throw new IllegalArgumentException("Cannot verify oauth Type");
+        }
+        return oAuthRestTemplate;
     }
 }
