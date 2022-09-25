@@ -1,5 +1,6 @@
 package com.gbc.codingmates.api.oAuth;
 
+import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
 import com.gbc.codingmates.dto.oAuth.FacebookAuthInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class FacebookOauthRestTemplate {
+public class FacebookOauthRestTemplate extends OAuthRestTemplate {
 
     private String authEndpointURI = "";
     @Value("${spring.security.oauth2.client.registration.facebook.auth-endpoint}")
@@ -74,7 +75,7 @@ public class FacebookOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public FacebookAuthInfoDTO getUserInfoByAccessToken(String accessToken) {
+    public AuthInfoDTO getUserInfoByAccessToken(String accessToken) {
         RestTemplate restTemplate = settingRestTemplate();
 
         Map<String, List<String>> param = new HashMap<>();
@@ -101,11 +102,5 @@ public class FacebookOauthRestTemplate {
         response.getBody().saveAccessToken(accessToken);
 
         return response.getBody();
-    }
-
-    private RestTemplate settingRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setErrorHandler(new OAuthErrorHandler());
-        return restTemplate;
     }
 }

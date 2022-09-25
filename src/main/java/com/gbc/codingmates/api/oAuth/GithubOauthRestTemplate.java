@@ -1,5 +1,6 @@
 package com.gbc.codingmates.api.oAuth;
 
+import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
 import com.gbc.codingmates.dto.oAuth.GithubAuthInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class GithubOauthRestTemplate {
+public class GithubOauthRestTemplate extends OAuthRestTemplate {
 
     private String authEndpointURI = "";
     @Value("${spring.security.oauth2.client.registration.github.auth-endpoint}")
@@ -71,7 +72,7 @@ public class GithubOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public GithubAuthInfoDTO getUserInfoByAccessToken(String accessToken) {
+    public AuthInfoDTO getUserInfoByAccessToken(String accessToken) {
         RestTemplate restTemplate = settingRestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -90,11 +91,5 @@ public class GithubOauthRestTemplate {
         userInfoDTO.saveAccessToken(accessToken);
 
         return userInfoDTO;
-    }
-
-    private RestTemplate settingRestTemplate(){
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setErrorHandler(new OAuthErrorHandler());
-        return restTemplate;
     }
 }
