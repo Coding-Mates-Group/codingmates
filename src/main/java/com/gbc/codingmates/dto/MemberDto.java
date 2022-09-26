@@ -25,11 +25,12 @@ public class MemberDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private MemberStatus memberStatus;
+
     public static MemberDto from(Member member) {
         return MemberDto.builder()
             .memberId(member.getId())
             .username(member.getUsername())
-            .gitRepository(member.getResume().getGitRepository())
+            .gitRepository(member.getResume() != null ? member.getResume().getGitRepository() : "")
             .memberStatus(member.getMemberStatus())
             .build();
     }
