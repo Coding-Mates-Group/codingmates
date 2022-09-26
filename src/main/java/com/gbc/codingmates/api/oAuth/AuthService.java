@@ -2,6 +2,8 @@ package com.gbc.codingmates.api.oAuth;
 
 import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthRepository;
+import com.gbc.codingmates.domain.member.OAuthToken;
+import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
@@ -26,8 +28,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Transactional(readOnly = true)
 public class AuthService {
 
-    private static final String MEMBER_JOIN_URI = "/login/join";
-
+    private static final String MEMBER_JOIN_URI = "/members";
+    private final OAuthTokenRepository oAuthTokenRepository;
     private final GoogleOauthRestTemplate googleOauthRestTemplate;
     private final GithubOauthRestTemplate githubOauthRestTemplate;
     private final FacebookOauthRestTemplate facebookOauthRestTemplate;
@@ -62,19 +64,22 @@ public class AuthService {
                 MemberDto.from(oAuth.get().getMember())
             ));
         } else {
-            return getMemberJoinPath(authInfoDTO.getAuthUserId(), authInfoDTO.getAccessToken(),
-                oAuthType);
+            return getMemberJoinPath(authInfoDTO.getAuthUserId(), oAuthType);
         }
     }
 
-    private ResponseEntity getMemberJoinPath(String authId, String accessToken,
-        OAuthType oAuthType) {
+
+    private ResponseEntity getMemberJoinPath(String authId, OAuthType oAuthType) {
         HttpHeaders headers = new HttpHeaders();
+
+        OAuthToken oAuthToken = oAuthTokenRepository.save(OAuthToken.builder()
+            .authUserId(authId)
+            .oAuthType(oAuthType)
+            .build());
+
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .path(MEMBER_JOIN_URI)
-            .queryParam("userId", authId)
-            .queryParam("token", accessToken)
-            .queryParam("oauth", oAuthType.name())
+            .queryParam("token", oAuthToken.getId())
             .build(true);
 
         headers.setLocation(URI.create(uriComponents.toString()));
