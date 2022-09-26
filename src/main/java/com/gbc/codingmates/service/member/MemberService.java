@@ -1,34 +1,59 @@
 package com.gbc.codingmates.service.member;
 
 import com.gbc.codingmates.domain.member.Member;
-import com.gbc.codingmates.domain.member.MemberRepository;
+import com.gbc.codingmates.domain.member.MemberStatus;
+import com.gbc.codingmates.domain.member.OAuth;
+import com.gbc.codingmates.domain.member.OAuthRepository;
+import com.gbc.codingmates.domain.member.OAuthToken;
+import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.dto.MemberDto;
+import com.gbc.codingmates.dto.form.MemberJoinDto;
+import com.gbc.codingmates.jwt.TokenProvider;
+import com.gbc.codingmates.util.FileHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
+
+    private final OAuthTokenRepository oAuthTokenRepository;
+    private final OAuthRepository oAuthRepository;
+    private final FileHandler fileHandler;
+    private final TokenProvider tokenProvider;
 
     @Transactional
-    public Member register(MemberDto memberDTO){
-        if(memberRepository.findMemberByUsername(memberDTO.getUsername()).orElse(null)!=null){
-            throw new RuntimeException("already a registered member");
-        }
-        Member member = Member.builder()
-                .username(memberDTO.getUsername())
-                .password(passwordEncoder.encode(memberDTO.getPassword()))
-                .build();
-        return memberRepository.save(member);
-    }
+    public ResponseEntity join(MemberJoinDto memberJoinDto) {
+        final OAuthToken oauthToken = oAuthTokenRepository.findByIdWithLock(
+                memberJoinDto.getToken())
+            .orElseThrow(() -> new IllegalArgumentException("regeist with invalid token"));
 
-    public Optional<Member> findByIdPw(Long id){
-        return memberRepository.findById(id);
+        final Member member = Member.builder()
+            .username(memberJoinDto.getUserAlias())
+            .memberStatus(MemberStatus.BASIC)
+            .build();
+
+        final OAuth oauth = OAuth.builder()
+            .authId(oauthToken.getAuthUserId())
+            .member(member)
+            .provider(oauthToken.getOAuthType())
+            .build();
+
+        oAuthRepository.save(oauth);
+        oAuthTokenRepository.delete(oauthToken);
+
+        if (!memberJoinDto.getProfileImage().isEmpty()) {
+            String profileRelativePath = fileHandler.saveProfileImage(
+                memberJoinDto.getProfileImage(),
+                member.getId());
+            member.mapMemberProfileImagePath(profileRelativePath);
+        }
+
+        return ResponseEntity.ok(tokenProvider.getTokenByUserInfo(
+            MemberDto.from(member)
+        ));
     }
 }
