@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -21,4 +22,10 @@ public class MemberJoinDto {
     private List<Long> skillIds = new ArrayList<>();
     private MultipartFile profileImage;
 
+    public boolean profileImageExist(){
+        if(ObjectUtils.isEmpty(profileImage) || profileImage.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }

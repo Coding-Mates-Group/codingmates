@@ -45,7 +45,7 @@ public class MemberService {
         oAuthRepository.save(oauth);
         oAuthTokenRepository.delete(oauthToken);
 
-        if (!memberJoinDto.getProfileImage().isEmpty()) {
+        if (memberJoinDto.profileImageExist()) {
             String profileRelativePath = fileHandler.saveProfileImage(
                 memberJoinDto.getProfileImage(),
                 member.getId());
