@@ -6,13 +6,14 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.domain.BaseTimeEntity;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,19 +47,20 @@ public class Member extends BaseTimeEntity {
 
     @Embedded
     private Resume resume = new Resume();
+    private String memberProfilePath;
 
     @Builder
-    public Member(String username, String password){
-        this.username = username;
-        this.password = password;
-    }
-
-    @Builder
-    public Member(String username, String email, String password, MemberStatus memberStatus, Resume resume) {
+    public Member(String username, String email, String password, MemberStatus memberStatus,
+        Resume resume, String memberProfilePath) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.memberStatus = memberStatus;
         this.resume = resume;
+        this.memberProfilePath = memberProfilePath;
+    }
+
+    public void mapMemberProfileImagePath(String imagePath) {
+        this.memberProfilePath = imagePath;
     }
 }
