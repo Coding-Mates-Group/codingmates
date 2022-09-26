@@ -66,7 +66,7 @@ public class GithubOauthRestTemplate extends OAuthRestTemplate {
         ResponseEntity<Map> response = restTemplate.postForEntity(tokenEndpoint,
             params, Map.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(response.getBody().toString());
         }
 
         return (String) response.getBody().get("access_token");

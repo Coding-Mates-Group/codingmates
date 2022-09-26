@@ -66,10 +66,10 @@ public class FacebookOauthRestTemplate extends OAuthRestTemplate {
         params.put("client_secret", secret);
         params.put("code", code);
 
-        ResponseEntity<Map> response = restTemplate.postForEntity(tokenEndpoint, params,
-            Map.class);
+        ResponseEntity<Map> response = restTemplate.postForEntity(tokenEndpoint,
+            params, Map.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(response.getBody().toString());
         }
 
         return (String) response.getBody().get("access_token");
