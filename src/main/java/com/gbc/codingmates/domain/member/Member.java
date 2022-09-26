@@ -6,8 +6,12 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.domain.BaseTimeEntity;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
@@ -22,6 +26,7 @@ public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "member_id")
+    @JsonIgnore
     private Long id;
 
     @NotBlank(message = "Your id:")
@@ -30,30 +35,32 @@ public class Member extends BaseTimeEntity {
     @JsonIgnore
     private String username;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30)
     private String email;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 62)
     @JsonIgnore
     private String password;
 
     @Enumerated(STRING)
-    private MemberStatus status;
-
-    @Embedded
-    private OAuthEmail oAuthEmail = new OAuthEmail();
+    private MemberStatus memberStatus;
 
     @Embedded
     private Resume resume = new Resume();
+    private String memberProfilePath;
 
     @Builder
-    public Member(String username, String email, String password, MemberStatus status,
-        OAuthEmail oAuthEmail, Resume resume) {
+    public Member(String username, String email, String password, MemberStatus memberStatus,
+        Resume resume, String memberProfilePath) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
-        this.oAuthEmail = oAuthEmail;
+        this.memberStatus = memberStatus;
         this.resume = resume;
+        this.memberProfilePath = memberProfilePath;
+    }
+
+    public void mapMemberProfileImagePath(String imagePath) {
+        this.memberProfilePath = imagePath;
     }
 }
