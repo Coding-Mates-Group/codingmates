@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,7 @@ public class OAuth extends BaseTimeEntity {
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_oauth_member"))
     private Member member;
 
+    @Builder
     public OAuth(String authId, OAuthType provider, Member member) {
         this.authId = authId;
         this.provider = provider;
