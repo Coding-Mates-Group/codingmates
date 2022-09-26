@@ -45,13 +45,14 @@ public class AuthService {
         oauthTemplates.put(OAuthType.GITHUB, githubOauthRestTemplate);
     }
 
+
     public ResponseEntity getLoginURI(OAuthType oAuthType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(getOAuthTemplateByType(oAuthType).getAuthEndpointURI()));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
-
+    @Transactional
     public ResponseEntity authorizationByAuthCode(String code, OAuthType oAuthType) {
         OAuthRestTemplate oAuthRestTemplate = getOAuthTemplateByType(oAuthType);
         String accessToken = oAuthRestTemplate.getAccessToken(code);
