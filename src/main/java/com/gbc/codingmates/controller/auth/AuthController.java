@@ -1,7 +1,6 @@
 package com.gbc.codingmates.controller.auth;
 
 import com.gbc.codingmates.api.oAuth.AuthService;
-import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
