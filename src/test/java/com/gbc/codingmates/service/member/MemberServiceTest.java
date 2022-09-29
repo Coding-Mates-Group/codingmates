@@ -10,6 +10,8 @@ import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
+import com.gbc.codingmates.domain.skill.MemberSkillRepository;
+import com.gbc.codingmates.domain.skill.SkillRepository;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
 import com.gbc.codingmates.util.FileHandler;
@@ -39,10 +41,13 @@ class MemberServiceTest {
 
     @Mock
     private MultipartFile profileImage;
-
+    @Mock
+    private SkillRepository skillRepository;
+    @Mock
+    private MemberSkillRepository memberSkillRepository;
     @BeforeEach
     public void init() {
-        memberService = new MemberService(oAuthTokenRepository, oAuthRepository, fileHandler,
+        memberService = new MemberService(oAuthTokenRepository, oAuthRepository, skillRepository, memberSkillRepository, fileHandler,
             tokenProvider);
     }
 
@@ -50,7 +55,7 @@ class MemberServiceTest {
     public void memberRegister() {
         //given
         MemberJoinDto memberJoinDto = new MemberJoinDto("userAlias", "token",
-            Arrays.asList(1L, 2L), profileImage);
+            Arrays.asList(1L, 2L));
 
         when(oAuthTokenRepository.findByIdWithLock(memberJoinDto.getToken())).thenReturn(
             Optional.of(OAuthToken.builder()
@@ -63,7 +68,7 @@ class MemberServiceTest {
         when(tokenProvider.getTokenByUserInfo(any())).thenReturn("JWT_TOKEN");
 
         //when
-        ResponseEntity responseEntity = memberService.join(memberJoinDto);
+        ResponseEntity responseEntity = memberService.join(memberJoinDto, null);
 
         //then
         assertAll(
