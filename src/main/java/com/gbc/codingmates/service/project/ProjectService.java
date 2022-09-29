@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+//@Transactional(readOnly = true)
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
@@ -39,10 +40,20 @@ public class ProjectService {
     }
 
     //delete project
+    @Transactional
     public void deleteById(final Long id, final ProjectRequestDto projectRequestDto){
 //        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
         projectRepository.deleteById(id);
     }
+
+    @Transactional
+    public void updateView(final Long id, final ProjectRequestDto projectRequestDto){
+        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalStateException("There is no such project found"));
+        project.updateView(projectRequestDto.getViews());
+
+    }
+
+
 
 
 }

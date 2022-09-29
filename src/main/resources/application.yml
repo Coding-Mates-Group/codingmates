@@ -1,15 +1,6 @@
 spring:
-#  profiles:
-#    active: local
-
-  h2:
-    console:
-      enabled: true
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/codingmates
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+  profiles:
+    active: local
 
   jpa:
     properties:
@@ -53,33 +44,46 @@ spring:
         secret-key: secretKeytestauthorizationjwtmanagetokenjwtmanagetoken
         expire-length: 1800000
 
+---
+spring:
+  profiles:
+    group:
+      "local": local
+      "dev":  dev
+      "prod": prod
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://codingmatesdb.c8pa7vtqsrpa.us-west-1.rds.amazonaws.com:5432/coding_mates_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: disneyland77
 
-#---
-#spring:
-#  profiles:
-#    active: local
-#server:
-#  port: 8080
-#logging:
-#  level:
-#    root: info
-#
-#---
-#spring:
-#  profiles:
-#    active: dev
-#server:
-#  port: 8081
-#logging:
-#  level:
-#    root: info
-#
-#---
-#spring:
-#  profiles:
-#    active: prod
-#server:
-#  port: 80
-#logging:
-#  level:
-#    root: error
+---
+spring:
+  h2:
+    console:
+      enabled: true
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/codingmates
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "common"
+
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+

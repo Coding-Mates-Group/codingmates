@@ -75,4 +75,9 @@ public class Project extends BaseTimeEntity {
         this.content = content;
         this.modifyToot = LocalDateTime.now();
     }
+
+    public void updateView(Long views){
+        this.views = views;
+    }
+
 }

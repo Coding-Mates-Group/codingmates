@@ -13,11 +13,13 @@ public class ProjectRequestDto {
     private String title;
     private String content;
     private Blob contentBig;
+    private Long views;
 
     public Project toEntity(){
         return Project.builder()
                 .title(title)
                 .content(content)
+                .views(views)
                 .build();
     }
 }

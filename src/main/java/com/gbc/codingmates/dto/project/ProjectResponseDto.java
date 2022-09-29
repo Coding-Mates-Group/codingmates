@@ -15,5 +15,6 @@ public class ProjectResponseDto {
         this.id= project.getId();
         this.title= project.getTitle();
         this.content= project.getContent();
+
     }
 }
