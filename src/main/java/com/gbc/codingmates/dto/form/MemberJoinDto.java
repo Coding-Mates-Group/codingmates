@@ -20,12 +20,4 @@ public class MemberJoinDto {
     @NotEmpty(message = "token must not empty")
     private String token;
     private List<Long> skillIds = new ArrayList<>();
-    private MultipartFile profileImage;
-
-    public boolean profileImageExist(){
-        if(ObjectUtils.isEmpty(profileImage) || profileImage.isEmpty()){
-            return false;
-        }
-        return true;
-    }
 }
