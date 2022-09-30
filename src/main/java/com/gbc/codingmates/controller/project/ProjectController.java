@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
-    private final Mapper mapper;
 
     //list all projects
     @GetMapping("")
