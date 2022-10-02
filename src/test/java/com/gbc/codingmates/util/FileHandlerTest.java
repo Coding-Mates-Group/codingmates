@@ -22,16 +22,13 @@ class FileHandlerTest {
     public static final String TEST_PNG_NAME = "testImage.png";
     public static final String TEST_GIF_NAME = "testImage.gif";
     public static final String TEST_JPG_NAME = "testImage.jpg";
-
+    public static final String TEST_PROFILE_ROOT_PATH = "/test/profiles";
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
     private FileHandler fileHandler;
 
-    @BeforeEach
-    public void init() {
-        fileHandler = new FileHandler();
-    }
 
     @Test
     public void userPngProfileSaveTest() throws IOException {
