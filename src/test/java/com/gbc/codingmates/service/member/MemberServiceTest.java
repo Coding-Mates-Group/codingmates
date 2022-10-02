@@ -11,10 +11,10 @@ import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.domain.skill.MemberSkillRepository;
+import com.gbc.codingmates.domain.skill.Skill;
 import com.gbc.codingmates.domain.skill.SkillRepository;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
-import com.gbc.codingmates.util.FileHandler;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -35,19 +34,17 @@ class MemberServiceTest {
     @Mock
     private OAuthRepository oAuthRepository;
     @Mock
-    private FileHandler fileHandler;
-    @Mock
     private TokenProvider tokenProvider;
 
-    @Mock
-    private MultipartFile profileImage;
     @Mock
     private SkillRepository skillRepository;
     @Mock
     private MemberSkillRepository memberSkillRepository;
+
     @BeforeEach
     public void init() {
-        memberService = new MemberService(oAuthTokenRepository, oAuthRepository, skillRepository, memberSkillRepository, fileHandler,
+        memberService = new MemberService(oAuthTokenRepository, oAuthRepository, skillRepository,
+            memberSkillRepository,
             tokenProvider);
     }
 
@@ -63,12 +60,18 @@ class MemberServiceTest {
                 .authUserId("authUserId")
                 .build()));
         when(oAuthRepository.save(any())).thenReturn(null);
-        when(profileImage.isEmpty()).thenReturn(true);
         doNothing().when(oAuthTokenRepository).delete(any());
         when(tokenProvider.getTokenByUserInfo(any())).thenReturn("JWT_TOKEN");
-
+        when(skillRepository.findAllById(memberJoinDto.getSkillIds()))
+            .thenReturn(
+                Arrays.asList(
+                    new Skill[]{
+                        Skill.builder().skillName("a").build(),
+                        Skill.builder().skillName("b").build()
+                    }
+                ));
         //when
-        ResponseEntity responseEntity = memberService.join(memberJoinDto, null);
+        ResponseEntity responseEntity = memberService.join(memberJoinDto);
 
         //then
         assertAll(
