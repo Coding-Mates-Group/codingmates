@@ -5,7 +5,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.service.member.MemberService;
-import java.util.Arrays;
+import com.gbc.codingmates.service.member.ProfileService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +26,29 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ProfileService profileService;
 
 
-    @PostMapping(value = "", consumes = {APPLICATION_JSON_VALUE, MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "", consumes = {APPLICATION_JSON_VALUE})
     public ResponseEntity register(@RequestPart @Validated MemberJoinDto request,
-        BindingResult bindingResult,
-        @RequestPart(required = false) MultipartFile profile) {
+        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().toString());
         }
-        return memberService.join(request, profile);
+        return memberService.join(request);
     }
 
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable("id") Long memberID,
         @RequestParam(defaultValue = "profile") List<String> scope) {
         return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping(value = "{id}/profiles", consumes = {APPLICATION_JSON_VALUE,
+        MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity saveProfileImage(@PathVariable Long id,
+        @RequestPart MultipartFile profile) {
+        return profileService.saveProfile(profile, id, id);
     }
 }
