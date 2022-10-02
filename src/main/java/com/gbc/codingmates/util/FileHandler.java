@@ -48,7 +48,7 @@ public class FileHandler {
     }
 
     private void save(MultipartFile multipartFile, String dirPath, String fileName) {
-        File file = new File(MEMBER_PROFILE_ABSOLUTE_PATH);
+        File file = new File(dirPath);
         if (!file.exists()) {
             file.mkdirs();
         }
