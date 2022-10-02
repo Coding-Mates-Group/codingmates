@@ -2,13 +2,15 @@ package com.gbc.codingmates.util;
 
 import java.io.File;
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileHandler {
 
-    public static final String MEMBER_PROFILE_ABSOLUTE_PATH = "/images/profiles";
+    @Value("${spring.member-profile.path}")
+    public String MEMBER_PROFILE_ABSOLUTE_PATH;
     public static final String PROJECT_SRC_PATH = new File("").getAbsolutePath();
     public static final String FILE_EXTENSION_JPG = ".jpg";
     public static final String FILE_EXTENSION_PNG = ".png";
