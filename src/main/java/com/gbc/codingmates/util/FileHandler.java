@@ -2,13 +2,15 @@ package com.gbc.codingmates.util;
 
 import java.io.File;
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileHandler {
 
-    public static final String MEMBER_PROFILE_ABSOLUTE_PATH = "/images/profiles";
+    @Value("${spring.member-profile.path}")
+    public String MEMBER_PROFILE_ABSOLUTE_PATH;
     public static final String PROJECT_SRC_PATH = new File("").getAbsolutePath();
     public static final String FILE_EXTENSION_JPG = ".jpg";
     public static final String FILE_EXTENSION_PNG = ".png";
@@ -16,6 +18,16 @@ public class FileHandler {
 
 //    //"^([\\S]+(\\.(?i)(jpg|png|gif|bmp|java))$)"
 //    public static final Pattern LINUX_FILE_PATTERN = Pattern.compile("^/|(/[\\w-]+)+$");
+
+    public static String getRandomProfilePath() {
+        int imageNumber = (int) (Math.random() * 10 % 6 + 1); // 1 ~ 6
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(PROJECT_SRC_PATH);
+        stringBuilder.append("/images/default/");
+        stringBuilder.append(imageNumber);
+        stringBuilder.append(".png");
+        return stringBuilder.toString();
+    }
 
     public String saveProfileImage(MultipartFile multipartFile, Long memberId) {
         if (multipartFile.isEmpty()) {
@@ -36,7 +48,7 @@ public class FileHandler {
     }
 
     private void save(MultipartFile multipartFile, String dirPath, String fileName) {
-        File file = new File(MEMBER_PROFILE_ABSOLUTE_PATH);
+        File file = new File(dirPath);
         if (!file.exists()) {
             file.mkdirs();
         }

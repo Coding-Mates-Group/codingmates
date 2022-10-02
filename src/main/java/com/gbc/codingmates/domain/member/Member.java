@@ -1,11 +1,14 @@
 package com.gbc.codingmates.domain.member;
 
+import static com.gbc.codingmates.util.FileHandler.getRandomProfilePath;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.domain.BaseTimeEntity;
+import com.gbc.codingmates.dto.form.MemberJoinDto;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -48,6 +51,17 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Resume resume = new Resume();
     private String memberProfilePath;
+
+    public static Member from(MemberJoinDto memberJoinDto) {
+        if (isEmpty(memberJoinDto.getUserAlias())) {
+            throw new IllegalArgumentException("user alias is inquired for create Member");
+        }
+        return Member.builder()
+            .username(memberJoinDto.getUserAlias())
+            .memberStatus(MemberStatus.BASIC)
+            .memberProfilePath(getRandomProfilePath())
+            .build();
+    }
 
     @Builder
     public Member(String username, String email, String password, MemberStatus memberStatus,
