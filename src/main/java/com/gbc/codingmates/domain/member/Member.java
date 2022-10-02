@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.member;
 
+import static com.gbc.codingmates.util.FileHandler.getRandomProfilePath;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -58,6 +59,7 @@ public class Member extends BaseTimeEntity {
         return Member.builder()
             .username(memberJoinDto.getUserAlias())
             .memberStatus(MemberStatus.BASIC)
+            .memberProfilePath(getRandomProfilePath())
             .build();
     }
 
