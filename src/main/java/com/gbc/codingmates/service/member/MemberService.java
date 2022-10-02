@@ -37,21 +37,14 @@ public class MemberService {
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public ResponseEntity join(MemberJoinDto memberJoinDto, MultipartFile profile) {
+    public ResponseEntity join(MemberJoinDto memberJoinDto) {
         final OAuthToken oauthToken = oAuthTokenRepository.findByIdWithLock(
                 memberJoinDto.getToken())
             .orElseThrow(() -> new IllegalArgumentException("regeist with invalid token"));
 
-        final Member member = Member.builder()
-            .username(memberJoinDto.getUserAlias())
-            .memberStatus(MemberStatus.BASIC)
-            .build();
+        final Member member = Member.from(memberJoinDto);
 
-        final OAuth oauth = OAuth.builder()
-            .authId(oauthToken.getAuthUserId())
-            .member(member)
-            .provider(oauthToken.getOAuthType())
-            .build();
+        final OAuth oauth = OAuth.of(oauthToken, member);
 
         List<Skill> memberSkills =
             skillRepository.findAllById(memberJoinDto.getSkillIds());
@@ -69,13 +62,6 @@ public class MemberService {
                 .map(skill -> new MemberSkill(member, skill))
                 .collect(Collectors.toList())
         );
-
-        if (!isEmpty(profile)) {
-            String profileRelativePath = fileHandler.saveProfileImage(
-                profile,
-                member.getId());
-            member.mapMemberProfileImagePath(profileRelativePath);
-        }
 
         return ResponseEntity.ok(tokenProvider.getTokenByUserInfo(
             MemberDto.from(member)

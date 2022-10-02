@@ -39,6 +39,14 @@ public class OAuth extends BaseTimeEntity {
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_oauth_member"))
     private Member member;
 
+    public static OAuth of(OAuthToken oAuthToken, Member member) {
+        return OAuth.builder()
+            .authId(oAuthToken.getAuthUserId())
+            .member(member)
+            .provider(oAuthToken.getOAuthType())
+            .build();
+    }
+
     @Builder
     public OAuth(String authId, OAuthType provider, Member member) {
         this.authId = authId;
