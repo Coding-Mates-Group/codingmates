@@ -17,6 +17,16 @@ public class FileHandler {
 //    //"^([\\S]+(\\.(?i)(jpg|png|gif|bmp|java))$)"
 //    public static final Pattern LINUX_FILE_PATTERN = Pattern.compile("^/|(/[\\w-]+)+$");
 
+    public static String getRandomProfilePath() {
+        int imageNumber = (int) (Math.random() * 10 % 6 + 1); // 1 ~ 6
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(PROJECT_SRC_PATH);
+        stringBuilder.append("/images/default/");
+        stringBuilder.append(imageNumber);
+        stringBuilder.append(".png");
+        return stringBuilder.toString();
+    }
+
     public String saveProfileImage(MultipartFile multipartFile, Long memberId) {
         if (multipartFile.isEmpty()) {
             throw new IllegalArgumentException("profile image is empty");
