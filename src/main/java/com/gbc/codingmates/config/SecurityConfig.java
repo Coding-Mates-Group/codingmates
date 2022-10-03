@@ -67,7 +67,7 @@ public class SecurityConfig {
             //except
             .antMatchers("/authenticate").permitAll()
             .antMatchers("/register").permitAll()
-                .antMatchers("/project").permitAll()
+                .antMatchers("/project/**").permitAll()
             .antMatchers("/login/**").permitAll()
 
             //else any other requests need to be authenticated

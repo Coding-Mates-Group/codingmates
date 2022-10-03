@@ -58,8 +58,9 @@ public class Project extends BaseTimeEntity {
 
 //    @Builder(builderClassName = "createPostWithAll", builderMethodName = "createPostWithAll")
     @Builder
-    public Project(String title, String content, Blob contentBig, Long views, LocalDateTime startDate, LocalDateTime endDate,
+    public Project(Long id, String title, String content, Blob contentBig, Long views, LocalDateTime startDate, LocalDateTime endDate,
                    String recruitmentStatus, Member member){
+        this.id = id;
         this.title = title;
         this.content = content;
         this.contentBig = contentBig;

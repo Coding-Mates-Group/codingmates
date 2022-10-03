@@ -16,17 +16,16 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
 
-    //list all projects
-    @GetMapping("")
-    public ResponseEntity<List<ProjectResponseDto>> findAll(){
-        return projectService.findAll();
-    }
-
     //create project
     @PostMapping("")
     public ResponseEntity<Long> save(@RequestBody final ProjectRequestDto projectRequestDto) {
         return projectService.save(projectRequestDto);
+    }
 
+    //list all projects
+    @GetMapping("")
+    public ResponseEntity<List<ProjectRequestDto>> findAll(){
+        return projectService.findAll();
     }
 
     //edit/update project
@@ -38,8 +37,8 @@ public class ProjectController {
 
     //delete project
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable final Long id, @RequestBody final ProjectRequestDto projectRequestDto){
-        projectService.deleteById(id, projectRequestDto);
+    public ResponseEntity<Long> deleteById(@PathVariable final Long id){
+        return projectService.deleteById(id);
     }
 
 

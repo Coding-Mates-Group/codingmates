@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,20 +24,25 @@ public class ProjectService {
     public ResponseEntity<Long> save(final ProjectRequestDto projectRequestDto){
         validateDuplicateProject(projectRequestDto);
         Project project = projectRepository.save(projectRequestDto.toEntity());
-//        return project.getId();
         return ResponseEntity.ok(project.getId());
     }
 
-//    find one project
-//    public ResponseEntity<Project> findProject(final Long id, final ProjectRequestDto projectRequestDto){
-//
-//    }
-
-
     //List all projects
-    public ResponseEntity<List<ProjectResponseDto>> findAll(){
+    public ResponseEntity<List<ProjectRequestDto>> findAll(){
         List<Project> list = projectRepository.findAll();
-        return  ResponseEntity.ok(list.stream().map(ProjectResponseDto::new).collect(Collectors.toList()));
+//        return list.stream().map(ProjectRequestDto::toEntity).collect(Collectors.toList());
+        List<ProjectRequestDto> projectRequestDtoList = new ArrayList<>();
+        for(Project project: list){
+            ProjectRequestDto projectRequestDto = ProjectRequestDto.builder()
+                    .id(project.getId())
+                    .title(project.getTitle())
+                    .content(project.getContent())
+                    .views(project.getViews())
+                    .recruitmentStatus(project.getRecruitmentStatus())
+                    .build();
+            projectRequestDtoList.add(projectRequestDto);
+        }
+        return ResponseEntity.ok().body(projectRequestDtoList);
     }
 
     //update/edit project
@@ -49,18 +55,12 @@ public class ProjectService {
 
     //delete project
     @Transactional
-    public void deleteById(final Long id, final ProjectRequestDto projectRequestDto){
-//        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+    public ResponseEntity<Long> deleteById(final Long id){
         projectRepository.deleteById(id);
+        return ResponseEntity.ok(id);
     }
 
-    @Transactional
-    public void updateView(final Long id, final ProjectRequestDto projectRequestDto){
-        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalStateException("There is no such project found"));
-        project.updateView(projectRequestDto.getViews());
-
-    }
-
+    //to be changed to ResponseEntity
     //check existing, duplicate project
     private void validateDuplicateProject(ProjectRequestDto projectRequestDto){
         List<Project> findProjects = projectRepository.findByTitle(projectRequestDto.getTitle());
