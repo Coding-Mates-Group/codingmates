@@ -5,16 +5,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
+import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
 import java.sql.Blob;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import java.util.List;
+import javax.persistence.*;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +29,10 @@ public class Project extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    //when deleting post, comments need to be removed via .REMOVE
+    @OneToMany(mappedBy = "projects", fetch = LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @Column(nullable = false)
     private String title;

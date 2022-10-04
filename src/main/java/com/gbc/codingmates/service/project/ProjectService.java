@@ -56,7 +56,8 @@ public class ProjectService {
     //delete project
     @Transactional
     public ResponseEntity<Long> deleteById(final Long id){
-        projectRepository.deleteById(id);
+        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such project"));
+        projectRepository.delete(project);
         return ResponseEntity.ok(id);
     }
 

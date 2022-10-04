@@ -1,11 +1,7 @@
 package com.gbc.codingmates.domain.project;
 
-import com.gbc.codingmates.domain.member.Member;
-import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.ProjectRequestDto;
-import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class ProjectRepositoryTest {
+class ProjectServiceTest {
 
     @Autowired
     private ProjectService projectService;

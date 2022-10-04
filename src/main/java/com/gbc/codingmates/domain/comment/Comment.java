@@ -9,6 +9,8 @@ import com.gbc.codingmates.domain.project.Project;
 
 import javax.persistence.*;
 
+import com.gbc.codingmates.dto.comment.CommentRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,9 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_id")
     private Long id;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String comment;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "FK_Comment_Member"))
     private Member member;
@@ -30,6 +35,13 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_Comment_Project"))
     private Project project;
 
-    private String title;
+    @Builder
+    public Comment(Long id, String comment, Member member, Project project){
+        this.id=id;
+        this.comment=comment;
+        this.member = member;
+        this.project = project;
+    }
+
 
 }

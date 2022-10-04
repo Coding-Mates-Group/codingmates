@@ -10,6 +10,8 @@ public class ProjectResponseDto {
     private Long id;
     private String title;
     private String content;
+    private Long member_id;
+
 
     public ProjectResponseDto(Project project){
         this.id= project.getId();
