@@ -1,7 +1,8 @@
 package com.gbc.codingmates.api.oAuth;
 
 
-import com.gbc.codingmates.dto.oAuth.GoogleUserInfoDTO;
+import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
+import com.gbc.codingmates.dto.oAuth.GoogleAuthInfoDTO;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class GoogleOauthRestTemplate {
+public class GoogleOauthRestTemplate extends OAuthRestTemplate {
 
     private String authEndpointURI = "";
     @Value("${spring.security.oauth2.client.registration.google.auth-endpoint}")
@@ -62,7 +63,8 @@ public class GoogleOauthRestTemplate {
     }
 
     public String getAccessToken(String code) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = settingRestTemplate();
+
         Map<String, String> params = new HashMap<>();
         params.put("grant_type", "authorization_code");
         params.put("client_id", clientId);
@@ -79,23 +81,22 @@ public class GoogleOauthRestTemplate {
         return (String) response.getBody().get("access_token");
     }
 
-    public GoogleUserInfoDTO getGoogleUserInfoByAccessToken(String accessToken) {
-        RestTemplate restTemplate = new RestTemplate();
+    public AuthInfoDTO getUserInfoByAccessToken(String accessToken) {
+        RestTemplate restTemplate = settingRestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
 
-        ResponseEntity<GoogleUserInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
-            HttpMethod.GET, new HttpEntity<>("", httpHeaders), GoogleUserInfoDTO.class);
+        ResponseEntity<GoogleAuthInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
+            HttpMethod.GET, new HttpEntity<>("", httpHeaders), GoogleAuthInfoDTO.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalArgumentException();
         }
 
-        GoogleUserInfoDTO googleUserInfoDTO = response.getBody();
-        googleUserInfoDTO.checkEmailExist();
+        GoogleAuthInfoDTO userInfoDTO = response.getBody();
+        userInfoDTO.saveAccessToken(accessToken);
 
-        return googleUserInfoDTO;
+        return userInfoDTO;
     }
-
 }

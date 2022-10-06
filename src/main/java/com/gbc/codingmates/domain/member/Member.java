@@ -1,18 +1,22 @@
 package com.gbc.codingmates.domain.member;
 
+import static com.gbc.codingmates.util.FileHandler.getRandomProfilePath;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.domain.BaseTimeEntity;
-
-import javax.persistence.*;
+import com.gbc.codingmates.dto.form.MemberJoinDto;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,23 +46,35 @@ public class Member extends BaseTimeEntity {
     private String password;
 
     @Enumerated(STRING)
-    private MemberStatus status;
+    private MemberStatus memberStatus;
 
     @Embedded
     private Resume resume = new Resume();
+    private String memberProfilePath;
 
-    @Builder
-    public Member(String username, String password){
-        this.username = username;
-        this.password = password;
+    public static Member from(MemberJoinDto memberJoinDto) {
+        if (isEmpty(memberJoinDto.getUserAlias())) {
+            throw new IllegalArgumentException("user alias is inquired for create Member");
+        }
+        return Member.builder()
+            .username(memberJoinDto.getUserAlias())
+            .memberStatus(MemberStatus.BASIC)
+            .memberProfilePath(getRandomProfilePath())
+            .build();
     }
 
     @Builder
-    public Member(String username, String email, String password, MemberStatus status, Resume resume) {
+    public Member(String username, String email, String password, MemberStatus memberStatus,
+        Resume resume, String memberProfilePath) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
+        this.memberStatus = memberStatus;
         this.resume = resume;
+        this.memberProfilePath = memberProfilePath;
+    }
+
+    public void mapMemberProfileImagePath(String imagePath) {
+        this.memberProfilePath = imagePath;
     }
 }
