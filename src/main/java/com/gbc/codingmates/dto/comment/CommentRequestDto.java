@@ -3,12 +3,10 @@ package com.gbc.codingmates.dto.comment;
 import com.gbc.codingmates.domain.comment.Comment;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.project.Project;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentRequestDto {
     private Long id;

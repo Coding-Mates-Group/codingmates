@@ -31,8 +31,8 @@ public class Project extends BaseTimeEntity {
     private Member member;
 
     //when deleting post, comments need to be removed via .REMOVE
-    @OneToMany(mappedBy = "projects", fetch = LAZY, cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "project", fetch = LAZY, cascade = CascadeType.REMOVE)
+//    private List<Comment> comments;
 
     @Column(nullable = false)
     private String title;

@@ -1,5 +1,6 @@
 package com.gbc.codingmates.controller.project;
 
+import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.project.ProjectRequestDto;
 import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
@@ -8,6 +9,7 @@ import org.apache.catalina.mapper.Mapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EnumType;
 import java.util.List;
 
 @RestController
@@ -41,5 +43,9 @@ public class ProjectController {
         return projectService.deleteById(id);
     }
 
-
+    //search project by title
+    @GetMapping("/search/{title}")
+    public ResponseEntity<List<ProjectRequestDto>> searchProjectByTitle(@PathVariable final String title, @RequestBody ProjectRequestDto projectRequestDto){
+        return projectService.searchProjectByTitle(title);
+    }
 }
