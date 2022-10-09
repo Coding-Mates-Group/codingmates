@@ -34,7 +34,7 @@ public class Member extends BaseTimeEntity {
 
     @NotBlank(message = "Your id:")
     @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "3~12 in length, with no special characters")
-    @Column(length = 15, nullable = false)
+    @Column(length = 15, nullable = false, unique = true)
     @JsonIgnore
     private String username;
 
