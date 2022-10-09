@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+import com.gbc.codingmates.domain.member.Member;
+import com.gbc.codingmates.domain.member.MemberRepository;
 import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
@@ -13,6 +15,7 @@ import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.domain.skill.MemberSkillRepository;
 import com.gbc.codingmates.domain.skill.Skill;
 import com.gbc.codingmates.domain.skill.SkillRepository;
+import com.gbc.codingmates.dto.MemberAliasCheck;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.util.Arrays;
@@ -41,9 +44,13 @@ class MemberServiceTest {
     @Mock
     private MemberSkillRepository memberSkillRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
     @BeforeEach
     public void init() {
         memberService = new MemberService(oAuthTokenRepository, oAuthRepository, skillRepository,
+            memberRepository,
             memberSkillRepository,
             tokenProvider);
     }
@@ -80,5 +87,39 @@ class MemberServiceTest {
             () -> assertThat(responseEntity.getBody()).isEqualTo("JWT_TOKEN")
         );
 
+    }
+
+    @Test
+    public void checkUserAliasDuplicated() {
+        //given
+        MemberAliasCheck memberAliasCheck = new MemberAliasCheck("test");
+        when(memberRepository.findByUsername(memberAliasCheck.getUserAlias()))
+            .thenReturn(Optional.of(Member.builder().build()));
+
+        //when
+        ResponseEntity responseEntity = memberService.checkAlias(memberAliasCheck);
+
+        //then
+        assertAll(
+            () -> assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(responseEntity.getBody()).isEqualTo("duplicated")
+        );
+    }
+
+    @Test
+    public void checkUserAliasNotDuplicated() {
+        //given
+        MemberAliasCheck memberAliasCheck = new MemberAliasCheck("test");
+        when(memberRepository.findByUsername(memberAliasCheck.getUserAlias()))
+            .thenReturn(Optional.empty());
+
+        //when
+        ResponseEntity responseEntity = memberService.checkAlias(memberAliasCheck);
+
+        //then
+        assertAll(
+            () -> assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(responseEntity.getBody()).isEqualTo("available")
+        );
     }
 }

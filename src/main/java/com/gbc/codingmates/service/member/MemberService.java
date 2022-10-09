@@ -1,6 +1,7 @@
 package com.gbc.codingmates.service.member;
 
 import com.gbc.codingmates.domain.member.Member;
+import com.gbc.codingmates.domain.member.MemberRepository;
 import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
@@ -9,10 +10,12 @@ import com.gbc.codingmates.domain.skill.MemberSkill;
 import com.gbc.codingmates.domain.skill.MemberSkillRepository;
 import com.gbc.codingmates.domain.skill.Skill;
 import com.gbc.codingmates.domain.skill.SkillRepository;
+import com.gbc.codingmates.dto.MemberAliasCheck;
 import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,7 @@ public class MemberService {
     private final OAuthTokenRepository oAuthTokenRepository;
     private final OAuthRepository oAuthRepository;
     private final SkillRepository skillRepository;
+    private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
     private final TokenProvider tokenProvider;
 
@@ -60,5 +64,14 @@ public class MemberService {
         return ResponseEntity.ok(tokenProvider.getTokenByUserInfo(
             MemberDto.from(member)
         ));
+    }
+
+    public ResponseEntity checkAlias(MemberAliasCheck memberAliasCheck) {
+        Optional<Member> member = memberRepository.findByUsername(
+            memberAliasCheck.getUserAlias());
+        if(member.isPresent()){
+            return ResponseEntity.ok("duplicated");
+        }
+        return ResponseEntity.ok("available");
     }
 }
