@@ -31,4 +31,6 @@ public class MemberService {
     public Optional<Member> findByIdPw(Long id){
         return memberRepository.findById(id);
     }
+
+
 }

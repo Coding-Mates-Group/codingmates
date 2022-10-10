@@ -31,7 +31,7 @@ public class ProjectController {
     }
 
     //edit/update project
-    @PatchMapping("/{id}")
+//    @PatchMapping("/{id}")
     @PutMapping("{id}")
     public ResponseEntity<Long> edit(@PathVariable final Long id, @RequestBody final ProjectRequestDto projectRequestDto){
         return projectService.update(id, projectRequestDto);
