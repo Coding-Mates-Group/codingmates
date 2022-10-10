@@ -1,1 +1,5 @@
 rootProject.name = 'codingmates'
+include ':module-project'
+include ':module-skill'
+include ':module-member'
+include ':module-common'
