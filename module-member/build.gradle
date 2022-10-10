@@ -1,0 +1,8 @@
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+    testImplementation project(':module-project')
+    testImplementation project(':module-skill')
+    testImplementation project(':module-common')
+}
