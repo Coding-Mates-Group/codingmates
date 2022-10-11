@@ -49,6 +49,10 @@ allprojects {
 		//google oAuth2
 		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.2'
 
+		//swagger v3
+		implementation 'io.springfox:springfox-boot-starter:3.0.0'
+		implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
 		runtimeOnly 'com.h2database:h2'
 
 		implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
