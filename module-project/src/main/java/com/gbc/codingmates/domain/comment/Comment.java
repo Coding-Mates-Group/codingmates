@@ -35,7 +35,7 @@ public class Comment extends BaseTimeEntity {
     private Project project;
 
     @Builder
-    public Comment(Long id, String comment, Member member, Project project){
+    public Comment(Long id, String comment, Memb member, Project project){
         this.id=id;
         this.comment=comment;
         this.member = member;

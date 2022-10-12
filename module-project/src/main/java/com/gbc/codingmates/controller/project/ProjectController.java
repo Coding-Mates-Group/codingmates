@@ -35,7 +35,7 @@ public class ProjectController {
     public ResponseEntity listAll(){
         List<Project> projects = projectService.listAll();
         List<ProjectDto> result = projects.stream()
-                .map(project -> new ProjectDto(project))
+                .map(ProjectDto::new)
                 .collect(Collectors.toList());
         Result<List<ProjectDto>> listResult = new Result<>(result);
         return ResponseEntity.ok(listResult);
