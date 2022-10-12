@@ -2,13 +2,18 @@ package com.gbc.codingmates.service.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
-import com.gbc.codingmates.dto.project.ProjectRequestDto;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.ProjectResponseDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.persistence.EntityManager;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,43 +23,36 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ProjectService {
     private final ProjectRepository projectRepository;
+    private final EntityManager em;
 
-    //Create project
+//    Create project
     @Transactional
-    public ResponseEntity<Long> save(final ProjectRequestDto projectRequestDto){
-        validateDuplicateProject(projectRequestDto);
-        Project project = projectRepository.save(projectRequestDto.toEntity());
+    public ResponseEntity<Long> save(final ProjectDto ProjectDto){
+        validateDuplicateProject(ProjectDto);
+        Project project = projectRepository.save(ProjectDto.toEntity());
+//        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
         return ResponseEntity.ok(project.getId());
     }
 
-    //List all projects
-    public ResponseEntity<List<ProjectRequestDto>> findAll(){
-        List<Project> list = projectRepository.findAll();
-//        return list.stream().map(ProjectRequestDto::toEntity).collect(Collectors.toList());
-        List<ProjectRequestDto> projectRequestDtoList = new ArrayList<>();
-        for(Project project: list){
-            ProjectRequestDto projectRequestDto = ProjectRequestDto.builder()
-                    .id(project.getId())
-                    .title(project.getTitle())
-                    .content(project.getContent())
-                    .views(project.getViews())
-                    .recruitmentStatus(project.getRecruitmentStatus())
-                    .build();
-            projectRequestDtoList.add(projectRequestDto);
-        }
-        return ResponseEntity.ok().body(projectRequestDtoList);
+    //list all projects
+    public List<Project> listAll(){
+        List<Project> projects = em.createQuery(
+                "select p from Project p" +
+                        " join fetch p.member m", Project.class
+        ).getResultList();
+        return projects;
     }
 
-    public ResponseEntity<Long> findById(final ProjectRequestDto projectRequestDto){
-        Project project = projectRepository.findById(projectRequestDto.getId()).orElseThrow(() -> new IllegalArgumentException());
+    public ResponseEntity<Long> findById(final ProjectDto ProjectDto){
+        Project project = projectRepository.findById(ProjectDto.getId()).orElseThrow(() -> new IllegalArgumentException());
         return ResponseEntity.ok(project.getId());
     }
 
     //update/edit project
     @Transactional
-    public ResponseEntity<Long> update(final Long id, final ProjectRequestDto projectRequestDto){
+    public ResponseEntity<Long> update(final Long id, final ProjectDto ProjectDto){
         Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
-        project.update(projectRequestDto.getTitle(), projectRequestDto.getContent());
+        project.update(ProjectDto.getTitle(), ProjectDto.getContent());
         return ResponseEntity.ok(id);
     }
 
@@ -68,32 +66,11 @@ public class ProjectService {
 
     //to be changed to ResponseEntity
     //check existing, duplicate project
-    private void validateDuplicateProject(ProjectRequestDto projectRequestDto){
-        List<Project> findProjects = projectRepository.findByTitle(projectRequestDto.getTitle());
+    private void validateDuplicateProject(ProjectDto ProjectDto){
+        List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
         if(!findProjects.isEmpty()){
             throw new IllegalStateException("already an existing project");
         }
     }
 
-    //search project by title
-    public ResponseEntity<List<ProjectRequestDto>> searchProjectByTitle(String title){
-        List<Project> projects = projectRepository.findByTitle(title);
-        List<ProjectRequestDto> projectRequestDtoList = new ArrayList<>();
-
-        if(projects.isEmpty()) return ResponseEntity.notFound().build();
-        for(Project project: projects){
-            projectRequestDtoList.add(this.convertEntityToDto(project));
-        }
-        return ResponseEntity.ok(projectRequestDtoList);
-    }
-
-    private ProjectRequestDto convertEntityToDto(Project project){
-        return ProjectRequestDto.builder()
-                .id(project.getId())
-                .title(project.getTitle())
-                .content(project.getContent())
-                .views(project.getViews())
-                .recruitmentStatus(project.getRecruitmentStatus())
-                .build();
-    }
 }

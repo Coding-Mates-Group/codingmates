@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
@@ -12,4 +13,5 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     List<Project> findByTitle(@Param("title") String title);
 
     List<Project> findByTitleContaining(String title);
+
 }

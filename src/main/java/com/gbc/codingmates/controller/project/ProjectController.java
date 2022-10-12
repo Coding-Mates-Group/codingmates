@@ -1,16 +1,21 @@
 package com.gbc.codingmates.controller.project;
 
+import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.dto.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectRequestDto;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.mapper.Mapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EnumType;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/project")
@@ -20,21 +25,26 @@ public class ProjectController {
 
     //create project
     @PostMapping("")
-    public ResponseEntity<Long> save(@RequestBody final ProjectRequestDto projectRequestDto) {
-        return projectService.save(projectRequestDto);
+    public ResponseEntity<Long> save(@RequestBody final ProjectDto ProjectDto) {
+        return projectService.save(ProjectDto);
     }
 
     //list all projects
     @GetMapping("")
-    public ResponseEntity<List<ProjectRequestDto>> findAll(){
-        return projectService.findAll();
+    public ResponseEntity listAll(){
+        List<Project> projects = projectService.listAll();
+        List<ProjectDto> result = projects.stream()
+                .map(project -> new ProjectDto(project))
+                .collect(Collectors.toList());
+        Result<List<ProjectDto>> listResult = new Result<>(result);
+        return ResponseEntity.ok(listResult);
     }
 
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
-    public ResponseEntity<Long> edit(@PathVariable final Long id, @RequestBody final ProjectRequestDto projectRequestDto){
-        return projectService.update(id, projectRequestDto);
+    public ResponseEntity<Long> edit(@PathVariable final Long id, @RequestBody final ProjectDto ProjectDto){
+        return projectService.update(id, ProjectDto);
     }
 
     //delete project
@@ -43,9 +53,25 @@ public class ProjectController {
         return projectService.deleteById(id);
     }
 
-    //search project by title
-    @GetMapping("/search/{title}")
-    public ResponseEntity<List<ProjectRequestDto>> searchProjectByTitle(@PathVariable final String title, @RequestBody ProjectRequestDto projectRequestDto){
-        return projectService.searchProjectByTitle(title);
+    @Data
+    @AllArgsConstructor
+    static class Result<T>{
+        private T data;
+    }
+
+    @Data
+    static class createProjectRequest {
+        private Long id;
+        private String title;
+        private String content;
+        private Long views;
+        private String recruitmentStatus;
+        private String username;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class createProjectResponse{
+        private Long id;
     }
 }

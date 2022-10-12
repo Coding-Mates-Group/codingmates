@@ -25,6 +25,6 @@ public class ProjectResponseDto {
         this.createdDate = String.valueOf(project.getCreatedDate());
         this.modifiedDate = String.valueOf(project.getModifiedDate());
         this.member_id = project.getMember().getId();
-        this.comments = project.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
+//        this.comments = project.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
     }
 }

@@ -34,6 +34,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.postgresql/postgresql
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
 
+	//JPA comfort
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
 
 	//h2Db
 	implementation 'com.h2database:h2'

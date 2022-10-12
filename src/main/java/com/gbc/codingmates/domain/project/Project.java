@@ -30,10 +30,6 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //when deleting post, comments need to be removed via .REMOVE
-//    @OneToMany(mappedBy = "project", fetch = LAZY, cascade = CascadeType.REMOVE)
-//    private List<Comment> comments;
-
     @Column(nullable = false)
     private String title;
 
