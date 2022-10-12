@@ -41,7 +41,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
             // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-            .csrf().disable()
+            .csrf()
+                .disable()
 
             .exceptionHandling()
             .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -62,8 +63,8 @@ public class SecurityConfig {
             //all requests using HTTPServletRequest are restricted via .authorizeRequests()
             .authorizeRequests()
             //except
-            .anyRequest().permitAll()
 
+            .anyRequest().permitAll()
             .and()
             .apply(new JwtSecurityConfig(tokenProvider));
 

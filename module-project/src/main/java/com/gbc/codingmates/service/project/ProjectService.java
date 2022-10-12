@@ -2,47 +2,75 @@ package com.gbc.codingmates.service.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
-import com.gbc.codingmates.dto.project.ProjectRequestDto;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.ProjectResponseDto;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import javax.persistence.EntityManager;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final EntityManager em;
 
-    //Create project
+//    Create project
     @Transactional
-    public Long save(final ProjectRequestDto projectRequestDto) {
-        Project project = projectRepository.save(projectRequestDto.toEntity());
-        return project.getId();
+    public ResponseEntity<Long> save(final ProjectDto ProjectDto){
+        validateDuplicateProject(ProjectDto);
+        Project project = projectRepository.save(ProjectDto.toEntity());
+//        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+        return ResponseEntity.ok(project.getId());
     }
 
-    //List all projects
-    public List<ProjectResponseDto> findAll() {
-        List<Project> list = projectRepository.findAll();
-        return list.stream().map(ProjectResponseDto::new).collect(Collectors.toList());
+    //list all projects
+    public List<Project> listAll(){
+        List<Project> projects = em.createQuery(
+                "select p from Project p" +
+                        " join fetch p.member m", Project.class
+        ).getResultList();
+        return projects;
+    }
+
+    public ResponseEntity<Long> findById(final ProjectDto ProjectDto){
+        Project project = projectRepository.findById(ProjectDto.getId()).orElseThrow(() -> new IllegalArgumentException());
+        return ResponseEntity.ok(project.getId());
     }
 
     //update/edit project
     @Transactional
-    public Long update(final Long id, final ProjectRequestDto projectRequestDto) {
-        Project project = projectRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException());
-        project.update(projectRequestDto.getTitle(), projectRequestDto.getContent());
-        return id;
+    public ResponseEntity<Long> update(final Long id, final ProjectDto ProjectDto){
+        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+        project.update(ProjectDto.getTitle(), ProjectDto.getContent());
+        return ResponseEntity.ok(id);
     }
 
     //delete project
-    public void deleteById(final Long id, final ProjectRequestDto projectRequestDto) {
-//        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
-        projectRepository.deleteById(id);
+    @Transactional
+    public ResponseEntity<Long> deleteById(final Long id){
+        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such project"));
+        projectRepository.delete(project);
+        return ResponseEntity.ok(id);
     }
 
+    //to be changed to ResponseEntity
+    //check existing, duplicate project
+    private void validateDuplicateProject(ProjectDto ProjectDto){
+        List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
+        if(!findProjects.isEmpty()){
+            throw new IllegalStateException("already an existing project");
+        }
+    }
 
 }

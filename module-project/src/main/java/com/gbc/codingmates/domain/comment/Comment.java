@@ -5,13 +5,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.domain.project.Project;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+
+import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +23,10 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_id")
     private Long id;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String comment;
 
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "FK_Comment_Member"))
     private Long member_id;
 
@@ -33,6 +34,11 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_Comment_Project"))
     private Project project;
 
-    private String title;
-
+    @Builder
+    public Comment(Long id, String comment, Member member, Project project){
+        this.id=id;
+        this.comment=comment;
+        this.member = member;
+        this.project = project;
+    }
 }
