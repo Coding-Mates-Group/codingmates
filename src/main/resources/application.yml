@@ -15,11 +15,8 @@ spring:
     console:
       enabled: true
   datasource:
-
 #    url: jdbc:h2:~/codingMates;AUTO_SERVER=true
-
     url: jdbc:h2:tcp://localhost/~/codingmates;AUTO_SERVER=true
-
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -27,7 +24,6 @@ spring:
 
   jpa:
     hibernate:
-
       ddl-auto: create
     properties:
       hibernate:
@@ -76,12 +72,30 @@ spring:
   config:
     activate:
       on-profile: "dev"
+  member-profile:
+    path: "/images/profiles"
 
   datasource:
     url: jdbc:postgresql://codingmatesdb.c8pa7vtqsrpa.us-west-1.rds.amazonaws.com:5432/coding_mates_db
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: disneyland77
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          #하이버네이트가 실행하는 모든 SQL문을 콘솔로 출력해 준다.
+          show_sql: true
+          #콘솔에 출력되는 JPA 실행 쿼리를 가독성있게 표현한다.
+          format_sql: true
+          #디버깅이 용이하도록 SQL문 이외에 추가적인 정보를 출력해 준다.
+          use_sql_comments: true
+      defer-datasource-initialization: true
+      generate-ddl: true
 
   security:
     oauth2:
@@ -115,7 +129,6 @@ spring:
 
 
 ---
-
 spring:
   config:
     activate:
