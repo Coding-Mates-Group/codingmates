@@ -6,6 +6,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -42,6 +44,7 @@ public class GithubOauthRestTemplate extends OAuthRestTemplate {
         Map<String, List<String>> param = new HashMap<>();
         MultiValueMap<String, String> queryParams = new MultiValueMapAdapter<>(param);
         queryParams.add("client_id", clientId);
+        queryParams.add("scope", "user:email");
 
         URI uri = UriComponentsBuilder
             .fromUriString(authEndpoint)
@@ -77,6 +80,8 @@ public class GithubOauthRestTemplate extends OAuthRestTemplate {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
+        httpHeaders.add("X-OAuth-Scopes", "user:email");
+        httpHeaders.add("X-Accepted-OAuth-Scopes", "user:email");
 
         ResponseEntity<GithubAuthInfoDTO> response = restTemplate.exchange(fetchingDataEndpoint,
             HttpMethod.GET,
@@ -88,8 +93,41 @@ public class GithubOauthRestTemplate extends OAuthRestTemplate {
         }
 
         GithubAuthInfoDTO userInfoDTO = response.getBody();
+
+        if(userInfoDTO.getEmail() == null){
+            String privateEmail = getPrivateEmail(accessToken);
+            userInfoDTO.saveEmail(privateEmail);
+        }
+
         userInfoDTO.saveAccessToken(accessToken);
 
         return userInfoDTO;
+    }
+
+    private String getPrivateEmail(String accessToken) {
+        RestTemplate restTemplate = settingRestTemplate();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + accessToken);
+        httpHeaders.add("Accept", "application/vnd.github+json");
+
+        ResponseEntity<List> response = restTemplate.exchange("https://api.github.com/user/emails",
+            HttpMethod.GET,
+            new HttpEntity<>("", httpHeaders),
+            List.class);
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new IllegalArgumentException("Github user can not provide user's email");
+        }
+
+        Optional primaryEmail = response.getBody().stream()
+            .filter(o -> ((Map) o).get("primary").equals(true))
+            .findFirst();
+
+        if(primaryEmail.isPresent()){
+            return (String) ((Map) primaryEmail.get()).get("email");
+        }
+
+        throw new IllegalArgumentException("Github user can not provide user's email");
     }
 }

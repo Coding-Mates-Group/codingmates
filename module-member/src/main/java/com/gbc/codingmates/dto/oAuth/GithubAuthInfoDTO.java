@@ -43,4 +43,8 @@ public class GithubAuthInfoDTO extends AuthInfoDTO {
     public void saveAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
+
+    public void saveEmail(String email) {
+        this.email = email;
+    }
 }
