@@ -1,0 +1,6 @@
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  member-profile:
+    path: "/image/profiles"

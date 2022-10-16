@@ -1,0 +1,40 @@
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 626914439027452
+            client-secret: ad25fd1b3eb2b01d3a5c7a92610b5697
+            auth-endpoint: https://www.facebook.com/dialog/oauth
+            token-endpoint: https://graph.facebook.com/oauth/access_token
+            redirect-url: https://127.0.0.1/login/oauth2/code/facebook
+            fetching_data_endpoint: https://graph.facebook.com/v15.0/debug_token
+
+          google:
+            client-id: 822931905259-andtk23a1gn4vlp0m2q9v8mjf93dnohn.apps.googleusercontent.com
+            client-secret: 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
+            auth-endpoint: https://accounts.google.com/o/oauth2/auth
+            redirect-url: https://codingmates.kro.kr/login/oauth2/code/google
+            token-endpoint: https://www.googleapis.com/oauth2/v4/token
+            fetching_data_endpoint: https://www.googleapis.com/oauth2/v2/userinfo
+          github:
+            client-id: 26ddd6feabe0b25ae54a
+            client-secret: a29aefcd80a4c1eb82f46e0da995084791528459
+            auth-endpoint: https://github.com/login/oauth/authorize
+            token-endpoint: https://github.com/login/oauth/access_token
+            fetching_data_endpoint: https://api.github.com/user
+    jwt:
+      token:
+        secret-key: secretKeytestauthorizationjwtmanagetokenjwtmanagetoken
+        expire-length: 1800000
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+---
+
