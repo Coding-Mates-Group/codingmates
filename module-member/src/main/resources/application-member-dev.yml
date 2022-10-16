@@ -1,8 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: "dev"
-
   security:
     oauth2:
       client:
@@ -36,5 +32,3 @@ spring:
   logging:
     level:
       org.hibernate.SQL: debug
----
-
