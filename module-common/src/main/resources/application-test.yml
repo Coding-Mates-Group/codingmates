@@ -1,0 +1,6 @@
+spring:
+  config:
+    activate:
+      on-profile: "test"
+  member-profile:
+    path: "/imagetest/profiles"
