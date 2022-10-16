@@ -1,17 +1,13 @@
 package com.gbc.codingmates.controller.auth;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 import com.gbc.codingmates.api.oAuth.AuthService;
 import com.gbc.codingmates.domain.member.OAuthType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
