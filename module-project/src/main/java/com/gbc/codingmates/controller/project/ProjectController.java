@@ -1,6 +1,8 @@
 package com.gbc.codingmates.controller.project;
 
+import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.domain.project.Project;
+import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
@@ -44,8 +46,8 @@ public class ProjectController {
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
-    public ResponseEntity<Long> edit(@PathVariable final Long id, @RequestBody final ProjectDto ProjectDto){
-        return projectService.update(id, ProjectDto);
+    public ResponseEntity<Long> edit(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id, @RequestBody final ProjectDto ProjectDto){
+        return projectService.edit(memberDto, id, ProjectDto);
     }
 
     //delete project

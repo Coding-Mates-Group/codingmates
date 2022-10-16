@@ -2,15 +2,15 @@ package com.gbc.codingmates.service.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
+import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
-import com.gbc.codingmates.dto.project.ProjectResponseDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.HttpClientErrorException;
+
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final EntityManager em;
 
 //    Create project
     @Transactional
@@ -36,22 +35,29 @@ public class ProjectService {
 
     //list all projects
     public List<Project> listAll(){
-        List<Project> projects = em.createQuery(
-                "select p from Project p" +
-                        " join fetch p.member m", Project.class
-        ).getResultList();
-        return projects;
+//        return projectRepository.findAll();
+//        List<Project> projects = em.createQuery(
+//                "select p from Project p" +
+//                        " join fetch p.member m", Project.class
+//        ).getResultList();
+//        return projects;
+        return projectRepository.listAllWithMember();
     }
 
-    public ResponseEntity<Long> findById(final ProjectDto ProjectDto){
-        Project project = projectRepository.findById(ProjectDto.getId()).orElseThrow(() -> new IllegalArgumentException());
-        return ResponseEntity.ok(project.getId());
+    public ResponseEntity<ProjectDto> findById(final ProjectDto projectDto){
+        Project project = projectRepository.findById(projectDto.getId()).orElseThrow(() -> new IllegalArgumentException());
+        return ResponseEntity.ok(projectDto);
     }
 
     //update/edit project
     @Transactional
-    public ResponseEntity<Long> update(final Long id, final ProjectDto ProjectDto){
+    public ResponseEntity<Long> edit(final MemberDto memberDto, final Long id, final ProjectDto ProjectDto){
         Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+        Long ownerId = project.getId();
+        if(ownerId!=memberDto.getMemberId()){
+//            throw HttpClientErrorException.Forbidden;
+//            return ResponseEntity.badRequest(memberDto.getMemberId());
+        }
         project.update(ProjectDto.getTitle(), ProjectDto.getContent());
         return ResponseEntity.ok(id);
     }
