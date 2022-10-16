@@ -2,17 +2,13 @@ package com.gbc.codingmates.controller.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.dto.project.ProjectDto;
-import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.project.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EnumType;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

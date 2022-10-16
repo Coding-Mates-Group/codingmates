@@ -32,7 +32,5 @@ public class ProjectDto {
         content = project.getContent();
         views = project.getViews();
         recruitmentStatus = project.getRecruitmentStatus();
-        username = project.getMember().getUsername();
-
     }
 }
