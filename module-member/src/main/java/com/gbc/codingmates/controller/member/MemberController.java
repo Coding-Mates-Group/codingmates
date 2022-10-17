@@ -77,9 +77,9 @@ public class MemberController {
         }
     )
     @GetMapping("{id}")
-    public ResponseEntity findMemberById(@PathVariable("id") Long memberID,
+    public ResponseEntity findMemberById(@PathVariable("id") Long memberId,
         @RequestParam(defaultValue = "profile") List<String> scope) {
-        return ResponseEntity.ok().build();
+        return memberService.getMemberInfo(memberId);
     }
 
 
