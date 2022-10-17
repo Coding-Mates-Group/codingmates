@@ -37,17 +37,6 @@ public class MemberController {
 
 
     @ApiOperation(value = "register member", notes = "register member")
-    @ApiImplicitParams(
-        {
-        @ApiImplicitParam(
-            name = "token",
-            value = "token provided by MEMBER_JOIN_URI \nex)/members?token={}",
-            required = true,
-            dataType = "string",
-            defaultValue = "none"
-        )
-        }
-    )
     @PostMapping(value = "", consumes = {APPLICATION_JSON_VALUE})
     public ResponseEntity register(@RequestBody @Validated MemberJoinDto request,
         BindingResult bindingResult) {
