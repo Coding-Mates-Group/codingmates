@@ -4,6 +4,7 @@ import com.fasterxml.classmate.TypeResolver;
 import com.gbc.codingmates.component.JwtMemberInfoResolver;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,9 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -32,11 +36,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api(TypeResolver typeResolver) {
-        return new Docket(DocumentationType.OAS_30)
+        return new Docket(DocumentationType.SWAGGER_2)
             .alternateTypeRules(
-                AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class), typeResolver.resolve(SwaggerConfig.Page.class))
+                AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class),
+                    typeResolver.resolve(Page.class))
             )
-            .useDefaultResponseMessages(false)
+            .securityContexts(Arrays.asList(securityContext()))
+            .securitySchemes(Arrays.asList(apiKey()))
             .select()
             .apis(RequestHandlerSelectors.basePackage("com.gbc.codingmates.controller"))
             .paths(PathSelectors.any())
@@ -52,8 +58,28 @@ public class WebConfig implements WebMvcConfigurer {
             .build();
     }
 
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+    private springfox.documentation.spi.service.contexts.SecurityContext securityContext() {
+        return springfox.documentation.spi.service.contexts.SecurityContext.builder()
+            .securityReferences(defaultAuth())
+            .forPaths(PathSelectors.any())
+            .build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global",
+            "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+    }
+
     @ApiModel
-    static class Page{
+    static class Page {
+
         @ApiModelProperty(value = "페이지 번호(0..N)")
         private Integer page;
 
