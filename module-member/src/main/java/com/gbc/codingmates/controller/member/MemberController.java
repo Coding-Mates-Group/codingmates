@@ -38,25 +38,12 @@ public class MemberController {
 
     @ApiOperation(value = "register member", notes = "register member")
     @ApiImplicitParams(
-        {@ApiImplicitParam(
-            name = "userAlias",
-            value = "user alias",
-            required = true,
-            dataType = "string",
-            defaultValue = "none"
-        ),
+        {
         @ApiImplicitParam(
             name = "token",
             value = "token provided by MEMBER_JOIN_URI \nex)/members?token={}",
             required = true,
             dataType = "string",
-            defaultValue = "none"
-        ),
-        @ApiImplicitParam(
-            name = "skillIds",
-            value = "member's interest skills ID",
-            required = false,
-            dataType = "List<Long>",
             defaultValue = "none"
         )
         }
@@ -74,7 +61,7 @@ public class MemberController {
     @ApiImplicitParams(
         {
             @ApiImplicitParam(
-                name = "memberId",
+                name = "id",
                 value = "target Member Id",
                 required = true,
                 dataType = "Long",
