@@ -2,10 +2,7 @@ package com.gbc.codingmates.dto.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +11,8 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Schema(description = "DTO for posting projects")
 public class ProjectDto {
 
     private Long id;
@@ -34,22 +33,22 @@ public class ProjectDto {
 
     private String userAlias;
 
-    public Project toEntity() {
-        return Project.builder()
-                .title(title)
-                .content(content)
-                .views(views)
-                .build();
-    }
-
-    @Builder
-    public ProjectDto(Project project){
-        id = project.getId();
-        title = project.getTitle();
-        content = project.getContent();
-        views = project.getViews();
-        recruitmentStatus = project.getRecruitmentStatus();
-//        project.getMember().getuserAlias
-
-    }
+//    public Project toEntity() {
+//        return Project.builder()
+//                .title(title)
+//                .content(content)
+//                .views(views)
+//                .build();
+//    }
+//
+//    @Builder
+//    public ProjectDto(Project project){
+//        id = project.getId();
+//        title = project.getTitle();
+//        content = project.getContent();
+//        views = project.getViews();
+//        recruitmentStatus = project.getRecruitmentStatus();
+////        project.getMember().getuserAlias
+//
+//    }
 }
