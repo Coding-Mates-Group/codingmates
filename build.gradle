@@ -59,6 +59,9 @@ allprojects {
 		runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 		runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
+		//postgrel
+		implementation group: 'org.postgresql', name: 'postgresql' // 추가
+
 	}
 
 	test {
@@ -90,8 +93,8 @@ project(':module-skill') {
 	}
 }
 
-bootJar { enabled = false }
-jar { enabled = true}
+bootJar { enabled = true }
+jar { enabled = false}
 
 
 ///

@@ -1,0 +1,3 @@
+spring:
+  member-profile:
+    path: "/image/profiles"

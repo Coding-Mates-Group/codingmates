@@ -1,9 +1,9 @@
 package com.gbc.codingmates.listener;
 
-import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.MemberRepository;
-import com.gbc.codingmates.event.GetMemberInfoByJwtEvent;
 import com.gbc.codingmates.jwt.TokenProvider;
+import com.gbc.codingmates.domain.member.Member;
+import com.gbc.codingmates.event.GetMemberInfoByJwtEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

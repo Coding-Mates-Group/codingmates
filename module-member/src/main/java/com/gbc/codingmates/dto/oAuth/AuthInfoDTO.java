@@ -6,7 +6,10 @@ public abstract class AuthInfoDTO {
 
     abstract void checkAccessTokenIsNull();
 
+
     public abstract String getAuthUserId();
 
     public abstract String getAccessToken();
+
+    public abstract String getEmail();
 }

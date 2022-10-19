@@ -1,13 +1,13 @@
 package com.gbc.codingmates.service.member;
 
+import com.gbc.codingmates.domain.member.OAuthRepository;
+import com.gbc.codingmates.dto.MemberAliasCheck;
+import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.MemberRepository;
 import com.gbc.codingmates.domain.member.OAuth;
-import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
-import com.gbc.codingmates.dto.MemberAliasCheck;
-import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.event.MemberCreateEvent;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.util.Optional;
