@@ -79,4 +79,7 @@ public class ProjectService {
         }
     }
 
+    //candidate apply for project
+
+
 }

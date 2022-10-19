@@ -14,26 +14,13 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Getter
 public class ProjectCreateEvent extends ApplicationEvent {
 
-//    private final ApplicationEventPublisher applicationEventPublisher;
-
-    private Long memberId;
-
-    private List<Long> skillIds = new ArrayList<>();
-
-    private String title;
-
-    private String content;
-
-    private String recruitmentStatus;
-
-    private String userAlias;
+    private Long projectId;
 
     protected ProjectCreateEvent(Object source){
         super(source);
     }
 
-    public ProjectCreateEvent(Object source, Long memberId, List<Long> skillIds, String title, String content,
-                              String recruitmentStatus, String userAlias){
+    public ProjectCreateEvent(Object source, Long projectId){
         super(source);
         try {
             String.valueOf(source);
@@ -41,14 +28,9 @@ public class ProjectCreateEvent extends ApplicationEvent {
             throw new IllegalArgumentException(
                     "Illegal Event name. It must be changed to string type!");
         }
-        this.memberId = memberId;
-        if (!isEmpty(skillIds)) {
-            this.skillIds = skillIds;
-        }
-        this.title = title;
-        this.content = content;
-        this.recruitmentStatus = recruitmentStatus;
-        this.userAlias = userAlias;
+
+        this.projectId = projectId;
+
     }
 
 }

@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.mapper.Mapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EnumType;
@@ -28,8 +30,12 @@ public class ProjectController {
 
     //create project
     @PostMapping("")
-    public ResponseEntity<Long> save(@RequestBody final ProjectDto ProjectDto) {
-        return projectService.save(ProjectDto);
+    public ResponseEntity save(@RequestBody @Valid final ProjectDto projectDto,
+                                     BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(bindingResult);
+        }
+        return projectService.save(projectDto);
     }
 
     //list all projects
