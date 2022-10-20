@@ -26,7 +26,7 @@ public class ProjectService {
 
 //    Create project
     @Transactional
-    public ResponseEntity<Long> save(final ProjectDto ProjectDto){
+    public ResponseEntity<Long> saveProject(final ProjectDto ProjectDto){
         validateDuplicateProject(ProjectDto);
         Project project = projectRepository.save(ProjectDto.toEntity());
 //        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
@@ -78,8 +78,5 @@ public class ProjectService {
             throw new IllegalStateException("already an existing project");
         }
     }
-
-    //candidate apply for project
-
 
 }

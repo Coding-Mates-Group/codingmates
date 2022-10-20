@@ -31,8 +31,6 @@ public class Candidate extends BaseTimeEntity {
     @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_candidate_project_can"))
     private Project project_can;
 
-    //skillId onetoone?
-
     @Column(nullable = false)
     private String result;
 }

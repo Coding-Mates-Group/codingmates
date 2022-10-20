@@ -35,7 +35,7 @@ public class ProjectController {
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(bindingResult);
         }
-        return projectService.save(projectDto);
+        return projectService.saveProject(projectDto);
     }
 
     //list all projects
