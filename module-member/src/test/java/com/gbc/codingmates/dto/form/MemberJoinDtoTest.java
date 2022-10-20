@@ -2,7 +2,6 @@ package com.gbc.codingmates.dto.form;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.gbc.codingmates.dto.form.MemberJoinDto;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

@@ -15,7 +15,6 @@ import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.dto.MemberAliasCheck;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
-import com.gbc.codingmates.service.member.MemberService;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
