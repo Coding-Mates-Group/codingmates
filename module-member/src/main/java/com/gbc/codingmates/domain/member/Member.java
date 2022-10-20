@@ -60,6 +60,7 @@ public class Member extends BaseTimeEntity {
         return Member.builder()
             .username(memberJoinDto.getUserAlias())
             .memberStatus(MemberStatus.BASIC)
+            .email(memberJoinDto.getEmail())
             .memberProfilePath(FileHandler.getRandomProfilePath())
             .build();
     }

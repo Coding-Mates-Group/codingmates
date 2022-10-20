@@ -7,6 +7,7 @@ import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
+import com.gbc.codingmates.dto.response.AuthTokenResponseDTO;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.net.URI;
 import java.util.HashMap;
@@ -65,17 +66,18 @@ public class AuthService {
                 Member.getMemberDto(oAuth.get().getMember()))
             );
         } else {
-            return getMemberJoinPath(authInfoDTO.getAuthUserId(), oAuthType);
+            return getMemberJoinPath(authInfoDTO, oAuthType);
         }
     }
 
 
-    private ResponseEntity getMemberJoinPath(String authId, OAuthType oAuthType) {
+    private ResponseEntity getMemberJoinPath(AuthInfoDTO authInfoDTO, OAuthType oAuthType) {
         HttpHeaders headers = new HttpHeaders();
 
         OAuthToken oAuthToken = oAuthTokenRepository.save(OAuthToken.builder()
-            .authUserId(authId)
+            .authUserId(authInfoDTO.getAuthUserId())
             .oAuthType(oAuthType)
+            .email(authInfoDTO.getEmail())
             .build());
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
@@ -95,5 +97,12 @@ public class AuthService {
         return oAuthRestTemplate;
     }
 
+    public AuthTokenResponseDTO getAuthTokenDetail(String token){
+        OAuthToken oAuthToken = oAuthTokenRepository.findById(token)
+            .orElseThrow(
+                () -> new IllegalArgumentException("invalid auth token")
+            );
+        return AuthTokenResponseDTO.from(oAuthToken);
+    }
 
 }
