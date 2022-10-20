@@ -1,7 +1,6 @@
 package com.gbc.codingmates.dto.project;
 
 import com.gbc.codingmates.domain.project.Project;
-import com.gbc.codingmates.dto.comment.CommentResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -16,7 +15,6 @@ public class ProjectResponseDto {
     private String content;
     private String createdDate, modifiedDate;
     private Long member_id;
-    private List<CommentResponseDto> comments;
 
     //entity to dto
     public ProjectResponseDto(Project project){
@@ -25,7 +23,6 @@ public class ProjectResponseDto {
         this.content= project.getContent();
         this.createdDate = String.valueOf(project.getCreatedDate());
         this.modifiedDate = String.valueOf(project.getModifiedDate());
-        this.member_id = project.getMember().getId();
 //        this.comments = project.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
     }
 }

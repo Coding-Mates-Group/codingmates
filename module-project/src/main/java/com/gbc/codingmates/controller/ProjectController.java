@@ -1,4 +1,4 @@
-package com.gbc.codingmates.controller.project;
+package com.gbc.codingmates.controller;
 
 import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.domain.project.Project;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EnumType;
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,25 +42,21 @@ public class ProjectController {
     //list all projects
     @GetMapping("")
     public ResponseEntity listAll(){
-        List<Project> projects = projectService.listAll();
-        List<ProjectDto> result = projects.stream()
-                .map(ProjectDto::new)
-                .collect(Collectors.toList());
-        Result<List<ProjectDto>> listResult = new Result<>(result);
-        return ResponseEntity.ok(listResult);
+        return projectService.listAll();
     }
 
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
-    public ResponseEntity<Long> edit(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id, @RequestBody final ProjectDto ProjectDto){
+    public ResponseEntity<Long> edit(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id,
+                                     @RequestBody @Valid final ProjectDto ProjectDto) throws AccessDeniedException {
         return projectService.edit(memberDto, id, ProjectDto);
     }
 
     //delete project
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteById(@PathVariable final Long id){
-        return projectService.deleteById(id);
+    public ResponseEntity<Long> deleteById(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id) throws AccessDeniedException {
+        return projectService.deleteById(memberDto, id);
     }
 
     @Data
