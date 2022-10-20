@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProjectRepository extends JpaRepository<Project,Long> {
+public interface ProjectRepository extends JpaRepository<Project,Long>, CustomProjectRepository {
 
     @Query("select p from Project p where p.title = :title")
     List<Project> findByTitle(@Param("title") String title);
