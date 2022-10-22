@@ -28,5 +28,6 @@ public class OAuthToken extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OAuthType oAuthType;
 
+    private String email;
 
 }
