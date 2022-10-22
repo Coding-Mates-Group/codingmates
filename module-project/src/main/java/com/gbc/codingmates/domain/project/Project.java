@@ -63,6 +63,7 @@ public class Project extends BaseTimeEntity {
         this.member_id = member_id;
     }
 
+
     public Project(Long memberId, List<Long> skillIds ,Long projectId, String title, String content, String recruitmentStatus) {
         super();
     }
