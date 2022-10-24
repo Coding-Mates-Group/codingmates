@@ -9,6 +9,8 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +49,15 @@ public class Project extends BaseTimeEntity {
     private LocalDateTime modifyToot;
 
     private String recruitmentStatus;
+
+    @Email(message = "Please enter a valid email")
+    private Email email;
+
+    @Column(nullable = false)
+    private Integer recruitCount;
+
+    @Column(nullable = true)
+    private String url;
 
     //    @Builder(builderClassName = "createPostWithAll", builderMethodName = "createPostWithAll")
     @Builder

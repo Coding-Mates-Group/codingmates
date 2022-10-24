@@ -22,7 +22,7 @@ public class CandidateService {
 
     //save candidate's application
     @Transactional
-    public ResponseEntity<Long> saveCandidate(final CandidateDto candidateDto){
+    public ResponseEntity saveCandidate(final CandidateDto candidateDto){
         Candidate candidate = modelMapper.map(candidateDto, Candidate.class);
         candidateRepository.save(modelMapper.map(candidateDto, Candidate.class));
         return ResponseEntity.ok(candidate.getId());
@@ -33,16 +33,29 @@ public class CandidateService {
         return ResponseEntity.ok(candidateRepository.findAll());
     }
 
-    //delete candidate's application
+    //reject candidate's application
     @Transactional
-    public ResponseEntity<Long> delete(final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+    public ResponseEntity<Long> reject(final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+        Candidate candidate = checkValidityOfCandidate(memberDto, candidateDto);
+        Long id = candidate.getId();
+        candidateRepository.deleteById(id);
+        return ResponseEntity.ok(id);
+    }
+
+    private Candidate checkValidityOfCandidate(MemberDto memberDto, CandidateDto candidateDto) {
         Candidate candidate = candidateRepository.findById(candidateDto.getId()).orElseThrow(()->new IllegalStateException());
         Long candidateId = candidate.getMember_id();
         if (candidateId != memberDto.getMemberId()) {
             throw new AccessDeniedException("you are not authorised");
         }
-        Long id = candidate.getId();
-        candidateRepository.deleteById(id);
-        return ResponseEntity.ok(id);
+        return candidate;
+    }
+
+    //accept candidate's application
+    @Transactional
+    public ResponseEntity<Long> accept(final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+        Candidate candidate = checkValidityOfCandidate(memberDto,candidateDto);
+        candidateRepository.save(candidate);
+        return ResponseEntity.ok(candidate.getId());
     }
 }

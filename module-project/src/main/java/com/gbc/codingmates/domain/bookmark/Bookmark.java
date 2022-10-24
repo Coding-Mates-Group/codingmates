@@ -18,8 +18,9 @@ public class Bookmark {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Member member
+    @JoinColumn(name = "member_id")
+    private Long member_id;
 
-
+    @Column(nullable = false)
+    private Boolean accept_info;
 }

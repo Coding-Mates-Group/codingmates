@@ -1,4 +1,4 @@
-package com.gbc.codingmates.domain.candidate;
+package com.gbc.codingmates.domain.recruitment;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
