@@ -22,7 +22,7 @@ public class RecruitmentDto {
     private String recruitmentStatus;
 
     @Builder
-    public RecruitmentDto(Recruitment recruitment){
+    public RecruitmentDto toEntity(Recruitment recruitment){
         id = recruitment.getId();
         project_id = recruitment.getProject().getId();
         recruitmentType = recruitment.getRecruitmentType();

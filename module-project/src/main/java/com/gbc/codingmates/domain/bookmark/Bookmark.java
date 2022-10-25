@@ -1,6 +1,7 @@
 package com.gbc.codingmates.domain.bookmark;
 
 import com.gbc.codingmates.domain.project.Project;
+import com.gbc.codingmates.dto.member.MemberDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +24,9 @@ public class Bookmark {
 
     @Column(nullable = false)
     private Boolean accept_info;
+
+    public Bookmark(Project project, MemberDto memberDto){
+        this.project = project;
+        this.member_id = memberDto.getMemberId();
+    }
 }

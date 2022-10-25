@@ -7,10 +7,13 @@ import static lombok.AccessLevel.PROTECTED;
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
+import com.gbc.codingmates.domain.bookmark.Bookmark;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +52,9 @@ public class Project extends BaseTimeEntity {
     private LocalDateTime modifyToot;
 
     private String recruitmentStatus;
+
+    @OneToMany(mappedBy = "member_id", cascade = CascadeType.ALL)
+    Set<Bookmark> bookmarks = new HashSet<>();
 
     @Email(message = "Please enter a valid email")
     private Email email;

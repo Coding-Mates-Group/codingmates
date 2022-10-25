@@ -18,8 +18,7 @@ public class RecruitmentService {
 
     //set initial recruitment count
     public ResponseEntity<Long> countRecruitment(final Integer count, final RecruitmentDto recruitmentDto){
-//        recruitmentRepository.save()
-    }
 
+    }
 
 }
