@@ -2,7 +2,5 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
-    testImplementation project(':module-member')
-    testImplementation project(':module-project')
     testImplementation project(':module-common')
 }
