@@ -30,7 +30,7 @@ class BookmarkControllerTest {
     @Test
     void testCreateBookmark() throws Exception{
         Bookmark bookmark = new Bookmark(new Project(1L, new ArrayList<Long>(), 3L, "HI", "BITCH", "WELP"),
-                new MemberDto(3L, "hey", "asdasd@gmail.com", "bitch", "welp"));
+                2L, true);
         bookmarkRepository.save(bookmark);
 
         Bookmark bookmark1 = bookmarkRepository.findAll().get(0);

@@ -17,10 +17,10 @@ public class RecruitmentService {
     private final CandidateService candidateService;
 
 //    set initial recruitment details
-    public ResponseEntity<RecruitmentDto> countRecruitment(final int count, final String type, final String status,
-                                                           final RecruitmentDto recruitmentDto){
-
-
-    }
+//    public ResponseEntity<RecruitmentDto> countRecruitment(final int count, final String type, final String status,
+//                                                           final RecruitmentDto recruitmentDto){
+//
+//
+//    }
 
 }

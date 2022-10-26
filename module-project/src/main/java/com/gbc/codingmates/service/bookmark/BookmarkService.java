@@ -22,19 +22,25 @@ public class BookmarkService {
 
     public boolean addBookmark(MemberDto memberDto, ProjectDto projectDto){
         Project project = projectRepository.findById(projectDto.getId()).get();
-//        if(optionalProject.isPresent()){
+        Long member_id = memberDto.getMemberId();
+        Boolean accept_info = true;
+
+        Bookmark bookmark = bookmarkRepository.findByMember_idAndProject(member_id, project).get();
+
+//        if(project.isPresent()){
 //            Project project = optionalProject.get();
 //        }
-//        if(isNotAlreadyBookmarked(memberDto, project)){
+//        if(isNotAlreadyBookmarked(memberDto, )){
 //            bookmarkRepository.save(new Bookmark(project,memberDto));
 //            return true;
 //        }
-        bookmarkRepository.save(new Bookmark(project, memberDto));
+//        bookmarkRepository.save(new Bookmark(project, member_id, accept_info));
+        bookmarkRepository.save(bookmark);
         return false;
     }
-    //check if member already bookmarked
-//    private boolean isNotAlreadyBookmarked(MemberDto memberDto, Project project) {
-//        return bookmarkRepository.findByMember_idAndProject(memberDto, project).isEmpty();
+//    check if member already bookmarked
+//    private boolean isNotAlreadyBookmarked(MemberDto memberDto, ProjectDto projectDto) {
+//        return bookmarkRepository.findByMember_idAndProject(memberDto, projectDto).isEmpty();
 //    }
 
 }

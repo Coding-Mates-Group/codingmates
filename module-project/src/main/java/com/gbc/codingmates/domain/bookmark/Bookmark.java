@@ -26,8 +26,11 @@ public class Bookmark {
     @Column(nullable = false)
     private Boolean accept_info;
 
-    public Bookmark(Project project, MemberDto memberDto){
+    public Bookmark(Project project, Long member_id, Boolean accept_info){
         this.project = project;
-        this.member_id = memberDto.getMemberId();
+        this.member_id = member_id;
+        this.accept_info = accept_info;
     }
+
+
 }
