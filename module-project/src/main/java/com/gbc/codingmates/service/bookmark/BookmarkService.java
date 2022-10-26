@@ -25,7 +25,7 @@ public class BookmarkService {
         Long member_id = memberDto.getMemberId();
         Boolean accept_info = true;
 
-        Bookmark bookmark = bookmarkRepository.findByMember_idAndProject(member_id, project).get();
+        Bookmark bookmark = bookmarkRepository.findByMemberIdAndProject(member_id, project).get();
 
 //        if(project.isPresent()){
 //            Project project = optionalProject.get();

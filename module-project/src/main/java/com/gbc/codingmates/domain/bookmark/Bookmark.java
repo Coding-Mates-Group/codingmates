@@ -21,14 +21,14 @@ public class Bookmark {
     private Project project;
 
     @JoinColumn(name = "member_id")
-    private Long member_id;
+    private Long memberId;
 
     @Column(nullable = false)
     private Boolean accept_info;
 
     public Bookmark(Project project, Long member_id, Boolean accept_info){
         this.project = project;
-        this.member_id = member_id;
+        this.memberId = member_id;
         this.accept_info = accept_info;
     }
 

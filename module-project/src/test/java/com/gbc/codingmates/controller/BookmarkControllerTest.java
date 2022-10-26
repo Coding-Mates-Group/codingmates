@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 class BookmarkControllerTest {
 
     @Autowired ProjectRepository projectRepository;
@@ -35,8 +37,7 @@ class BookmarkControllerTest {
 
         Bookmark bookmark1 = bookmarkRepository.findAll().get(0);
         assertNotNull(bookmark1);
-        assertNotNull(bookmark1.getMember_id());
+        assertNotNull(bookmark1.getMemberId());
         assertNotNull(bookmark1.getProject());
     }
-
 }

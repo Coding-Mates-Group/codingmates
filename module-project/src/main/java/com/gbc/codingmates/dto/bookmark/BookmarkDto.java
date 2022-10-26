@@ -22,7 +22,7 @@ public class BookmarkDto {
         return BookmarkDto.builder()
                 .id(bookmark.getId())
                 .project(bookmark.getProject())
-                .member_id(bookmark.getMember_id())
+                .member_id(bookmark.getMemberId())
                 .accept_info(bookmark.getAccept_info())
                 .build();
     }
