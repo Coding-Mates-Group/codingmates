@@ -19,22 +19,22 @@ import java.util.Optional;
 public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final ProjectRepository projectRepository;
-    private final ModelMapper modelMapper;
 
     public boolean addBookmark(MemberDto memberDto, ProjectDto projectDto){
         Project project = projectRepository.findById(projectDto.getId()).get();
 //        if(optionalProject.isPresent()){
 //            Project project = optionalProject.get();
 //        }
-        if(isNotAlreadyBookmarked(memberDto, project)){
-            bookmarkRepository.save(new Bookmark(project,memberDto));
-            return true;
-        }
+//        if(isNotAlreadyBookmarked(memberDto, project)){
+//            bookmarkRepository.save(new Bookmark(project,memberDto));
+//            return true;
+//        }
+        bookmarkRepository.save(new Bookmark(project, memberDto));
         return false;
     }
     //check if member already bookmarked
-    private boolean isNotAlreadyBookmarked(MemberDto memberDto, Project project) {
-        return bookmarkRepository.findByMember_idAndProject(memberDto, modelMapper.map(project, ProjectDto.class)).isEmpty();
-    }
+//    private boolean isNotAlreadyBookmarked(MemberDto memberDto, Project project) {
+//        return bookmarkRepository.findByMember_idAndProject(memberDto, project).isEmpty();
+//    }
 
 }

@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.gbc.codingmates.dto.Recruitment.RecruitmentDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,11 +31,43 @@ public class Recruitment extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "FK_recruitment_project"))
-    private Project project;
+    private Project project_recr;
 
     private String recruitmentType;
 
-    private String recruitmentCount;
+    private int recruitmentCount;
 
     private String recruitmentStatus;
+
+    public static Recruitment toEntity(RecruitmentDto recruitmentDto){
+        return Recruitment.builder()
+                .id(recruitmentDto.getId())
+                .project_recr(recruitmentDto.getProject_recr())
+                .recruitmentCount(recruitmentDto.getRecruitmentCount())
+                .recruitmentStatus(recruitmentDto.getRecruitmentStatus())
+                .recruitmentType(recruitmentDto.getRecruitmentType())
+                .build();
+    }
+
+    public static RecruitmentDto from(Recruitment recruitment){
+        return RecruitmentDto.builder()
+                .id(recruitment.getId())
+                .project_recr(recruitment.getProject_recr())
+                .recruitmentType(recruitment.getRecruitmentType())
+                .recruitmentCount(recruitment.getRecruitmentCount())
+                .recruitmentStatus(recruitment.getRecruitmentStatus())
+                .build();
+    }
+
+    @Builder
+    public Recruitment(Long id, Project project_recr, String recruitmentType,
+                       int recruitmentCount, String recruitmentStatus){
+        this.id = id;
+        this.project_recr = project_recr;
+        this.recruitmentCount = recruitmentCount;
+        this.recruitmentType = recruitmentType;
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
+
 }

@@ -40,10 +40,9 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @Lob
-    @Column
-//    @Column(nullable = false)
-    private Blob contentBig;
+//    @Lob
+//    @Column
+//    private Blob contentBig;
 
     private Long views;
 
@@ -53,14 +52,12 @@ public class Project extends BaseTimeEntity {
 
     private String recruitmentStatus;
 
-    @OneToMany(mappedBy = "member_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     Set<Bookmark> bookmarks = new HashSet<>();
 
-    @Email(message = "Please enter a valid email")
-    private Email email;
+//    @Email(message = "Please enter a valid email")
+//    private Email email;
 
-    @Column(nullable = false)
-    private Integer recruitCount;
 
     @Column(nullable = true)
     private String url;
@@ -72,7 +69,6 @@ public class Project extends BaseTimeEntity {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.contentBig = contentBig;
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;

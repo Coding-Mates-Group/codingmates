@@ -16,8 +16,10 @@ public class RecruitmentService {
     private final RecruitmentRepository recruitmentRepository;
     private final CandidateService candidateService;
 
-    //set initial recruitment count
-    public ResponseEntity<Long> countRecruitment(final Integer count, final RecruitmentDto recruitmentDto){
+//    set initial recruitment details
+    public ResponseEntity<RecruitmentDto> countRecruitment(final int count, final String type, final String status,
+                                                           final RecruitmentDto recruitmentDto){
+
 
     }
 
