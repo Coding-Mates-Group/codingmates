@@ -27,11 +27,11 @@ class MemberJoinDtoTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"aa:asdf:false", "Aaaa:asdf:false", "A aa:asdf:false", "a!aa:asdf:false",
-        "aaaa:asdf:true"}, delimiter = ':')
-    public void memberJoinDTOValidateTest(String userAlias, String token, boolean isOk) {
+    @CsvSource(value = {"thd@naver.com:aa:asdf:false", "thd@naver.com:Aaaa:asdf:false", "thd@naver.com:A aa:asdf:false", "thd@naver.com:a!aa:asdf:false",
+        "thd@naver.com:aaaa:asdf:true"}, delimiter = ':')
+    public void memberJoinDTOValidateTest(String email, String userAlias, String token, boolean isOk) {
         //given
-        MemberJoinDto memberJoinDto = new MemberJoinDto(userAlias, token, null);
+        MemberJoinDto memberJoinDto = new MemberJoinDto(email, userAlias, token, null);
 
         //when
         Set<ConstraintViolation<MemberJoinDto>> validatedResult = validator.validate(memberJoinDto);
