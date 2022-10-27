@@ -2,10 +2,8 @@ package com.gbc.codingmates.controller;
 
 import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.bookmark.BookmarkRepository;
-import com.gbc.codingmates.domain.member.MemberRepository;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
-import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.service.bookmark.BookmarkService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
