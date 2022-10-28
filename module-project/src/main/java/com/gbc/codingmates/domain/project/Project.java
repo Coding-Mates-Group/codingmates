@@ -62,7 +62,7 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = true)
     private String url;
 
-    private static Project toEntity(ProjectDto projectDto){
+    public static Project toEntity(ProjectDto projectDto){
         return Project.builder()
                 .id(projectDto.getId())
                 .member_id(projectDto.getMember_id())
@@ -77,7 +77,7 @@ public class Project extends BaseTimeEntity {
                 .build();
     }
 
-    private static ProjectDto from(Project project){
+    public static ProjectDto from(Project project){
         return ProjectDto.builder()
                 .id(project.getId())
                 .member_id(project.getMember_id())
