@@ -25,5 +25,4 @@ public class CandidateDto {
     @NotEmpty
     private String result;
 
-
 }

@@ -2,6 +2,7 @@ package com.gbc.codingmates.service.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
+import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,11 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
 
-//    Create project
+//    Create and save project
     @Transactional
     public ResponseEntity<Long> saveProject(final ProjectDto projectDto){
         validateDuplicateProject(projectDto);
         Project project = projectRepository.save(modelMapper.map(projectDto,Project.class));
-//        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
         return ResponseEntity.ok(project.getId());
     }
 
@@ -88,5 +88,4 @@ public class ProjectService {
             throw new IllegalStateException("already an existing project");
         }
     }
-
 }

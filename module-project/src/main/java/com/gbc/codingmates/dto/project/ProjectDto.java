@@ -5,17 +5,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Schema(description = "DTO for posting projects")
+@Builder
 public class ProjectDto {
 
     private Long id;
+
+    private Long member_id;
 
     @NotEmpty(message = "project title should not be empty!")
     @Length(min=5, max=30, message="project title should be 5 ~30 words long")
@@ -29,28 +34,11 @@ public class ProjectDto {
 
     private Long views;
 
+    private LocalDateTime startDate, endDate;
+
     private String recruitmentStatus;
 
-    private String userAlias;
+    private Email email;
 
-
-
-//    public Project toEntity() {
-//        return Project.builder()
-//                .title(title)
-//                .content(content)
-//                .views(views)
-//                .build();
-//    }
-//
-//    @Builder
-//    public ProjectDto(Project project){
-//        id = project.getId();
-//        title = project.getTitle();
-//        content = project.getContent();
-//        views = project.getViews();
-//        recruitmentStatus = project.getRecruitmentStatus();
-////        project.getMember().getuserAlias
-//
-//    }
+    private String url;
 }

@@ -9,22 +9,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder(access = AccessLevel.PRIVATE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Schema(description = "DTO for bookmark")
 public class BookmarkDto {
     private final Long id;
     private final Project project;
     private final Long member_id;
     private final Boolean accept_info;
-
-    public static BookmarkDto from(Bookmark bookmark){
-        return BookmarkDto.builder()
-                .id(bookmark.getId())
-                .project(bookmark.getProject())
-                .member_id(bookmark.getMemberId())
-                .accept_info(bookmark.getAccept_info())
-                .build();
-    }
 
 }
