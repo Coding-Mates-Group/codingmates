@@ -1,17 +1,14 @@
-package com.gbc.codingmates.service.bookmark;
+package com.gbc.codingmates.service;
 
 import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.bookmark.BookmarkRepository;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.ProjectDto;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Transactional
 @Service

@@ -1,8 +1,8 @@
-package com.gbc.codingmates.service.candidate;
+package com.gbc.codingmates.service;
 
 import com.gbc.codingmates.domain.candidate.Candidate;
 import com.gbc.codingmates.domain.candidate.CandidateRepository;
-import com.gbc.codingmates.dto.candidate.CandidateDto;
+import com.gbc.codingmates.dto.CandidateDto;
 import com.gbc.codingmates.dto.member.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

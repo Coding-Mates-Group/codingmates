@@ -1,8 +1,8 @@
 package com.gbc.codingmates.controller;
 
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
-import com.gbc.codingmates.service.bookmark.BookmarkService;
+import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

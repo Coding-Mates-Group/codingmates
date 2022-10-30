@@ -1,17 +1,15 @@
-package com.gbc.codingmates.service.project;
+package com.gbc.codingmates.service;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
-import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +23,10 @@ public class ProjectService {
 
 //    Create and save project
     @Transactional
-    public ResponseEntity<Long> saveProject(final ProjectDto projectDto){
+    public Long saveProject(final ProjectDto projectDto){
         validateDuplicateProject(projectDto);
-        Project project = projectRepository.save(modelMapper.map(projectDto,Project.class));
-        return ResponseEntity.ok(project.getId());
+        Project project = projectRepository.save(Project.toEntity(projectDto));
+        return project.getId();
     }
 
     //list all projects

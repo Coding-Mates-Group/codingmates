@@ -5,16 +5,15 @@ import static lombok.AccessLevel.PROTECTED;
 
 //import module-member.
 import com.gbc.codingmates.domain.BaseTimeEntity;
-import java.sql.Blob;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 import com.gbc.codingmates.domain.bookmark.Bookmark;
-import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.ProjectDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,7 +56,7 @@ public class Project extends BaseTimeEntity {
     Set<Bookmark> bookmarks = new HashSet<>();
 
     @Email(message = "Please enter a valid email")
-    private Email email;
+    private String email;
 
     @Column(nullable = true)
     private String url;
@@ -94,7 +93,7 @@ public class Project extends BaseTimeEntity {
 
     @Builder
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   String recruitmentStatus, Email email, String url) {
+                   String recruitmentStatus, String email, String url) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;

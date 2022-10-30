@@ -1,4 +1,4 @@
-package com.gbc.codingmates.dto.bookmark;
+package com.gbc.codingmates.dto;
 
 import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.project.Project;

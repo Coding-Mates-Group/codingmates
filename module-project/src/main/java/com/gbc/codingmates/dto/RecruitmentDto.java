@@ -1,9 +1,6 @@
-package com.gbc.codingmates.dto.Recruitment;
+package com.gbc.codingmates.dto;
 
-import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.project.Project;
-import com.gbc.codingmates.domain.recruitment.Recruitment;
-import com.gbc.codingmates.dto.bookmark.BookmarkDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

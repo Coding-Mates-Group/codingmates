@@ -1,4 +1,4 @@
-package com.gbc.codingmates.dto.project;
+package com.gbc.codingmates.dto;
 
 import com.gbc.codingmates.domain.project.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +38,9 @@ public class ProjectDto {
 
     private String recruitmentStatus;
 
-    private Email email;
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+            flags = Pattern.Flag.CASE_INSENSITIVE)
+    private String email;
 
     private String url;
 }

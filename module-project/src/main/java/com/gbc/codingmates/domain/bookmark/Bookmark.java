@@ -1,10 +1,7 @@
 package com.gbc.codingmates.domain.bookmark;
 
 import com.gbc.codingmates.domain.project.Project;
-import com.gbc.codingmates.domain.recruitment.Recruitment;
-import com.gbc.codingmates.dto.Recruitment.RecruitmentDto;
-import com.gbc.codingmates.dto.bookmark.BookmarkDto;
-import com.gbc.codingmates.dto.member.MemberDto;
+import com.gbc.codingmates.dto.BookmarkDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

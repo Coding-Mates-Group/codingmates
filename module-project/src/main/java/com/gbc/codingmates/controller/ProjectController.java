@@ -2,11 +2,12 @@ package com.gbc.codingmates.controller;
 
 import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
-import com.gbc.codingmates.service.project.ProjectService;
+import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.service.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,8 @@ public class ProjectController {
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(bindingResult);
         }
-        return projectService.saveProject(projectDto);
+        projectService.saveProject(projectDto);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     //list all projects

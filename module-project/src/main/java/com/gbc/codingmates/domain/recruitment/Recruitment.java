@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.gbc.codingmates.dto.Recruitment.RecruitmentDto;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,9 @@
-package com.gbc.codingmates.service.bookmark;
+package com.gbc.codingmates.service;
 
-import com.gbc.codingmates.domain.bookmark.Bookmark;
-import com.gbc.codingmates.domain.project.Project;
-import com.gbc.codingmates.dto.bookmark.BookmarkDto;
+import com.gbc.codingmates.dto.BookmarkDto;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.service.BookmarkService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @RunWith(SpringRunner.class)

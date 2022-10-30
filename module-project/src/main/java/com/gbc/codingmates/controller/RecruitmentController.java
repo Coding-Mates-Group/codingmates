@@ -1,8 +1,7 @@
 package com.gbc.codingmates.controller;
 
-import com.gbc.codingmates.domain.recruitment.RecruitmentRepository;
-import com.gbc.codingmates.dto.Recruitment.RecruitmentDto;
-import com.gbc.codingmates.service.recruitment.RecruitmentService;
+import com.gbc.codingmates.dto.RecruitmentDto;
+import com.gbc.codingmates.service.RecruitmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

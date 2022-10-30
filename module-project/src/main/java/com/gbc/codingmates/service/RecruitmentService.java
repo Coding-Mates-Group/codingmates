@@ -1,10 +1,8 @@
-package com.gbc.codingmates.service.recruitment;
+package com.gbc.codingmates.service;
 
-import com.gbc.codingmates.domain.candidate.CandidateRepository;
 import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.domain.recruitment.RecruitmentRepository;
-import com.gbc.codingmates.dto.Recruitment.RecruitmentDto;
-import com.gbc.codingmates.service.candidate.CandidateService;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

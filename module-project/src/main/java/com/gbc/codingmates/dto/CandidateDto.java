@@ -1,4 +1,4 @@
-package com.gbc.codingmates.dto.candidate;
+package com.gbc.codingmates.dto;
 
 import com.gbc.codingmates.domain.project.Project;
 import lombok.AllArgsConstructor;
