@@ -52,14 +52,15 @@ public class ProjectController {
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
-    public ResponseEntity<Long> edit(@PathVariable final Long id, @JwtMemberInfo MemberDto memberDto,
+    public ResponseEntity<Long> edit(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
                                      @RequestBody @Valid final ProjectDto ProjectDto) throws AccessDeniedException {
         return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
 
     //delete project
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo MemberDto memberDto) throws AccessDeniedException {
+    public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto)
+            throws AccessDeniedException {
         return ResponseEntity.ok(projectService.deleteById(id, memberDto));
     }
 
