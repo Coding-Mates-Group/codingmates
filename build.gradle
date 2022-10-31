@@ -40,6 +40,11 @@ allprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.security:spring-security-test'
 
+		// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+		implementation group: 'org.slf4j', name: 'slf4j-api'
+
+
+
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 

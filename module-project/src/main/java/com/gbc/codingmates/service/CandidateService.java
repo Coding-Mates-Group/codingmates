@@ -18,44 +18,50 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CandidateService {
     private final CandidateRepository candidateRepository;
-    private final ModelMapper modelMapper;
 
     //save candidate's application
     @Transactional
-    public ResponseEntity saveCandidate(final CandidateDto candidateDto){
-        Candidate candidate = modelMapper.map(candidateDto, Candidate.class);
-        candidateRepository.save(modelMapper.map(candidateDto, Candidate.class));
-        return ResponseEntity.ok(candidate.getId());
+    public Long saveCandidate(final CandidateDto candidateDto){
+        Candidate candidate = Candidate.toEntity(candidateDto);
+        candidateRepository.save(candidate);
+        return candidate.getId();
     }
 
     //list all
-    public ResponseEntity<List<Candidate>> listAll(){
-        return ResponseEntity.ok(candidateRepository.findAll());
-    }
-
-    //reject candidate's application
-    @Transactional
-    public ResponseEntity<Long> reject(final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
-        Candidate candidate = checkValidityOfCandidate(memberDto, candidateDto);
-        Long id = candidate.getId();
-        candidateRepository.deleteById(id);
-        return ResponseEntity.ok(id);
-    }
-
-    private Candidate checkValidityOfCandidate(MemberDto memberDto, CandidateDto candidateDto) {
-        Candidate candidate = candidateRepository.findById(candidateDto.getId()).orElseThrow(()->new IllegalStateException());
-        Long candidateId = candidate.getMember_id();
-        if (candidateId != memberDto.getMemberId()) {
-            throw new AccessDeniedException("you are not authorised");
-        }
-        return candidate;
+    public List<Candidate> listAll(){
+        return candidateRepository.findAll();
     }
 
     //accept candidate's application
     @Transactional
-    public ResponseEntity<Long> accept(final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
-        Candidate candidate = checkValidityOfCandidate(memberDto,candidateDto);
+    public Long accept(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+        Candidate candidate = findCandidateById(id, new IllegalArgumentException());
+        checkPermission(memberDto,candidate);
         candidateRepository.save(candidate);
-        return ResponseEntity.ok(candidate.getId());
+        return id;
+    }
+
+    //reject candidate's application
+    @Transactional
+    public Long reject(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+        Candidate candidate = findCandidateById(id, new IllegalArgumentException());
+        checkPermission(memberDto,candidate);
+        candidateRepository.deleteById(id);
+        return id;
+    }
+
+    //check if he/she is the team leader that can accept/reject candidate's applications
+    private void checkPermission(MemberDto memberDto, Candidate candidate) {
+        Long ownerId = candidate.getProject_can().getMember_id();
+        if(ownerId != memberDto.getMemberId()){
+            throw new AccessDeniedException("you are not authorised");
+        }
+    }
+
+    //find candidate by id
+    private Candidate findCandidateById(Long id, IllegalArgumentException no_such_candidate) {
+        Candidate candidate = candidateRepository.findById(id).orElseThrow(
+                ()-> no_such_candidate);
+        return candidate;
     }
 }

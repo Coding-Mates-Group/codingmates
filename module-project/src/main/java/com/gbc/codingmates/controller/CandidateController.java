@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,27 +21,42 @@ public class CandidateController {
     private final CandidateService candidateService;
 
     //save candidate's application
+    @PostMapping("")
     public ResponseEntity saveCandidate(@RequestBody @Valid final CandidateDto candidateDto,
                                               BindingResult bindingResult){
+        ResponseEntity<BindingResult> checkViaBindingResult = checkViaBindingResult(bindingResult);
+        if (checkViaBindingResult != null) return checkViaBindingResult;
+        candidateService.saveCandidate(candidateDto);
+        return ResponseEntity.ok(candidateDto.getId());
+    }
+
+    //check via binding result
+    private ResponseEntity<BindingResult> checkViaBindingResult(BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(bindingResult);
         }
-        return candidateService.saveCandidate(candidateDto);
+        return null;
     }
 
     //list all candidates
+    @GetMapping("")
     public ResponseEntity<List<Candidate>> listAll(){
-        return candidateService.listAll();
+        return ResponseEntity.ok(candidateService.listAll());
+    }
+
+    //project leader accepts candidate's application
+    @PostMapping("/{id}")
+    public ResponseEntity<Long> accept(@PathVariable final Long id, @JwtMemberInfo final MemberDto memberDto,
+                                       final CandidateDto candidateDto) throws AccessDeniedException{
+        candidateService.accept(id, memberDto, candidateDto);
+        return ResponseEntity.ok(id);
     }
 
     //reject candidate's application
-    public ResponseEntity<Long> delete(@JwtMemberInfo final MemberDto memberDto,
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> delete(@PathVariable final Long id, @JwtMemberInfo final MemberDto memberDto,
                                        final CandidateDto candidateDto) throws AccessDeniedException{
-        return candidateService.reject(memberDto, candidateDto);
-    }
-
-    public ResponseEntity<Long> accept(@JwtMemberInfo final MemberDto memberDto,
-                                       final CandidateDto candidateDto) throws AccessDeniedException{
-        return candidateService.accept(memberDto, candidateDto);
+        candidateService.reject(id, memberDto, candidateDto);
+        return ResponseEntity.ok(id);
     }
 }

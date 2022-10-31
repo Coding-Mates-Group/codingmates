@@ -8,14 +8,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Schema(description = "DTO for bookmark")
 public class BookmarkDto {
     private final Long id;
-    private final Project project;
-    private final Long member_id;
-    private final Boolean accept_info;
 
+    @NotEmpty
+    private final Project project;
+
+    @NotEmpty
+    private final Long member_id;
+
+    @NotEmpty
+    private final Boolean accept_info;
 }

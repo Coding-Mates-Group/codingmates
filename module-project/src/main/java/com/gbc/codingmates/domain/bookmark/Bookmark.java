@@ -53,6 +53,4 @@ public class Bookmark {
         this.memberId = member_id;
         this.accept_info = accept_info;
     }
-
-
 }

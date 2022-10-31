@@ -109,7 +109,6 @@ public class Project extends BaseTimeEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.modifyToot = LocalDateTime.now();
     }
 
     public void updateView(Long views) {

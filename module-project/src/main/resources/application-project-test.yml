@@ -1,4 +1,24 @@
 spring:
+
+  output:
+    ansi:
+      enabled: always #로그 색상추가
+  datasource:
+    driver-class-name: org.h2.Driver # h2 드라이버 설정
+    url: jdbc:h2:mem:testdb # jdbc url 설정 (in-memory db 설정)
+    username: sa
+    password:
+    platform: h2 # datasource 타입 플랫폼 정의
+    data: classpath:db/h2/import.sql # 앞서 작성한 sql 파일경로
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect # 방언설정
+    properties:
+      hibernate:
+        ddl-auto: none
+        show_sql: true #sql 문이 보이도록
+        format_sql: true  #sql 계층식 표현
+
   security:
     oauth2:
       client:
@@ -32,4 +52,4 @@ spring:
   logging:
     level:
       org.hibernate.SQL: debug
----
+

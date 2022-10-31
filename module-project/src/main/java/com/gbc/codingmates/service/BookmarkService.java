@@ -17,12 +17,10 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final ProjectRepository projectRepository;
 
-
     //add bookmark if project has not been bookmarked before
-    public boolean addBookmark(MemberDto memberDto, ProjectDto projectDto){
-        Project project = projectRepository.findById(projectDto.getId()).get();
+    public boolean addBookmark(final Long project_id, final MemberDto memberDto, final ProjectDto projectDto){
+        Project project = findProjectByProjectId(project_id);
         Long member_id = memberDto.getMemberId();
-
         if(isNotAlreadyBookmarked(member_id,project)){
             bookmarkRepository.save(Bookmark.builder()
                     .member_id(member_id)
@@ -33,8 +31,12 @@ public class BookmarkService {
         return false;
     }
 
+    private Project findProjectByProjectId(final Long project_id) {
+        return projectRepository.findById(project_id).get();
+    }
+
     //check if member has bookmarked this project before
-    private boolean isNotAlreadyBookmarked(Long member_id, Project project) {
+    private boolean isNotAlreadyBookmarked(final Long member_id, final Project project) {
         return bookmarkRepository.findByMemberIdAndProject(member_id, project).isPresent();
     }
 }

@@ -1,5 +1,6 @@
 package com.gbc.codingmates.service;
 
+import com.gbc.codingmates.domain.project.CustomProjectRepositoryImpl;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.member.MemberDto;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ModelMapper modelMapper;
+    private final CustomProjectRepositoryImpl customProjectRepository;
 
 //    Create and save project
     @Transactional
@@ -30,56 +31,54 @@ public class ProjectService {
     }
 
     //list all projects
-//    public List<Project> listAll(){
-////        return projectRepository.findAll();
-////        List<Project> projects = em.createQuery(
-////                "select p from Project p" +
-////                        " join fetch p.member m", Project.class
-////        ).getResultList();
-////        return projects;
-////        return projectRepository.listAllWithMember();
-//        return projectRepository.findAll();
+    public List<ProjectDto> listAll(){
+//        return customProjectRepository.listAllWithMember();
+        return projectRepository.findAll()
+                .stream()
+                .map(project -> Project.from(project))
+                .collect(Collectors.toList());
+    }
+
+
+//    public List<ProjectDto> listAll(){
+//        List<Project> projectList = projectRepository.findAll();
+//        return projectList.stream()
+//                .map(project -> Project.from(project))
+//                .collect(Collectors.toList());
 //    }
 
-    public ResponseEntity<List<ProjectDto>> listAll(){
-        List<Project> projectList = projectRepository.findAll();
-        return ResponseEntity.ok(projectList.stream()
-                .map(project -> modelMapper.map(project,ProjectDto.class))
-                .collect(Collectors.toList()));
-    }
-
-
-    public ResponseEntity<ProjectDto> findById(final ProjectDto projectDto){
-        Project project = projectRepository.findById(projectDto.getId()).orElseThrow(() -> new IllegalArgumentException());
-        return ResponseEntity.ok(modelMapper.map(project,ProjectDto.class));
-    }
-
-    //update/edit project
+    //update/edit project's title and content
     @Transactional
-    public ResponseEntity<Long> edit(final MemberDto memberDto, final Long id, final ProjectDto ProjectDto) throws AccessDeniedException {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
-        Long ownerId = project.getMember_id();
-        if(ownerId!=memberDto.getMemberId()){
-            throw new AccessDeniedException("you are not the owner of this post");
-        }
+    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws AccessDeniedException {
+        Project project = findProjectById(id, new IllegalArgumentException());
+        checkEditPermission(project, memberDto);
         project.update(ProjectDto.getTitle(), ProjectDto.getContent());
-        return ResponseEntity.ok(id);
+        return id;
     }
 
     //delete project
     @Transactional
-    public ResponseEntity<Long> deleteById(final MemberDto memberDto, final Long id) throws AccessDeniedException {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such project"));
-        Long ownerId = project.getMember_id();
-        if(ownerId!=memberDto.getMemberId()){
-            throw new AccessDeniedException("you are not the owner of this post");
-        }
+    public Long deleteById(final Long id, final MemberDto memberDto) throws AccessDeniedException {
+        Project project = findProjectById(id, new IllegalArgumentException());
+        checkEditPermission(project, memberDto);
         projectRepository.delete(project);
-        return ResponseEntity.ok(id);
+        return id;
     }
 
-    //to be changed to ResponseEntity
-    //check existing, duplicate project
+    private Project findProjectById(Long id, IllegalArgumentException no_such_project) {
+        Project project = projectRepository.findById(id).orElseThrow(() -> no_such_project);
+        return project;
+    }
+
+    //check if person is owner of this project post and if he/she is authorised to edit
+    private void checkEditPermission(Project project, MemberDto memberDto) throws AccessDeniedException {
+        Long ownerId = project.getMember_id();
+        if(ownerId!= memberDto.getMemberId()){
+            throw new AccessDeniedException("you are not the owner of this post");
+        }
+    }
+
+    //check existing, duplicate project via title
     private void validateDuplicateProject(ProjectDto ProjectDto){
         List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
         if(!findProjects.isEmpty()){
