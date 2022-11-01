@@ -41,8 +41,8 @@ spring:
 cloud:
   aws:
     credentials:
-      accessKey: AKIAVGDOMJMV7PR6OPGC
-      secretKey: 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
+      accessKey: xx
+      secretKey: xx
     s3:
       bucket: codingmates
       dir: /codingmates/hola
