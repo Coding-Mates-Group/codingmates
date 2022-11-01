@@ -4,6 +4,9 @@ import com.gbc.codingmates.domain.project.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
@@ -15,10 +18,13 @@ public class RecruitmentDto {
 
     private Project project_recr;
 
+    @NotEmpty
     private String recruitmentType;
 
+    @NotNull
     private int recruitmentCount;
 
+    @NotEmpty
     private String recruitmentStatus;
 
 

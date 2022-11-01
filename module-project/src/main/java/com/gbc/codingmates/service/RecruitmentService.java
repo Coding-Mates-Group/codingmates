@@ -16,7 +16,7 @@ public class RecruitmentService {
     private final CandidateService candidateService;
 
 //    set initial recruitment details
-    public ResponseEntity<RecruitmentDto> createRecruitment(final int count, final String type, final String status){
+    public RecruitmentDto createRecruitment(final int count, final String type, final String status){
         RecruitmentDto recruitmentDto  = Recruitment.from(Recruitment.builder()
                 .recruitmentCount(count)
                 .recruitmentType(type)
@@ -24,10 +24,23 @@ public class RecruitmentService {
                 .build());
         Recruitment recruitment = Recruitment.toEntity(recruitmentDto);
         recruitmentRepository.save(recruitment);
-        return ResponseEntity.ok(recruitmentDto);
+        return recruitmentDto;
     }
 
-    //edit recruitment details
+    //edit recruitment details of count and type
+    public RecruitmentDto editRecruitmentCountAndType(final Long id, final int count, final String type, final String status){
+        RecruitmentDto recruitmentDto  = Recruitment.from(Recruitment.builder()
+                .recruitmentCount(count)
+                .recruitmentType(type)
+                .recruitmentStatus(status)
+                .build());
+        Recruitment recruitment = Recruitment.toEntity(recruitmentDto);
+        recruitmentRepository.save(recruitment);
+        return recruitmentDto;
+    }
 
-
+    private Recruitment findRecruitmentById(Long id) {
+        Recruitment recruitment = recruitmentRepository.findById(id).get();
+        return recruitment;
+    }
 }

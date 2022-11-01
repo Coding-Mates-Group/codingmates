@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 
 
 @RestController
+@Validated
 @RequestMapping("/project")
 @RequiredArgsConstructor
 public class ProjectController {
@@ -53,13 +55,14 @@ public class ProjectController {
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
     public ResponseEntity<Long> edit(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
-                                     @RequestBody @Valid final ProjectDto ProjectDto) throws AccessDeniedException {
+                                     @RequestBody @Valid final ProjectDto ProjectDto, BindingResult bindingResult) throws AccessDeniedException {
         return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
 
     //delete project
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto)
+    public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
+                                           BindingResult bindingResult)
             throws AccessDeniedException {
         return ResponseEntity.ok(projectService.deleteById(id, memberDto));
     }

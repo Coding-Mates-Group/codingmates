@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/candidate")
+@Validated
 @RequiredArgsConstructor
 public class CandidateController {
     private final CandidateService candidateService;
@@ -47,7 +49,7 @@ public class CandidateController {
     //project leader accepts candidate's application
     @PostMapping("/{id}")
     public ResponseEntity<Long> accept(@PathVariable final Long id, @JwtMemberInfo @Valid final MemberDto memberDto,
-                                       @Valid final CandidateDto candidateDto) throws AccessDeniedException{
+                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws AccessDeniedException{
         candidateService.accept(id, memberDto, candidateDto);
         return ResponseEntity.ok(id);
     }
@@ -55,7 +57,7 @@ public class CandidateController {
     //reject candidate's application
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable final Long id, @JwtMemberInfo @Valid final MemberDto memberDto,
-                                       @Valid final CandidateDto candidateDto) throws AccessDeniedException{
+                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws AccessDeniedException{
         candidateService.reject(id, memberDto, candidateDto);
         return ResponseEntity.ok(id);
     }
