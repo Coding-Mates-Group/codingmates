@@ -20,7 +20,7 @@ spring:
     username: sa
     password:
     initialization-mode: always
-    data: classpath:db.h2/import.sql
+#    data: classpath:db.h2/import.sql
 
   jpa:
     hibernate:
