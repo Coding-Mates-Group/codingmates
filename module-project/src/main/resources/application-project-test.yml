@@ -9,7 +9,7 @@ spring:
     username: sa
     password:
     platform: h2 # datasource 타입 플랫폼 정의
-    data: classpath:db/h2/import.sql # 앞서 작성한 sql 파일경로
+#    data: classpath:db/h2/import.sql # 앞서 작성한 sql 파일경로
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect # 방언설정

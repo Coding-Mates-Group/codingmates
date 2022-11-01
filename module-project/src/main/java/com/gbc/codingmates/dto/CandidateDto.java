@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 public class CandidateDto {
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     private Long member_id;
 
     @NotEmpty

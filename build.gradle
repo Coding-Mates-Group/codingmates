@@ -40,10 +40,12 @@ allprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.security:spring-security-test'
 
-		// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-		implementation group: 'org.slf4j', name: 'slf4j-api'
 
+		// aws s3
+//		implementation 'com.amazonaws:aws-java-sdk-s3:1.12.328'
 
+		//aws
+		implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'

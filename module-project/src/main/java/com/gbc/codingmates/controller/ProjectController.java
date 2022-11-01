@@ -5,6 +5,7 @@ import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.ProjectDto;
 import com.gbc.codingmates.service.ProjectService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     //create project
+    @ApiOperation(value = "create Project post")
     @PostMapping("")
     public ResponseEntity save(@RequestBody @Valid final ProjectDto projectDto,
                                      BindingResult bindingResult) {
