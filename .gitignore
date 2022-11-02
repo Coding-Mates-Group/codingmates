@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### ymls ###
-#src/main/resources/application.yml
+module-member/src/main/resources/application-member-dev.yml
 
 ### IntelliJ IDEA ###
 .idea
