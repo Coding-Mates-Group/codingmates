@@ -19,6 +19,7 @@ bin/
 
 ### ymls ###
 module-member/src/main/resources/application-member-dev.yml
+module-member/src/main/resources/application-member-local.yml
 
 ### IntelliJ IDEA ###
 .idea
