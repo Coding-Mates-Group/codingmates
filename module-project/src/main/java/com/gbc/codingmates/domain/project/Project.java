@@ -21,10 +21,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@SequenceGenerator(
+        name = "PROJECT_SEQ_GENERATOR",
+        sequenceName = "PROJECT_SEQ",
+        initialValue = 1, allocationSize = 50)
 public class Project extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "project_id")
     private Long id;
 
@@ -34,15 +38,8 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column
-    private String category;
-
-    @Column(nullable = false)
+    @Lob
     private String content;
-
-//    @Lob
-//    @Column
-//    private Blob contentBig;
 
     private Long views;
 
