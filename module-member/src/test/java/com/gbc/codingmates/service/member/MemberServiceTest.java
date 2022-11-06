@@ -53,7 +53,7 @@ class MemberServiceTest {
         MemberJoinDto memberJoinDto = new MemberJoinDto("thd@naver.com", "userAlias", "token",
             Arrays.asList(1L, 2L));
 
-        when(oAuthTokenRepository.findByIdWithLock(memberJoinDto.getToken())).thenReturn(
+        when(oAuthTokenRepository.findById(memberJoinDto.getToken())).thenReturn(
             Optional.of(OAuthToken.builder()
                 .oAuthType(OAuthType.GOOGLE)
                 .authUserId("authUserId")

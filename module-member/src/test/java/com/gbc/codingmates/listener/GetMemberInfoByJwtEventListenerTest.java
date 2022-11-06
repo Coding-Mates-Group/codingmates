@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.MemberRepository;
 import com.gbc.codingmates.domain.member.MemberStatus;
+import com.gbc.codingmates.domain.member.RedisJwtTokenRepository;
 import com.gbc.codingmates.event.GetMemberInfoByJwtEvent;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.util.Optional;
@@ -28,11 +29,13 @@ class GetMemberInfoByJwtEventListenerTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private RedisJwtTokenRepository redisJwtTokenRepository;
     private Member member;
 
     @BeforeEach
     public void init() {
-        listener = new GetMemberInfoByJwtEventListener(tokenProvider, memberRepository);
+        listener = new GetMemberInfoByJwtEventListener(tokenProvider, memberRepository, redisJwtTokenRepository);
         member = new Member("sjh", "jhsg@naver.com", "asdf", MemberStatus.BASIC, null, "default");
     }
 
