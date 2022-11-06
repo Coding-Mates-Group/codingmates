@@ -1,6 +1,5 @@
 package com.gbc.codingmates.domain.member;
 
-import com.gbc.codingmates.domain.BaseTimeEntity;
 import java.util.UUID;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,11 +17,11 @@ import org.springframework.data.redis.core.TimeToLive;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Builder
 @Getter
-public class OAuthToken{
+public class OAuthToken {
 
     @Id
     @Builder.Default
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     private String authUserId;
 
