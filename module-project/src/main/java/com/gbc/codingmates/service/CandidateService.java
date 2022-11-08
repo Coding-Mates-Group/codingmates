@@ -34,7 +34,7 @@ public class CandidateService {
 
     //accept candidate's application
     @Transactional
-    public Long accept(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+    public Long accept(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws Exception{
         Candidate candidate = findCandidateById(id, new IllegalArgumentException());
         checkPermission(memberDto,candidate);
         candidateRepository.save(candidate);
@@ -43,7 +43,7 @@ public class CandidateService {
 
     //reject candidate's application
     @Transactional
-    public Long reject(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws AccessDeniedException{
+    public Long reject(final Long id, final MemberDto memberDto, final CandidateDto candidateDto) throws Exception{
         Candidate candidate = findCandidateById(id, new IllegalArgumentException());
         checkPermission(memberDto,candidate);
         candidateRepository.deleteById(id);
@@ -54,7 +54,7 @@ public class CandidateService {
     private void checkPermission(MemberDto memberDto, Candidate candidate) {
         Long ownerId = candidate.getProject_can().getMember_id();
         if(ownerId != memberDto.getMemberId()){
-            throw new AccessDeniedException("you are not authorised");
+            throw new IllegalArgumentException("you are not authorised");
         }
     }
 

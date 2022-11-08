@@ -1,4 +1,4 @@
-package com.gbc.codingmates.config;
+package com.gbc.codingmates.configuration;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

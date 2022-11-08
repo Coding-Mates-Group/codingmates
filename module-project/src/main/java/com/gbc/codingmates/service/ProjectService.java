@@ -49,7 +49,7 @@ public class ProjectService {
 
     //update/edit project's title and content
     @Transactional
-    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws AccessDeniedException {
+    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws Exception {
         Project project = findProjectById(id, new IllegalArgumentException());
         checkEditPermission(project, memberDto);
         project.update(ProjectDto.getTitle(), ProjectDto.getContent());
@@ -58,7 +58,7 @@ public class ProjectService {
 
     //delete project
     @Transactional
-    public Long deleteById(final Long id, final MemberDto memberDto) throws AccessDeniedException {
+    public Long deleteById(final Long id, final MemberDto memberDto) throws Exception {
         Project project = findProjectById(id, new IllegalArgumentException());
         checkEditPermission(project, memberDto);
         projectRepository.delete(project);
@@ -71,10 +71,10 @@ public class ProjectService {
     }
 
     //check if person is owner of this project post and if he/she is authorised to edit
-    private void checkEditPermission(Project project, MemberDto memberDto) throws AccessDeniedException {
+    private void checkEditPermission(Project project, MemberDto memberDto){
         Long ownerId = project.getMember_id();
         if(ownerId!= memberDto.getMemberId()){
-            throw new AccessDeniedException("you are not the owner of this post");
+            throw new IllegalArgumentException("you are not the owner of this post");
         }
     }
 

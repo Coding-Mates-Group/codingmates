@@ -1,12 +1,10 @@
-package com.gbc.codingmates.controller;
+package com.gbc.codingmates;
 
 import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.util.S3FileService;
-
+import com.gbc.codingmates.utils.S3FileService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

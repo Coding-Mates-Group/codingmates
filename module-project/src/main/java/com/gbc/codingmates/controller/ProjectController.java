@@ -57,15 +57,14 @@ public class ProjectController {
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
     public ResponseEntity<Long> edit(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
-                                     @RequestBody @Valid final ProjectDto ProjectDto, BindingResult bindingResult) throws AccessDeniedException {
+                                     @RequestBody @Valid final ProjectDto ProjectDto, BindingResult bindingResult) throws Exception {
         return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
 
     //delete project
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
-                                           BindingResult bindingResult)
-            throws AccessDeniedException {
+                                           BindingResult bindingResult) throws Exception {
         return ResponseEntity.ok(projectService.deleteById(id, memberDto));
     }
 

@@ -49,7 +49,7 @@ public class CandidateController {
     //project leader accepts candidate's application
     @PostMapping("/{id}")
     public ResponseEntity<Long> accept(@PathVariable final Long id, @JwtMemberInfo @Valid final MemberDto memberDto,
-                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws AccessDeniedException{
+                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws Exception{
         candidateService.accept(id, memberDto, candidateDto);
         return ResponseEntity.ok(id);
     }
@@ -57,7 +57,7 @@ public class CandidateController {
     //reject candidate's application
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable final Long id, @JwtMemberInfo @Valid final MemberDto memberDto,
-                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws AccessDeniedException{
+                                       @Valid final CandidateDto candidateDto, BindingResult bindingResult) throws Exception{
         candidateService.reject(id, memberDto, candidateDto);
         return ResponseEntity.ok(id);
     }

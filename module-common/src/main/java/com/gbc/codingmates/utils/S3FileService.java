@@ -1,4 +1,4 @@
-package com.gbc.codingmates.util;
+package com.gbc.codingmates.utils;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;

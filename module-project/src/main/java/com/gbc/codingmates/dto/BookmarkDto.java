@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Schema(description = "DTO for bookmark")
 public class BookmarkDto {
