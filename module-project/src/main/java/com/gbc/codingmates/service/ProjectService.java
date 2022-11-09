@@ -5,6 +5,8 @@ import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.exception.CustomException;
+import com.gbc.codingmates.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +76,7 @@ public class ProjectService {
     private void checkEditPermission(Project project, MemberDto memberDto){
         Long ownerId = project.getMember_id();
         if(ownerId!= memberDto.getMemberId()){
-            throw new IllegalArgumentException("you are not the owner of this post");
+            throw new CustomException(ErrorCode.PROJECT_EDIT_PERMISSION_FORBIDDEN);
         }
     }
 
@@ -82,7 +84,7 @@ public class ProjectService {
     private void validateDuplicateProject(ProjectDto ProjectDto){
         List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
         if(!findProjects.isEmpty()){
-            throw new IllegalStateException("already an existing project");
+            throw new CustomException(ErrorCode.ALREADY_EXISTING_PROJECT);
         }
     }
 }

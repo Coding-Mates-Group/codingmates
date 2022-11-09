@@ -4,6 +4,8 @@ import com.gbc.codingmates.domain.candidate.Candidate;
 import com.gbc.codingmates.domain.candidate.CandidateRepository;
 import com.gbc.codingmates.dto.CandidateDto;
 import com.gbc.codingmates.dto.member.MemberDto;
+import com.gbc.codingmates.exception.CustomException;
+import com.gbc.codingmates.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +56,7 @@ public class CandidateService {
     private void checkPermission(MemberDto memberDto, Candidate candidate) {
         Long ownerId = candidate.getProject_can().getMember_id();
         if(ownerId != memberDto.getMemberId()){
-            throw new IllegalArgumentException("you are not authorised");
+            throw new CustomException(ErrorCode.CANDIDATE_EDIT_PERMISSION_FORBIDDEN);
         }
     }
 
