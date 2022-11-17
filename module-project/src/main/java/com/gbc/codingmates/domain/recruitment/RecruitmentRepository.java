@@ -1,4 +1,4 @@
-package com.gbc.codingmates.domain.candidate;
+package com.gbc.codingmates.domain.recruitment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

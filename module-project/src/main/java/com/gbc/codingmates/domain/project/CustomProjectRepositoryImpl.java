@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.project;
 
+import com.gbc.codingmates.dto.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +13,9 @@ public class CustomProjectRepositoryImpl implements CustomProjectRepository{
 
     private final EntityManager em;
 
-//    @Override
-//    public List<Project> listAllWithMember() {
-//        return em.createQuery("select p from Project p" +
-//                        " join fetch p.member m", Project.class)
-//                .getResultList();
-//    }
+    public List<ProjectDto> listAllWithMember() {
+        return em.createQuery("select p from Project p" +
+                        " join fetch p.member_id m", ProjectDto.class)
+                .getResultList();
+    }
 }

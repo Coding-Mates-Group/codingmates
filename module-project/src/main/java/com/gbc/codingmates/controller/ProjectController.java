@@ -3,26 +3,25 @@ package com.gbc.codingmates.controller;
 import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.project.ProjectDto;
-import com.gbc.codingmates.dto.project.ProjectResponseDto;
-import com.gbc.codingmates.service.project.ProjectService;
+import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.service.ProjectService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mapper.Mapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EnumType;
 import javax.validation.Valid;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
+@Validated
 @RequestMapping("/project")
 @RequiredArgsConstructor
 public class ProjectController {
@@ -30,33 +29,43 @@ public class ProjectController {
     private final ProjectService projectService;
 
     //create project
+    @ApiOperation(value = "create Project post")
     @PostMapping("")
     public ResponseEntity save(@RequestBody @Valid final ProjectDto projectDto,
                                      BindingResult bindingResult) {
+        ResponseEntity<BindingResult> checkViaBindingResult = checkViaBindingResult(bindingResult);
+        if (checkViaBindingResult != null) return checkViaBindingResult;
+        projectService.saveProject(projectDto);
+        return ResponseEntity.ok(projectDto.getId());
+    }
+
+    //check via binding result
+    private ResponseEntity<BindingResult> checkViaBindingResult(BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(bindingResult);
         }
-        return projectService.saveProject(projectDto);
+        return null;
     }
 
     //list all projects
     @GetMapping("")
-    public ResponseEntity listAll(){
-        return projectService.listAll();
+    public ResponseEntity<List<ProjectDto>> listAll(){
+        return ResponseEntity.ok(projectService.listAll());
     }
 
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
-    public ResponseEntity<Long> edit(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id,
-                                     @RequestBody @Valid final ProjectDto ProjectDto) throws AccessDeniedException {
-        return projectService.edit(memberDto, id, ProjectDto);
+    public ResponseEntity<Long> edit(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
+                                     @RequestBody @Valid final ProjectDto ProjectDto, BindingResult bindingResult) throws Exception {
+        return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
 
     //delete project
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteById(@JwtMemberInfo MemberDto memberDto, @PathVariable final Long id) throws AccessDeniedException {
-        return projectService.deleteById(memberDto, id);
+    public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,
+                                           BindingResult bindingResult) throws Exception {
+        return ResponseEntity.ok(projectService.deleteById(id, memberDto));
     }
 
     @Data
