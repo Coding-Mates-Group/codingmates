@@ -109,13 +109,13 @@ class ProjectServiceTest {
     @Test
     void edit() {
         //given
-//        MemberDto memberDto = MemberDto.builder()
-//                .memberId(3L)
-//                .username("brian")
-//                .memberStatus("BASIC")
-//                .gitRepository("https://github.com/2")
-//                .
-//                .build()
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(3L)
+                .username("brian")
+                .memberStatus("BASIC")
+                .gitRepository("https://github.com/2")
+                .password("testing")
+                .build();
         assertThat(projectRepository.findByTitle("testing ").isEmpty());
 
     }
@@ -131,6 +131,15 @@ class ProjectServiceTest {
 
     @Test
     void checkEditPermission(){
+        MemberDto memberDto = MemberDto.builder()
+                .memberId(3L)
+                .username("brian")
+                .memberStatus("BASIC")
+                .gitRepository("https://github.com/2")
+                .password("testing")
+                .build();
+        ProjectDto projectDto = projectService.listAll().get(0);
+        
 
     }
 
