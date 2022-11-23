@@ -53,6 +53,12 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.listAll());
     }
 
+    //paging
+    @GetMapping
+    public ResponseEntity<List<Project>> paging(){
+        return ResponseEntity.ok(projectService.paging());
+    }
+
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")

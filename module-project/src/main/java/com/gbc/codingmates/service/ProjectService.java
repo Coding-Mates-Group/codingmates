@@ -67,6 +67,11 @@ public class ProjectService {
         return id;
     }
 
+    //returns page of 21 projects 
+    public List<Project> paging(){
+        return customProjectRepository.paging();
+    }
+
     private Project findProjectById(Long id, IllegalArgumentException no_such_project) {
         Project project = projectRepository.findById(id).orElseThrow(() -> no_such_project);
         return project;

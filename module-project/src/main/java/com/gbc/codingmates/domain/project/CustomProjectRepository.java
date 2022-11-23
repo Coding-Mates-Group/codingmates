@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface CustomProjectRepository {
 //    List<Project> listAllWithMember();
+
+    List<Project> paging();
 }

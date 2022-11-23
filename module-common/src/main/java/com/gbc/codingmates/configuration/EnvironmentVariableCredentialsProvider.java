@@ -5,10 +5,10 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.util.StringUtils;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class EnvironmentVariableCredentialsProvider implements AWSCredentialsProvider {
+
+
+//public class EnvironmentVariableCredentialsProvider implements AWSCredentialsProvider {
 
 //    @Override
 //    public AWSCredentials getCredentials() {
@@ -37,4 +37,4 @@ public class EnvironmentVariableCredentialsProvider implements AWSCredentialsPro
 //    public void refresh() {
 //
 //    }
-}
+//}

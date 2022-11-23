@@ -12,8 +12,8 @@ cloud:
       accessKey: xx
       secretKey: xx
     s3:
-      bucket: xx
-      dir: xx
+      bucket: codingmates
+      dir: /hola
     region:
       static: us-west-1
     stack:

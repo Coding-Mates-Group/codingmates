@@ -18,4 +18,12 @@ public class CustomProjectRepositoryImpl implements CustomProjectRepository{
                         " join fetch p.member_id m", ProjectDto.class)
                 .getResultList();
     }
+
+    @Override
+    public List<Project> paging() {
+        String jpql = "select p from Project p order by p.id desc";
+        return em.createQuery(jpql, Project.class)
+                .setMaxResults(21)
+                .getResultList();
+    }
 }
