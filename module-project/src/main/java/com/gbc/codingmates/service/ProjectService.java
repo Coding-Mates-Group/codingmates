@@ -8,12 +8,11 @@ import com.gbc.codingmates.dto.ProjectDto;
 import com.gbc.codingmates.exception.CustomException;
 import com.gbc.codingmates.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.nio.file.AccessDeniedException;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,31 +36,23 @@ public class ProjectService {
 //        return customProjectRepository.listAllWithMember();
         return projectRepository.findAll()
                 .stream()
-                .map(project -> Project.from(project))
+                .map(Project::from)
                 .collect(Collectors.toList());
     }
 
-
-//    public List<ProjectDto> listAll(){
-//        List<Project> projectList = projectRepository.findAll();
-//        return projectList.stream()
-//                .map(project -> Project.from(project))
-//                .collect(Collectors.toList());
-//    }
-
     //update/edit project's title and content
     @Transactional
-    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws Exception {
-        Project project = findProjectById(id, new IllegalArgumentException());
+    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws CustomException {
+        Project project = findProjectById(id);
         checkEditPermission(project, memberDto);
-        project.update(ProjectDto.getTitle(), ProjectDto.getContent());
+        projectRepository.save(project);
         return id;
     }
 
     //delete project
     @Transactional
-    public Long deleteById(final Long id, final MemberDto memberDto) throws Exception {
-        Project project = findProjectById(id, new IllegalArgumentException());
+    public Long deleteById(final Long id, final MemberDto memberDto) throws CustomException {
+        Project project = findProjectById(id);
         checkEditPermission(project, memberDto);
         projectRepository.delete(project);
         return id;
@@ -72,8 +63,14 @@ public class ProjectService {
         return customProjectRepository.paging();
     }
 
-    private Project findProjectById(Long id, IllegalArgumentException no_such_project) {
-        Project project = projectRepository.findById(id).orElseThrow(() -> no_such_project);
+    //find project by project_id
+    private Project findProjectById(Long id) {
+        Project project;
+        try {
+            project = projectRepository.findById(id).get();
+        } catch (CustomException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
         return project;
     }
 
@@ -85,7 +82,7 @@ public class ProjectService {
         }
     }
 
-    //check existing, duplicate project via title
+    //check existing, duplicate project via title in case of abusers who spam projects
     private void validateDuplicateProject(ProjectDto ProjectDto){
         List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
         if(!findProjects.isEmpty()){

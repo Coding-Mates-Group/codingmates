@@ -19,7 +19,6 @@ public enum ErrorCode {
     //400 BAD REQUEST
     INVALID_PARAMETER(BAD_REQUEST, "check parameter value"),
 
-
     //401 UNAUTHORISED
     UNAUTHORISED(UNAUTHORIZED,"please login for authentication"),
 

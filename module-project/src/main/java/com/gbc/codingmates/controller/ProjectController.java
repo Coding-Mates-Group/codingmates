@@ -29,7 +29,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     //create project
-    @ApiOperation(value = "create Project post")
+    @ApiOperation(value = "create Project post", notes = "save project post with BindingResult")
     @PostMapping("")
     public ResponseEntity save(@RequestBody @Valid final ProjectDto projectDto,
                                      BindingResult bindingResult) {
@@ -48,6 +48,7 @@ public class ProjectController {
     }
 
     //list all projects
+    @ApiOperation(value = "list all projects", notes = "list all projects")
     @GetMapping("")
     public ResponseEntity<List<ProjectDto>> listAll(){
         return ResponseEntity.ok(projectService.listAll());

@@ -4,6 +4,8 @@ import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.ProjectDto;
 import com.gbc.codingmates.dto.member.MemberDto;
+import com.gbc.codingmates.exception.CustomException;
+import com.gbc.codingmates.exception.ErrorCode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -106,6 +108,7 @@ class ProjectServiceTest {
         assertThat(projectDto.getContent().equals("testing"));
     }
 
+//    @Test(ErrorCode.PROJECT_EDIT_PERMISSION_FORBIDDEN)
     @Test
     void edit() {
         //given
@@ -116,7 +119,17 @@ class ProjectServiceTest {
                 .gitRepository("https://github.com/2")
                 .password("testing")
                 .build();
-        assertThat(projectRepository.findByTitle("testing ").isEmpty());
+
+        ProjectDto projectDto = projectService.listAll()
+                .stream()
+                .findFirst()
+                .get();
+
+        //when
+        projectService.edit(projectDto.getId(), memberDto, projectDto);
+
+        //then
+        //exception of project edit permission forbidden should be caught
 
     }
 

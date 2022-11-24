@@ -45,14 +45,11 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
-    private LocalDateTime modifyToot;
-
     private String recruitmentStatus;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     Set<Bookmark> bookmarks = new HashSet<>();
 
-    @Email(message = "Please enter a valid email")
     private String email;
 
     @Column(nullable = true)
