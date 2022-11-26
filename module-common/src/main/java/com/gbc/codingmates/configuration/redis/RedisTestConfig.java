@@ -1,4 +1,4 @@
-package com.gbc.codingmates;
+package com.gbc.codingmates.configuration.redis;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,10 +13,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import redis.embedded.RedisServer;
 
+
 @Configuration
 @EnableRedisRepositories // Redis Repository 활성화
 @EnableCaching
-@Profile({"test"})
+@Profile({"test", "local"})
 public class RedisTestConfig {
 
     @Value("${spring.redis.host}")
