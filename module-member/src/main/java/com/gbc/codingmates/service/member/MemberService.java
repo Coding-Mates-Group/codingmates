@@ -30,7 +30,7 @@ public class MemberService {
 
     @Transactional
     public ResponseEntity join(MemberJoinDto memberJoinDto) {
-        final OAuthToken oauthToken = oAuthTokenRepository.findByIdWithLock(
+        final OAuthToken oauthToken = oAuthTokenRepository.findById(
                 memberJoinDto.getToken())
             .orElseThrow(() -> new IllegalArgumentException("regeist with invalid token"));
 

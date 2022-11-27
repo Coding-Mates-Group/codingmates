@@ -13,6 +13,7 @@ import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
+import com.gbc.codingmates.domain.member.RedisJwtTokenRepository;
 import com.gbc.codingmates.dto.oAuth.GoogleAuthInfoDTO;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.util.Optional;
@@ -44,10 +45,12 @@ class AuthServiceTest {
     @Mock
     private GoogleAuthInfoDTO googleAuthInfoDTO;
 
+    @Mock
+    private RedisJwtTokenRepository redisJwtTokenRepository;
     @BeforeEach
     public void init() {
         authService = new AuthService(oAuthTokenRepository, googleOauthRestTemplate,
-            githubOauthRestTemplate, facebookOauthRestTemplate, oAuthRepository, tokenProvider);
+            githubOauthRestTemplate, facebookOauthRestTemplate, oAuthRepository, tokenProvider, redisJwtTokenRepository);
         authService.init();
     }
 

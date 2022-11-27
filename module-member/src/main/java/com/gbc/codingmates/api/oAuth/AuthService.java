@@ -1,11 +1,14 @@
 package com.gbc.codingmates.api.oAuth;
 
+import com.gbc.codingmates.domain.member.RedisJwtToken;
+import com.gbc.codingmates.domain.member.RedisJwtTokenRepository;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
+import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
 import com.gbc.codingmates.dto.response.AuthTokenResponseDTO;
 import com.gbc.codingmates.jwt.TokenProvider;
@@ -36,6 +39,7 @@ public class AuthService {
     private final FacebookOauthRestTemplate facebookOauthRestTemplate;
     private final OAuthRepository oAuthRepository;
     private final TokenProvider tokenProvider;
+    private final RedisJwtTokenRepository redisJwtTokenRepository;
     private Map<OAuthType, OAuthRestTemplate> oauthTemplates;
 
     @PostConstruct
@@ -61,10 +65,14 @@ public class AuthService {
 
         Optional<OAuth> oAuth = oAuthRepository.findByAuthIdAndProvider(
             authInfoDTO.getAuthUserId(), oAuthType);
+
         if (oAuth.isPresent()) {
-            return ResponseEntity.ok(tokenProvider.getTokenByUserInfo(
-                Member.getMemberDto(oAuth.get().getMember()))
-            );
+            MemberDto memberDto = Member.getMemberDto(oAuth.get().getMember());
+
+            String token = tokenProvider.getTokenByUserInfo(memberDto);
+            redisJwtTokenRepository.save(new RedisJwtToken(token, memberDto, 1000L));
+
+            return ResponseEntity.ok(token);
         } else {
             return getMemberJoinPath(authInfoDTO, oAuthType);
         }

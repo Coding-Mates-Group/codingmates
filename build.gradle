@@ -40,6 +40,7 @@ allprojects {
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.security:spring-security-test'
 
+		compileOnly 'org.projectlombok:lombok:1.18.16'
 
 		// aws s3
 //		implementation 'com.amazonaws:aws-java-sdk-s3:1.12.328'
@@ -68,6 +69,16 @@ allprojects {
 
 		//postgrel
 		implementation group: 'org.postgresql', name: 'postgresql' // 추가
+
+		//redis
+		implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+		implementation('it.ozimov:embedded-redis:0.7.2') // mem redis
+
+		//인수테스트
+		testImplementation 'io.rest-assured:rest-assured:3.3.0'
+		testImplementation 'com.google.guava:guava:11.0.2'
+		implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+		runtimeOnly 'com.h2database:h2'
 
 	}
 
