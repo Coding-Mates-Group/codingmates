@@ -1,6 +1,11 @@
 spring:
   member-profile:
     path: "/imagetest/profiles"
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
   servlet:
     multipart:
       max-request-size: 10MB
@@ -12,8 +17,8 @@ cloud:
       accessKey: xx
       secretKey: xx
     s3:
-      bucket: codingmates
-      dir: /hola
+      bucket: xx
+      dir: xx
     region:
       static: us-west-1
     stack:
