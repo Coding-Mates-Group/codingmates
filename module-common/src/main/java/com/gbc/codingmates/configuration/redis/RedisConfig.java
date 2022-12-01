@@ -26,7 +26,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories // Redis Repository 활성화
 @EnableCaching
 @RequiredArgsConstructor
-@Profile({"dev"})
+@Profile({"dev","local"})
 public class RedisConfig {
     @Value("${spring.redis.host}")
     private String host;
