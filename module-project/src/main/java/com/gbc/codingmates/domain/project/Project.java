@@ -89,13 +89,8 @@ public class Project extends BaseTimeEntity {
     }
 
     @Builder
-<<<<<<< HEAD
-    public Project(Long id, String title, String content, Blob contentBig, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   String recruitmentStatus, Long member_id){
-=======
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
                    String recruitmentStatus, String email, String url) {
->>>>>>> 4fb9b388927900e0a663237b1d2c38f6a40304b2
         this.id = id;
         this.member_id = member_id;
         this.title = title;
