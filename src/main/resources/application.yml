@@ -77,11 +77,12 @@ spring:
     activate:
       on-profile: "dev"
 
-  datasource:
-    url: jdbc:postgresql://codingmatesdb.c8pa7vtqsrpa.us-west-1.rds.amazonaws.com:5432/coding_mates_db
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: disneyland77
+#the aws rds details i have taken pic
+#  datasource:
+#    url: xx
+#    driver-class-name: org.postgresql.Driver
+#    username: postgres
+#    password: disneyland77
 
   security:
     oauth2:

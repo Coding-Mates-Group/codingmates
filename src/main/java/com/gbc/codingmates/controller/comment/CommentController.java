@@ -1,6 +1,6 @@
 package com.gbc.codingmates.controller.comment;
 
-import com.gbc.codingmates.dto.MemberDto;
+//import com.gbc.codingmates.dto.MemberDto;
 import com.gbc.codingmates.dto.comment.CommentRequestDto;
 import com.gbc.codingmates.dto.comment.CommentResponseDto;
 import com.gbc.codingmates.service.comment.CommentService;

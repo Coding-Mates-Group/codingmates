@@ -1,0 +1,48 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 626914439027452
+            client-secret: ad25fd1b3eb2b01d3a5c7a92610b5697
+            auth-endpoint: https://www.facebook.com/dialog/oauth
+            token-endpoint: https://graph.facebook.com/oauth/access_token
+            redirect-url: https://127.0.0.1/login/oauth2/code/facebook
+            fetching_data_endpoint: https://graph.facebook.com/v15.0/debug_token
+
+          google:
+            client-id: 822931905259-5cu7f4rrlrc02st634a33gjku1sovj47.apps.googleusercontent.com
+            client-secret: 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
+            auth-endpoint: https://accounts.google.com/o/oauth2/auth
+            redirect-url: http://localhost:8080/login/oauth2/code/google
+            token-endpoint: https://www.googleapis.com/oauth2/v4/token
+            fetching_data_endpoint: https://www.googleapis.com/oauth2/v2/userinfo
+          github:
+            client-id: b07e5cb0ab0e5a2eb7ab
+            client-secret: 39564cb9ebb23b5d5c4415096efbfffd8c97cebc
+            auth-endpoint: https://github.com/login/oauth/authorize
+            token-endpoint: https://github.com/login/oauth/access_token
+            fetching_data_endpoint: https://api.github.com/user
+    jwt:
+      token:
+        secret-key: secretKeytestauthorizationjwtmanagetokenjwtmanagetoken
+        expire-length: 1800000
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+
+#cloud:
+#  aws:
+#    s3:
+#      bucket: xx
+#      dir: /whatever
+#    credentials:
+#      accessKey: xx
+#      secretKey: xx
+#    region:
+#      static: us-west-1
+#      auto: false
+#    stack:
+#      auto: false
