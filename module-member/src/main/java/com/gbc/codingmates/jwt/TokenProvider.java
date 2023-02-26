@@ -105,7 +105,7 @@ public class TokenProvider implements InitializingBean {
             .build()
             .parseClaimsJws(token)
             .getBody();
-        return (Long) claims.get(MEMBER_ID);
+        return Integer.toUnsignedLong((Integer)claims.get(MEMBER_ID));
     }
 
     public boolean validateToken(String token) {

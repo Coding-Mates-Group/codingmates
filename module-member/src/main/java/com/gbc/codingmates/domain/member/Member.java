@@ -5,10 +5,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.domain.BaseTimeEntity;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gbc.codingmates.utils.FileHandler;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -60,12 +60,14 @@ public class Member extends BaseTimeEntity {
         return Member.builder()
             .username(memberJoinDto.getUserAlias())
             .memberStatus(MemberStatus.BASIC)
+            .email(memberJoinDto.getEmail())
             .memberProfilePath(FileHandler.getRandomProfilePath())
             .build();
     }
 
     public static MemberDto getMemberDto(Member member) {
         return MemberDto.builder()
+            .memberId(member.getId())
             .username(member.getUsername())
             .memberStatus(member.getMemberStatus().name())
             .password(member.getPassword())

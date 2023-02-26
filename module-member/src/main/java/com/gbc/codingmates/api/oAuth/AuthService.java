@@ -1,12 +1,16 @@
 package com.gbc.codingmates.api.oAuth;
 
+import com.gbc.codingmates.domain.member.RedisJwtToken;
+import com.gbc.codingmates.domain.member.RedisJwtTokenRepository;
 import com.gbc.codingmates.domain.member.Member;
 import com.gbc.codingmates.domain.member.OAuth;
 import com.gbc.codingmates.domain.member.OAuthRepository;
 import com.gbc.codingmates.domain.member.OAuthToken;
 import com.gbc.codingmates.domain.member.OAuthTokenRepository;
 import com.gbc.codingmates.domain.member.OAuthType;
+import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.oAuth.AuthInfoDTO;
+import com.gbc.codingmates.dto.response.AuthTokenResponseDTO;
 import com.gbc.codingmates.jwt.TokenProvider;
 import java.net.URI;
 import java.util.HashMap;
@@ -35,6 +39,7 @@ public class AuthService {
     private final FacebookOauthRestTemplate facebookOauthRestTemplate;
     private final OAuthRepository oAuthRepository;
     private final TokenProvider tokenProvider;
+    private final RedisJwtTokenRepository redisJwtTokenRepository;
     private Map<OAuthType, OAuthRestTemplate> oauthTemplates;
 
     @PostConstruct
@@ -60,22 +65,27 @@ public class AuthService {
 
         Optional<OAuth> oAuth = oAuthRepository.findByAuthIdAndProvider(
             authInfoDTO.getAuthUserId(), oAuthType);
+
         if (oAuth.isPresent()) {
-            return ResponseEntity.ok(tokenProvider.getTokenByUserInfo(
-                Member.getMemberDto(oAuth.get().getMember()))
-            );
+            MemberDto memberDto = Member.getMemberDto(oAuth.get().getMember());
+
+            String token = tokenProvider.getTokenByUserInfo(memberDto);
+            redisJwtTokenRepository.save(new RedisJwtToken(token, memberDto, 1000L));
+
+            return ResponseEntity.ok(token);
         } else {
-            return getMemberJoinPath(authInfoDTO.getAuthUserId(), oAuthType);
+            return getMemberJoinPath(authInfoDTO, oAuthType);
         }
     }
 
 
-    private ResponseEntity getMemberJoinPath(String authId, OAuthType oAuthType) {
+    private ResponseEntity getMemberJoinPath(AuthInfoDTO authInfoDTO, OAuthType oAuthType) {
         HttpHeaders headers = new HttpHeaders();
 
         OAuthToken oAuthToken = oAuthTokenRepository.save(OAuthToken.builder()
-            .authUserId(authId)
+            .authUserId(authInfoDTO.getAuthUserId())
             .oAuthType(oAuthType)
+            .email(authInfoDTO.getEmail())
             .build());
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
@@ -95,5 +105,12 @@ public class AuthService {
         return oAuthRestTemplate;
     }
 
+    public AuthTokenResponseDTO getAuthTokenDetail(String token){
+        OAuthToken oAuthToken = oAuthTokenRepository.findById(token)
+            .orElseThrow(
+                () -> new IllegalArgumentException("invalid auth token")
+            );
+        return AuthTokenResponseDTO.from(oAuthToken);
+    }
 
 }

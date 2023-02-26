@@ -10,7 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.gbc.codingmates.domain.recruitment.Recruitment;
+import com.gbc.codingmates.dto.CandidateDto;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +38,30 @@ public class Candidate extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String result;
+
+    public static Candidate toEntity(CandidateDto candidateDto){
+        return Candidate.builder()
+                .id(candidateDto.getId())
+                .member_id(candidateDto.getMember_id())
+                .project_can(candidateDto.getProject_can())
+                .result(candidateDto.getResult())
+                .build();
+    }
+
+    public static CandidateDto from(Candidate candidate){
+        return CandidateDto.builder()
+                .id(candidate.getId())
+                .member_id(candidate.getMember_id())
+                .project_can(candidate.getProject_can())
+                .result(candidate.getResult())
+                .build();
+    }
+
+    @Builder
+    public Candidate(Long id, Long member_id, Project project_can, String result){
+        this.id = id;
+        this.member_id = member_id;
+        this.project_can = project_can;
+        this.result = result;
+    }
 }

@@ -15,7 +15,6 @@ import com.gbc.codingmates.domain.member.OAuthType;
 import com.gbc.codingmates.dto.MemberAliasCheck;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
 import com.gbc.codingmates.jwt.TokenProvider;
-import com.gbc.codingmates.service.member.MemberService;
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,10 +50,10 @@ class MemberServiceTest {
     @Test
     public void memberRegister() {
         //given
-        MemberJoinDto memberJoinDto = new MemberJoinDto("userAlias", "token",
+        MemberJoinDto memberJoinDto = new MemberJoinDto("thd@naver.com", "userAlias", "token",
             Arrays.asList(1L, 2L));
 
-        when(oAuthTokenRepository.findByIdWithLock(memberJoinDto.getToken())).thenReturn(
+        when(oAuthTokenRepository.findById(memberJoinDto.getToken())).thenReturn(
             Optional.of(OAuthToken.builder()
                 .oAuthType(OAuthType.GOOGLE)
                 .authUserId("authUserId")

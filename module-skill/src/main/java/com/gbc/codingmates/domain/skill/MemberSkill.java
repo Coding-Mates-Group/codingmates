@@ -25,7 +25,6 @@ public class MemberSkill {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-
     @JoinColumn(name = "MEMBER_ID", foreignKey = @ForeignKey(name = "FK_MEMBERSKILL_MEMBER"))
     private Long member_id;
 

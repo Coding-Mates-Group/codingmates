@@ -17,6 +17,10 @@ import org.hibernate.validator.constraints.Length;
 @Schema(description = "DTO for member register")
 public class MemberJoinDto {
 
+    @Pattern(regexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "invalid user email pattern")
+    @Schema(description = "member email", required = true, pattern = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+    private String email;
+
     @NotEmpty(message = "user alias must not empty")
     @Length(min = 4, max = 20, message = "user alias length must be 4 ~ 20 words")
     @Pattern(regexp = "^[a-z0-9]*", message = "user alias can be made by numbers and lower spelling")

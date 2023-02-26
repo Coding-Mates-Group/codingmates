@@ -41,6 +41,11 @@ public class FacebookAuthInfoDTO extends AuthInfoDTO {
         return accessToken;
     }
 
+    @Override
+    public String getEmail() {
+        return null;
+    }
+
     public void saveAccessToken(String accessToken){
         this.accessToken = accessToken;
     }

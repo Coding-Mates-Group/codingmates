@@ -17,10 +17,9 @@ cloud:
       accessKey: xx
       secretKey: xx
     s3:
-      bucket: codingtomato
-      dir: /hola
+      bucket: xx
+      dir: xx
     region:
       static: us-west-1
     stack:
       auto: false
-

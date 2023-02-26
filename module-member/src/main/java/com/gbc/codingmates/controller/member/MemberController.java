@@ -3,8 +3,10 @@ package com.gbc.codingmates.controller.member;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
+import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.dto.MemberAliasCheck;
 import com.gbc.codingmates.dto.form.MemberJoinDto;
+import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.service.member.MemberService;
 import com.gbc.codingmates.service.member.ProfileService;
 import io.swagger.annotations.Api;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,30 +40,6 @@ public class MemberController {
 
 
     @ApiOperation(value = "register member", notes = "register member")
-    @ApiImplicitParams(
-        {@ApiImplicitParam(
-            name = "userAlias",
-            value = "user alias",
-            required = true,
-            dataType = "string",
-            defaultValue = "none"
-        ),
-        @ApiImplicitParam(
-            name = "token",
-            value = "token provided by MEMBER_JOIN_URI \nex)/members?token={}",
-            required = true,
-            dataType = "string",
-            defaultValue = "none"
-        ),
-        @ApiImplicitParam(
-            name = "skillIds",
-            value = "member's interest skills ID",
-            required = false,
-            dataType = "List<Long>",
-            defaultValue = "none"
-        )
-        }
-    )
     @PostMapping(value = "", consumes = {APPLICATION_JSON_VALUE})
     public ResponseEntity register(@RequestBody @Validated MemberJoinDto request,
         BindingResult bindingResult) {
@@ -74,7 +53,7 @@ public class MemberController {
     @ApiImplicitParams(
         {
             @ApiImplicitParam(
-                name = "memberId",
+                name = "id",
                 value = "target Member Id",
                 required = true,
                 dataType = "Long",
@@ -90,9 +69,9 @@ public class MemberController {
         }
     )
     @GetMapping("{id}")
-    public ResponseEntity findMemberById(@PathVariable("id") Long memberID,
+    public ResponseEntity findMemberById(@PathVariable("id") Long memberId,
         @RequestParam(defaultValue = "profile") List<String> scope) {
-        return ResponseEntity.ok().build();
+        return memberService.getMemberInfo(memberId);
     }
 
 
@@ -110,8 +89,9 @@ public class MemberController {
     )
     @PostMapping(value = "{id}/profiles", consumes = {MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity saveProfileImage(@PathVariable Long id,
-        @RequestPart MultipartFile profile) {
-        return profileService.saveProfile(profile, id, id);
+        @RequestPart MultipartFile profile,
+        @ApiIgnore @JwtMemberInfo MemberDto memberDto) {
+        return profileService.saveProfile(profile, id, memberDto.getMemberId());
     }
 
     @PostMapping(value = "/alias/check")

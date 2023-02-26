@@ -30,7 +30,7 @@ public class MemberService {
 
     @Transactional
     public ResponseEntity join(MemberJoinDto memberJoinDto) {
-        final OAuthToken oauthToken = oAuthTokenRepository.findByIdWithLock(
+        final OAuthToken oauthToken = oAuthTokenRepository.findById(
                 memberJoinDto.getToken())
             .orElseThrow(() -> new IllegalArgumentException("regeist with invalid token"));
 
@@ -58,5 +58,13 @@ public class MemberService {
             return ResponseEntity.ok("duplicated");
         }
         return ResponseEntity.ok("available");
+    }
+
+    public ResponseEntity getMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(
+                () -> new IllegalArgumentException(String.format("member not exist %s", memberId))
+            );
+        return ResponseEntity.ok(Member.getMemberDto(member));
     }
 }
