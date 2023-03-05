@@ -4,7 +4,6 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import com.gbc.codingmates.domain.BaseTimeEntity;
-import com.gbc.codingmates.domain.project.Project;
 
 
 import javax.persistence.*;

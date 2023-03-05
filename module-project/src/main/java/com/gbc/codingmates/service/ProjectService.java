@@ -39,6 +39,11 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
+    //picking one from list of projects in home page
+//    public ProjectDto listOne(){
+//
+//    }
+
 
 //    public List<ProjectDto> listAll(){
 //        List<Project> projectList = projectRepository.findAll();

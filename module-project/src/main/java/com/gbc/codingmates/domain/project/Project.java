@@ -49,6 +49,8 @@ public class Project extends BaseTimeEntity {
 
     private String recruitmentStatus;
 
+    private String result;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     Set<Bookmark> bookmarks = new HashSet<>();
 
