@@ -68,6 +68,4 @@ public class Recruitment extends BaseTimeEntity {
         this.recruitmentType = recruitmentType;
         this.recruitmentStatus = recruitmentStatus;
     }
-
-
 }
