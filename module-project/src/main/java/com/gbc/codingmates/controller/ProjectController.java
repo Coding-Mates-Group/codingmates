@@ -48,6 +48,7 @@ public class ProjectController {
     }
 
     //list all projects
+    @ApiOperation(value = "list of all projects")
     @GetMapping("")
     public ResponseEntity<List<ProjectDto>> listAll(){
         return ResponseEntity.ok(projectService.listAll());
