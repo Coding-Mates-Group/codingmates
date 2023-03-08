@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
+    //converts dto to entity and vice versa
     @Bean
     public ModelMapper modelMapper(){
 
