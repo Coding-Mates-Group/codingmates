@@ -43,4 +43,7 @@ public class ProjectDto {
     private String email;
 
     private String url;
+
+    @Schema(description = "skill stack for your project")
+    private String[] skillStack;
 }

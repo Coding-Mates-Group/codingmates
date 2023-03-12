@@ -49,6 +49,8 @@ public class Project extends BaseTimeEntity {
 
     private String recruitmentStatus;
 
+    private String[] skillStack;
+
     private String result;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
@@ -70,6 +72,7 @@ public class Project extends BaseTimeEntity {
                 .startDate(projectDto.getStartDate())
                 .endDate(projectDto.getEndDate())
                 .recruitmentStatus(projectDto.getRecruitmentStatus())
+                .skillStack(projectDto.getSkillStack())
                 .email(projectDto.getEmail())
                 .url(projectDto.getUrl())
                 .build();
@@ -85,6 +88,7 @@ public class Project extends BaseTimeEntity {
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
                 .recruitmentStatus(project.getRecruitmentStatus())
+                .skillStack(project.getSkillStack())
                 .email(project.getEmail())
                 .url(project.getUrl())
                 .build();
@@ -92,7 +96,7 @@ public class Project extends BaseTimeEntity {
 
     @Builder
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   String recruitmentStatus, String email, String url) {
+                   String recruitmentStatus, String email, String url, String[] skillStack) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;
@@ -103,6 +107,7 @@ public class Project extends BaseTimeEntity {
         this.recruitmentStatus = recruitmentStatus;
         this.email = email;
         this.url = url;
+        this.skillStack = skillStack;
     }
 
     public void update(String title, String content) {
