@@ -4,6 +4,7 @@ import com.gbc.codingmates.annotation.JwtMemberInfo;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.dto.member.MemberDto;
 import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.dto.project.ProjectResponseDto;
 import com.gbc.codingmates.service.ProjectService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.listAll());
     }
 
+    //output 1 project when u click on homepage
+    @ApiOperation(value = "output details of 1 project as response when click on homepage")
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjectResponseDto> listOne(){
+        return null;
+    }
+
     //edit/update project
 //    @PatchMapping("/{id}")
     @PutMapping("{id}")
@@ -61,6 +69,8 @@ public class ProjectController {
                                      @RequestBody @Valid final ProjectDto ProjectDto, BindingResult bindingResult) throws Exception {
         return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
+
+
 
     //delete project
     @DeleteMapping("/{id}")
