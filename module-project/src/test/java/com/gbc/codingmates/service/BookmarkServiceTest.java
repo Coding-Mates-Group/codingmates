@@ -2,8 +2,7 @@ package com.gbc.codingmates.service;
 
 import com.gbc.codingmates.dto.BookmarkDto;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.ProjectDto;
-import com.gbc.codingmates.service.BookmarkService;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,14 +4,13 @@ import com.gbc.codingmates.domain.project.CustomProjectRepositoryImpl;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.member.MemberDto;
-import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.nio.file.AccessDeniedException;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,10 +38,15 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    //picking one from list of projects in home page
-//    public ProjectDto listOne(){
+    //select one from list of projects in home page
+    public ProjectDto selectOne(Long id){
+        Optional<Project> optionalProject = projectRepository.findById(id);
+//        if(!optionalProject.isPresent()){
 //
-//    }
+//        }
+        Project project = optionalProject.get();
+        return Project.from(project);
+    }
 
 
 //    public List<ProjectDto> listAll(){

@@ -1,7 +1,7 @@
 package com.gbc.codingmates.domain.project;
 
-import com.gbc.codingmates.dto.ProjectDto;
-import com.gbc.codingmates.dto.project.ProjectResponseDto;
+import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.project.response.ProjectSelectOneResponseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class CustomProjectRepositoryImpl implements CustomProjectRepository{
     }
 
     @Override
-    public ProjectResponseDto listOne() {
+    public ProjectSelectOneResponseDto listOne() {
 //        query.selectFrom()
         return null;
     }

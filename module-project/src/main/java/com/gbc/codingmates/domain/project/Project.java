@@ -1,6 +1,5 @@
 package com.gbc.codingmates.domain.project;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 //import module-member.
@@ -8,12 +7,14 @@ import com.gbc.codingmates.domain.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 import com.gbc.codingmates.domain.bookmark.Bookmark;
-import com.gbc.codingmates.dto.ProjectDto;
+import com.gbc.codingmates.domain.recruitment.Recruitment;
+import com.gbc.codingmates.dto.project.ProjectDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,7 +55,10 @@ public class Project extends BaseTimeEntity {
     private String result;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    Set<Bookmark> bookmarks = new HashSet<>();
+    private Set<Bookmark> bookmarkSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "recruitment_id", cascade = CascadeType.ALL)
+    private List<Recruitment> recruitmentList;
 
     @Email(message = "Please enter a valid email")
     private String email;

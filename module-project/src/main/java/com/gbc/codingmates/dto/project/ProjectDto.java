@@ -1,6 +1,7 @@
-package com.gbc.codingmates.dto;
+package com.gbc.codingmates.dto.project;
 
 import com.gbc.codingmates.domain.project.Project;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +39,8 @@ public class ProjectDto {
     private LocalDateTime startDate, endDate;
 
     private String recruitmentStatus;
+
+    private List<RecruitmentDto> recruitmentDtoList;
 
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE)
