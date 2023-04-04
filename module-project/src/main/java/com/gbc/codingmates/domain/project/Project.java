@@ -1,5 +1,6 @@
 package com.gbc.codingmates.domain.project;
 
+import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 //import module-member.
@@ -22,14 +23,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@SequenceGenerator(
-        name = "PROJECT_SEQ_GENERATOR",
-        sequenceName = "PROJECT_SEQ",
-        initialValue = 1, allocationSize = 50)
 public class Project extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "project_id")
     private Long id;
 
@@ -46,15 +43,7 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
-    private LocalDateTime modifyToot;
-
-    private String recruitmentStatus;
-
-    private String[] skillStack;
-
-    private String result;
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project_id", cascade = CascadeType.ALL)
     private Set<Bookmark> bookmarkSet = new HashSet<>();
 
     @OneToMany(mappedBy = "recruitment_id", cascade = CascadeType.ALL)
@@ -75,8 +64,6 @@ public class Project extends BaseTimeEntity {
                 .views(projectDto.getViews())
                 .startDate(projectDto.getStartDate())
                 .endDate(projectDto.getEndDate())
-                .recruitmentStatus(projectDto.getRecruitmentStatus())
-                .skillStack(projectDto.getSkillStack())
                 .email(projectDto.getEmail())
                 .url(projectDto.getUrl())
                 .build();
@@ -91,8 +78,6 @@ public class Project extends BaseTimeEntity {
                 .views(project.getViews())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
-                .recruitmentStatus(project.getRecruitmentStatus())
-                .skillStack(project.getSkillStack())
                 .email(project.getEmail())
                 .url(project.getUrl())
                 .build();
@@ -100,7 +85,7 @@ public class Project extends BaseTimeEntity {
 
     @Builder
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   String recruitmentStatus, String email, String url, String[] skillStack) {
+                   List<Recruitment> recruitmentList, String email, String url) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;
@@ -108,10 +93,9 @@ public class Project extends BaseTimeEntity {
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.recruitmentStatus = recruitmentStatus;
+        this.recruitmentList = recruitmentList;
         this.email = email;
         this.url = url;
-        this.skillStack = skillStack;
     }
 
     public void update(String title, String content) {
