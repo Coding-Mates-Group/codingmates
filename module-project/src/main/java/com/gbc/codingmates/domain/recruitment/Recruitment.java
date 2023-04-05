@@ -69,11 +69,11 @@ public class Recruitment extends BaseTimeEntity {
         this.recruitmentStatus = recruitmentStatus;
     }
 
-    public void setRecruitment(Project project_recr){
-        if(this.project_recr!=null){
-            this.project_recr.getRecruitmentList().remove(this);
-        }
-        this.project_recr = project_recr;
-        project_recr.getRecruitmentList().add(this);
-    }
+//    public void setRecruitment(Project project_recr){
+//        if(this.project_recr!=null){
+//            this.project_recr.getRecruitmentList().remove(this);
+//        }
+//        this.project_recr = project_recr;
+//        project_recr.getRecruitmentList().add(this);
+//    }
 }

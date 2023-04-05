@@ -26,7 +26,7 @@ public class ProjectSelectOneResponseDto extends ProjectDto {
         this.createdDate = String.valueOf(project.getCreatedDate());
         this.modifiedDate = String.valueOf(project.getModifiedDate());
         this.member_id = project.getMember_id();
-        this.recruitmentDtoList = project.getRecruitmentList().stream().map(RecruitmentDto::new).collect(Collectors.toList());
+//        this.recruitmentDtoList = project.getRecruitmentList().stream().map(RecruitmentDto::new).collect(Collectors.toList());
 //        this.comments = project.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
     }
 }

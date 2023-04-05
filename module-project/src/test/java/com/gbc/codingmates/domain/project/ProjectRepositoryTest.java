@@ -2,9 +2,12 @@ package com.gbc.codingmates.domain.project;
 
 import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.domain.recruitment.RecruitmentRepository;
+import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.project.request.ProjectCreateRequestDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
@@ -13,8 +16,8 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-public class ProjectRepositoryTest {
+@DataJpaTest
+class ProjectRepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -22,7 +25,7 @@ public class ProjectRepositoryTest {
     private RecruitmentRepository recruitmentRepository;
 
     @Test
-    private void saveProject(){
+    public void saveProject(){
         //given
         Recruitment recruitment = Recruitment.builder()
                 .id(1L)
@@ -55,6 +58,7 @@ public class ProjectRepositoryTest {
                 .endDate(LocalDateTime.now())
                 .url("hola.com")
                 .build();
+        ProjectCreateRequestDto projectCreateRequestDto = new ProjectCreateRequestDto(project, recruitment);
 
         //when
         Project savedProject = projectRepository.save(project);
@@ -63,6 +67,12 @@ public class ProjectRepositoryTest {
         //then
         assertThat(savedProject.getTitle()).isEqualTo("test");
         assertThat(savedRecruitment.getProject_recr().getTitle()).isEqualTo("test");
+    }
+
+    @Test
+    public void saveProjectWithDto(){
+        //given
+        ProjectDto projectDto = new ProjectDto();
 
     }
 

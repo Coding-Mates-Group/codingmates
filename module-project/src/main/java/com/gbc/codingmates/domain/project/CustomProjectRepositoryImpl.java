@@ -14,12 +14,13 @@ import java.util.List;
 public class CustomProjectRepositoryImpl implements CustomProjectRepository{
 
     private final EntityManager em;
-    private final JPAQueryFactory query;
+//    private final JPAQueryFactory query;
 
     public List<ProjectDto> listAllWithMember() {
-        return em.createQuery("select p from Project p" +
-                        " join fetch p.member_id m", ProjectDto.class)
-                .getResultList();
+//        return em.createQuery("select p from Project p" +
+//                        " join fetch p.member_id m", ProjectDto.class)
+//                .getResultList();
+        return null;
     }
 
     @Override

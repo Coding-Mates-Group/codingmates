@@ -3,6 +3,7 @@ package com.gbc.codingmates.dto.project.request;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.dto.RecruitmentDto;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ProjectCreateRequestDto {
 
-    private Long id;
+//    private Long id;
     private Long member_id;
     private String title;
     private String content;
@@ -26,7 +27,7 @@ public class ProjectCreateRequestDto {
 
     private String recruitmentStatus;
 
-    //entity to dto
+    @Builder
     public ProjectCreateRequestDto(Project project, Recruitment recruitment){
         this.id= project.getId();
         this.member_id = project.getMember_id();
@@ -40,4 +41,11 @@ public class ProjectCreateRequestDto {
 //        this.recruitmentDtoList = project.getRecruitmentList().stream().map(RecruitmentDto::new).collect(Collectors.toList());
     }
 //    email, id, member_id, recruitmentStatus, views는 서버에서 처리하면 될 것 같은데 어떠신가요??
+
+    public Project toEntity(){
+        return Project.builder()
+                .title(title)
+                .content(content)
+                .build();
+    }
 }

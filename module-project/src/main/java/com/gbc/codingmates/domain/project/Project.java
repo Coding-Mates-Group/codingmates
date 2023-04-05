@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.dto.project.ProjectDto;
+import com.gbc.codingmates.dto.project.request.ProjectCreateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,6 +65,8 @@ public class Project extends BaseTimeEntity {
                 .views(projectDto.getViews())
                 .startDate(projectDto.getStartDate())
                 .endDate(projectDto.getEndDate())
+                //why cant put bookmark
+                .recruitmentList(projectDto.getRecruitmentDtoList())
                 .email(projectDto.getEmail())
                 .url(projectDto.getUrl())
                 .build();
@@ -78,6 +81,7 @@ public class Project extends BaseTimeEntity {
                 .views(project.getViews())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
+                .recruitmentDtoList(project.getRecruitmentList())
                 .email(project.getEmail())
                 .url(project.getUrl())
                 .build();
@@ -93,7 +97,7 @@ public class Project extends BaseTimeEntity {
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.recruitmentList = recruitmentList;
+//        this.recruitmentList = recruitmentList;
         this.email = email;
         this.url = url;
     }
