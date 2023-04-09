@@ -1,4 +1,4 @@
-package com.gbc.codingmates.dto.project.request;
+package com.gbc.codingmates.dto.project;
 
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.recruitment.Recruitment;
@@ -6,20 +6,22 @@ import com.gbc.codingmates.dto.RecruitmentDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class ProjectCreateRequestDto {
+@NoArgsConstructor
+public class ProjectCreateDto {
 
-//    private Long id;
+    //    private Long id;
     private Long member_id;
     private String title;
     private String content;
     private String createdDate;
     private String email;
-    private List<RecruitmentDto> recruitmentDtoList;
+    private List<Recruitment> recruitmentList;
 
     private String recruitmentType;
 
@@ -28,8 +30,7 @@ public class ProjectCreateRequestDto {
     private String recruitmentStatus;
 
     @Builder
-    public ProjectCreateRequestDto(Project project, Recruitment recruitment){
-        this.id= project.getId();
+    public ProjectCreateDto(Project project, Recruitment recruitment){
         this.member_id = project.getMember_id();
         this.title= project.getTitle();
         this.content= project.getContent();
@@ -38,14 +39,18 @@ public class ProjectCreateRequestDto {
         this.recruitmentType = recruitment.getRecruitmentType();
         this.recruitmentCount = recruitment.getRecruitmentCount();
         this.recruitmentStatus = recruitment.getRecruitmentStatus();
+//        this.recruitmentList = recruitment
 //        this.recruitmentDtoList = project.getRecruitmentList().stream().map(RecruitmentDto::new).collect(Collectors.toList());
     }
 //    email, id, member_id, recruitmentStatus, views는 서버에서 처리하면 될 것 같은데 어떠신가요??
 
     public Project toEntity(){
         return Project.builder()
+                .member_id(member_id)
                 .title(title)
                 .content(content)
+                .email(email)
+//                .recruitmentList()
                 .build();
     }
 }

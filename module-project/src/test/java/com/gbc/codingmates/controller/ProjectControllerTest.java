@@ -33,7 +33,7 @@ class ProjectControllerTest {
                 .views(30L)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
-                .recruitmentStatus("complete")
+//                .recruitmentStatus("complete")
                 .email("testing@gmail.com")
                 .url("https://discord/hola")
                 .build();

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class ProjectSelectOneResponseDto extends ProjectDto {
+public class ProjectSelectOneResponseDto  {
 
     private Long id;
     private String title;
