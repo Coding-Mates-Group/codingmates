@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gbc.codingmates.domain.BaseTimeEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,13 +46,12 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
-//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonIgnoreProperties({"project"})
-//    private Set<Bookmark> bookmarkSet = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "project_recr", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties({"project_recr"})
-//    private List<Recruitment> recruitmentList;
+    private List<Bookmark> bookmarkSet = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project_recr", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Recruitment> recruitmentList = new ArrayList<>();
 
     @Email(message = "Please enter a valid email")
     private String email;
@@ -69,7 +69,7 @@ public class Project extends BaseTimeEntity {
                 .startDate(projectDto.getStartDate())
                 .endDate(projectDto.getEndDate())
                 //why cant put bookmark
-                .recruitmentList(projectDto.getRecruitmentDtoList())
+//                .recruitmentList(projectDto.getRecruitmentDtoList())
                 .email(projectDto.getEmail())
                 .url(projectDto.getUrl())
                 .build();
@@ -92,7 +92,7 @@ public class Project extends BaseTimeEntity {
 
     @Builder
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   List<Recruitment> recruitmentList, Set<Bookmark> bookmarkSet, String email, String url) {
+                   String email, String url, Recruitment recruitment, Bookmark bookmark) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;
@@ -100,8 +100,6 @@ public class Project extends BaseTimeEntity {
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
-//        this.recruitmentList = recruitmentList;
-//        this.bookmarkSet = bookmarkSet;
         this.email = email;
         this.url = url;
     }
@@ -111,10 +109,13 @@ public class Project extends BaseTimeEntity {
         this.content = content;
     }
 
-//    public void setRecruitmentList(List<Recruitment> recruitmentList){
-//        if(this.recruitmentList!=null)
-//            this.recruitmentList.get
-//    }
+    public void setRecruitmentList(Recruitment recruitment){
+        this.recruitmentList.add(recruitment);
+    }
+
+    public void setBookmarkSet(Bookmark bookmark){
+        this.bookmarkSet.add(bookmark);
+    }
 
     public void updateView(Long views) {
         this.views = views;

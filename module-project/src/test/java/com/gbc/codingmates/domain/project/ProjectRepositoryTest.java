@@ -3,6 +3,7 @@ package com.gbc.codingmates.domain.project;
 import com.gbc.codingmates.domain.bookmark.Bookmark;
 import com.gbc.codingmates.domain.recruitment.Recruitment;
 import com.gbc.codingmates.domain.recruitment.RecruitmentRepository;
+import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,21 +74,33 @@ class ProjectRepositoryTest {
 //        project.setBookmarkSet(bookmarkSet);
 //        project.setRecruitmentList(recruitmentList);
         Project savedProject = projectRepository.save(project);
-        Recruitment savedRec = recruitmentRepository.save(rec);
+        savedProject.setRecruitmentList(rec);
+//        Recruitment savedRec = recruitmentRepository.save(rec);
 //        Recruitment savedRecruitment = recruitmentRepository.save(recruitment);
 
         //then
         assertThat(savedProject.getTitle()).isEqualTo("test");
-        assertThat(savedRec.getRecruitmentCount()).isEqualTo(3);
+//        assertThat(savedRec.getRecruitmentCount()).isEqualTo(3);
+//        assertThat(savedRec.getProject_recr().getMember_id()).isEqualTo(2L);
 //        assertThat(savedProject.getRecruitmentList().size()).isEqualTo(2);
-//        assertThat(savedProject.getRecruitmentList().get(0).getRecruitmentCount()).isEqualTo(3);
+        assertThat(savedProject.getRecruitmentList().get(0).getRecruitmentCount()).isEqualTo(3);
 //        assertThat(savedRecruitment.getProject_recr().getTitle()).isEqualTo("test");
     }
 
     @Test
     public void saveProjectWithDto(){
         //given
-//        ProjectDto projectDto = new ProjectDto();
+        ProjectCreateDto projectDto = Project.from(ProjectCreateDto
+                .builder()
+                .member_id(2L)
+                .title("test")
+                .content("testing")
+                .email("random@gmail.com")
+                .views(3L)
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .url("hola.com")
+                .build());
 
     }
 

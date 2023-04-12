@@ -30,15 +30,17 @@ public class ProjectCreateDto {
     private String recruitmentStatus;
 
     @Builder
-    public ProjectCreateDto(Project project, Recruitment recruitment){
+    public ProjectCreateDto(Project project){
         this.member_id = project.getMember_id();
         this.title= project.getTitle();
         this.content= project.getContent();
         this.createdDate = String.valueOf(project.getCreatedDate());
         this.email = project.getEmail();
-        this.recruitmentType = recruitment.getRecruitmentType();
-        this.recruitmentCount = recruitment.getRecruitmentCount();
-        this.recruitmentStatus = recruitment.getRecruitmentStatus();
+        this.recruitmentList = project.getRecruitmentList();
+//        this.recruitmentType = project.getRecruitmentList();
+//        this.recruitmentType = recruitment.getRecruitmentType();
+//        this.recruitmentCount = project.getRecruitmentList()
+//        this.recruitmentStatus = recruitment.getRecruitmentStatus();
 //        this.recruitmentList = recruitment
 //        this.recruitmentDtoList = project.getRecruitmentList().stream().map(RecruitmentDto::new).collect(Collectors.toList());
     }
@@ -53,4 +55,5 @@ public class ProjectCreateDto {
 //                .recruitmentList()
                 .build();
     }
+
 }
