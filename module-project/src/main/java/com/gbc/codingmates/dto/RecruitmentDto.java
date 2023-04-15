@@ -11,12 +11,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Schema(description = "DTO for project recruitment")
+@Schema(description = "DTO for posting project recruitment details")
 public class RecruitmentDto {
-
-    private Long id;
-
-    private Project project_recr;
 
     @NotEmpty
     private String recruitmentType;
@@ -26,6 +22,4 @@ public class RecruitmentDto {
 
     @NotEmpty
     private String recruitmentStatus;
-
-
 }

@@ -3,9 +3,13 @@ package com.gbc.codingmates.service;
 import com.gbc.codingmates.domain.project.CustomProjectRepositoryImpl;
 import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
+import com.gbc.codingmates.domain.recruitment.Recruitment;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import com.gbc.codingmates.dto.member.MemberDto;
+import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,18 +19,30 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final CustomProjectRepositoryImpl customProjectRepository;
 
 //    Create and save project
+//    @Transactional
+//    public Long saveProject(final ProjectDto projectDto, final List<RecruitmentDto> recruitmentDtoList){
+//        validateDuplicateProject(projectDto,recruitmentDtoList);
+//        Project project = Project.toEntity(projectDto);
+//        List<Recruitment> recruitmentList = Recruitment.toEntityList(recruitmentDtoList);
+//        recruitmentList.forEach(recruitment -> project.addRecruitment(recruitment));
+//        Project savedProject = projectRepository.save(project);
+//        return savedProject.getId();
+//    }
+
     @Transactional
-    public Long saveProject(final ProjectDto projectDto){
-        validateDuplicateProject(projectDto);
-        Project project = projectRepository.save(Project.toEntity(projectDto));
-        return project.getId();
+    public Long saveProject(final ProjectCreateDto projectCreateDto){
+//        validateDuplicateProject(projectDto,recruitmentDtoList);
+        Project project = Project.toEntity(projectCreateDto.getProjectDto());
+        List<Recruitment> recruitmentList = Recruitment.toEntityList(projectCreateDto.getRecruitmentDtoList());
+        recruitmentList.forEach(recruitment -> project.addRecruitment(recruitment));
+        Project savedProject = projectRepository.save(project);
+        return savedProject.getId();
     }
 
     //list all projects
@@ -88,10 +104,10 @@ public class ProjectService {
     }
 
     //check existing, duplicate project via title
-    private void validateDuplicateProject(ProjectDto ProjectDto){
+    private void validateDuplicateProject(ProjectDto ProjectDto, List<RecruitmentDto> recruitmentDtoList){
         List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
         if(!findProjects.isEmpty()){
-            throw new IllegalStateException("already an existing project");
+            throw new DuplicateKeyException("already an existing project");
         }
     }
 }

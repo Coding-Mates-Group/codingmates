@@ -1,6 +1,8 @@
 package com.gbc.codingmates.service;
 
 import com.gbc.codingmates.domain.project.ProjectRepository;
+import com.gbc.codingmates.dto.RecruitmentDto;
+import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -28,9 +32,6 @@ class ProjectServiceTest {
 
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     DataSource dataSource;
@@ -60,25 +61,38 @@ class ProjectServiceTest {
     @Test
     void saveProject() {
         //given
+        List<RecruitmentDto> recruitmentDtoList = Arrays.asList(
+                RecruitmentDto.builder()
+                        .recruitmentCount(3)
+                        .recruitmentType("backend")
+                        .recruitmentStatus("open")
+                        .build(),
+                RecruitmentDto.builder()
+                        .recruitmentCount(1)
+                        .recruitmentType("frontend")
+                        .recruitmentStatus("open")
+                        .build());
+
         ProjectDto projectDto = ProjectDto.builder()
-                .id(1L)
-                .title("hi")
+                .title("test")
                 .content("testing")
-                .views(30L)
+                .email("random@gmail.com")
+                .url("hola.com")
+                .recruitmentDtoList(recruitmentDtoList)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
-//                .recruitmentStatus("complete")
-                .email("testing@gmail.com")
-                .url("https://discord/hola")
                 .build();
 
+        ProjectCreateDto projectCreateDto = ProjectCreateDto.builder()
+                .projectDto(projectDto)
+                .recruitmentDtoList(recruitmentDtoList)
+                .build();
 //        when
-        projectService.saveProject(projectDto);
+//        Long project_id = projectService.saveProject(projectDto, recruitmentDtoList);
+        Long project_id = projectService.saveProject(projectCreateDto);
 
         //then
-        assertThat(projectDto.getTitle().equals("hi"));
-        assertThat(projectDto.getContent().equals("testing"));
-
+        assertThat(project_id).isEqualTo(1);
     }
 
     @Test
@@ -106,7 +120,7 @@ class ProjectServiceTest {
 //                .gitRepository("https://github.com/2")
 //                .
 //                .build()
-        assertThat(projectRepository.findByTitle("testing ").isEmpty());
+//        assertThat(projectRepository.findByTitle("testing ").isEmpty());
 
     }
 

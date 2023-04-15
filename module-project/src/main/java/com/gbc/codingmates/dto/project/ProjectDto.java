@@ -24,10 +24,6 @@ import java.util.Set;
 @Builder
 public class ProjectDto {
 
-    private Long id;
-
-    private Long member_id;
-
     @NotEmpty(message = "project title should not be empty!")
     @Length(min=5, max=30, message="project title should be 5 ~30 words long")
     @Pattern(regexp = "^[a-z0-9]*", message = "project tile should not contain any special characters")
@@ -38,13 +34,9 @@ public class ProjectDto {
     @Schema(description = "project content for posting", required = true)
     private String content;
 
-    private Long views;
-
+    @NotNull(message = "approximate start date and end date of your project plan should not be empty!")
+    @Schema(description = "approximate start date and end date of your project plan")
     private LocalDateTime startDate, endDate;
-
-    private Set<Bookmark> bookmarkDtoSet;
-
-    private List<Recruitment> recruitmentDtoList;
 
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE)
@@ -52,6 +44,5 @@ public class ProjectDto {
 
     private String url;
 
-    @Schema(description = "skill stack for your project")
-    private String[] skillStack;
+    private List<RecruitmentDto> recruitmentDtoList;
 }

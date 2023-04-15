@@ -1,47 +1,100 @@
 package com.gbc.codingmates.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gbc.codingmates.dto.RecruitmentDto;
+import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
-import org.junit.Before;
+import com.google.gson.Gson;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+@ExtendWith(MockitoExtension.class)
+//@AutoConfigureMockMvc
 class ProjectControllerTest {
 
+    @InjectMocks
+    private ProjectController projectController;
+
+    private ObjectMapper objectMapper;
     private MockMvc mockMvc;
+    private Gson gson;
 
-    @Autowired
-    ProjectController projectController;
 
-    @Before
-    public void setup(){
-        mockMvc = MockMvcBuilders.standaloneSetup(projectController).build();
+    @BeforeEach
+    public void init(){
+        gson = new Gson();
+        mockMvc = MockMvcBuilders.standaloneSetup(projectController)
+                .build();
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     @Test
-    void save() {
+    void saveSingleProject() throws Exception {
         //given
+        final String url = "/project";
+        List<RecruitmentDto> recruitmentDtoList = Arrays.asList(
+                RecruitmentDto.builder()
+                        .recruitmentCount(3)
+                        .recruitmentType("backend")
+                        .recruitmentStatus("open")
+                        .build(),
+                RecruitmentDto.builder()
+                        .recruitmentCount(1)
+                        .recruitmentType("frontend")
+                        .recruitmentStatus("open")
+                        .build());
+
         ProjectDto projectDto = ProjectDto.builder()
-                .id(1L)
-                .title("hi")
+                .title("testeat")
                 .content("testing")
-                .views(30L)
+                .email("random@gmail.com")
+                .url("hola.com")
+                .recruitmentDtoList(recruitmentDtoList)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
-//                .recruitmentStatus("complete")
-                .email("testing@gmail.com")
-                .url("https://discord/hola")
                 .build();
 
+//        List<ProjectDto> projectDtos = Arrays.asList(projectDto);
+        ProjectCreateDto projectCreateDto = ProjectCreateDto.builder()
+                .projectDto(projectDto)
+                .recruitmentDtoList(recruitmentDtoList)
+                .build();
+        String body = objectMapper.writeValueAsString(projectCreateDto);
+
         //when
+        final ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post(url)
+                        .content(body)
+                        .contentType(MediaType.APPLICATION_JSON));
 
         //then
-
+        resultActions.andExpect(status().isOk());
     }
 
     @Test

@@ -46,10 +46,6 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonIgnoreProperties({"project"})
-    private List<Bookmark> bookmarkSet = new ArrayList<>();
-
     @OneToMany(mappedBy = "project_recr", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recruitment> recruitmentList = new ArrayList<>();
 
@@ -59,40 +55,9 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = true)
     private String url;
 
-    public static Project toEntity(ProjectDto projectDto){
-        return Project.builder()
-                .id(projectDto.getId())
-                .member_id(projectDto.getMember_id())
-                .title(projectDto.getTitle())
-                .content(projectDto.getContent())
-                .views(projectDto.getViews())
-                .startDate(projectDto.getStartDate())
-                .endDate(projectDto.getEndDate())
-                //why cant put bookmark
-//                .recruitmentList(projectDto.getRecruitmentDtoList())
-                .email(projectDto.getEmail())
-                .url(projectDto.getUrl())
-                .build();
-    }
-
-    public static ProjectDto from(Project project){
-        return ProjectDto.builder()
-                .id(project.getId())
-                .member_id(project.getMember_id())
-                .title(project.getTitle())
-                .content(project.getContent())
-                .views(project.getViews())
-                .startDate(project.getStartDate())
-                .endDate(project.getEndDate())
-//                .recruitmentDtoList(project.getRecruitmentList())
-                .email(project.getEmail())
-                .url(project.getUrl())
-                .build();
-    }
-
     @Builder
-    public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate, LocalDateTime endDate,
-                   String email, String url, Recruitment recruitment, Bookmark bookmark) {
+    public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate,
+                   LocalDateTime endDate, List<Recruitment> recruitmentList, String email, String url) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;
@@ -100,8 +65,33 @@ public class Project extends BaseTimeEntity {
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.recruitmentList = recruitmentList;
         this.email = email;
         this.url = url;
+    }
+
+    public static Project toEntity(ProjectDto projectDto){
+        return Project.builder()
+                .title(projectDto.getTitle())
+                .content(projectDto.getContent())
+                .startDate(projectDto.getStartDate())
+                .endDate(projectDto.getEndDate())
+                .recruitmentList(Recruitment.toEntityList(projectDto.getRecruitmentDtoList()))
+                .email(projectDto.getEmail())
+                .url(projectDto.getUrl())
+                .build();
+    }
+
+    public static ProjectDto from(Project project){
+        return ProjectDto.builder()
+                .title(project.getTitle())
+                .content(project.getContent())
+                .startDate(project.getStartDate())
+                .endDate(project.getEndDate())
+                .recruitmentDtoList(Recruitment.from(project.getRecruitmentList()))
+                .email(project.getEmail())
+                .url(project.getUrl())
+                .build();
     }
 
     public void update(String title, String content) {
@@ -109,12 +99,12 @@ public class Project extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void setRecruitmentList(Recruitment recruitment){
-        this.recruitmentList.add(recruitment);
-    }
-
-    public void setBookmarkSet(Bookmark bookmark){
-        this.bookmarkSet.add(bookmark);
+    public void addRecruitment(Recruitment recruitment){
+        if(this.recruitmentList!=null){
+            this.recruitmentList.removeIf(r -> r == null || r.getProject_recr() == null);
+        }
+        recruitmentList.add(recruitment);
+        recruitment.setProject_recr(this);
     }
 
     public void updateView(Long views) {

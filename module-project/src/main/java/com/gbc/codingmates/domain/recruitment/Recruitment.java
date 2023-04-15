@@ -19,6 +19,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -39,26 +42,6 @@ public class Recruitment extends BaseTimeEntity {
 
     private String recruitmentStatus;
 
-    public static Recruitment toEntity(RecruitmentDto recruitmentDto){
-        return Recruitment.builder()
-                .id(recruitmentDto.getId())
-                .project_recr(recruitmentDto.getProject_recr())
-                .recruitmentCount(recruitmentDto.getRecruitmentCount())
-                .recruitmentStatus(recruitmentDto.getRecruitmentStatus())
-                .recruitmentType(recruitmentDto.getRecruitmentType())
-                .build();
-    }
-
-    public static RecruitmentDto from(Recruitment recruitment){
-        return RecruitmentDto.builder()
-                .id(recruitment.getId())
-                .project_recr(recruitment.getProject_recr())
-                .recruitmentType(recruitment.getRecruitmentType())
-                .recruitmentCount(recruitment.getRecruitmentCount())
-                .recruitmentStatus(recruitment.getRecruitmentStatus())
-                .build();
-    }
-
     @Builder
     public Recruitment(Long id, Project project_recr, String recruitmentType,
                        int recruitmentCount, String recruitmentStatus){
@@ -69,11 +52,35 @@ public class Recruitment extends BaseTimeEntity {
         this.recruitmentStatus = recruitmentStatus;
     }
 
-//    public void setRecruitment(Project project_recr){
-//        if(this.project_recr!=null){
-//            this.project_recr.getRecruitmentList().remove(this);
-//        }
-//        this.project_recr = project_recr;
-//        project_recr.getRecruitmentList().add(this);
-//    }
+    public static Recruitment toEntity(RecruitmentDto recruitmentDto){
+        return Recruitment.builder()
+                .recruitmentCount(recruitmentDto.getRecruitmentCount())
+                .recruitmentStatus(recruitmentDto.getRecruitmentStatus())
+                .recruitmentType(recruitmentDto.getRecruitmentType())
+                .build();
+    }
+
+    public static List<Recruitment> toEntityList(List<RecruitmentDto> recruitmentDtoList){
+        return recruitmentDtoList.stream()
+                .map(recruitmentDto -> Recruitment.toEntity(recruitmentDto))
+                .collect(Collectors.toList());
+    }
+
+    public static RecruitmentDto from(Recruitment recruitment){
+        return RecruitmentDto.builder()
+                .recruitmentType(recruitment.getRecruitmentType())
+                .recruitmentCount(recruitment.getRecruitmentCount())
+                .recruitmentStatus(recruitment.getRecruitmentStatus())
+                .build();
+    }
+
+    public static List<RecruitmentDto> from(List<Recruitment> recruitmentList){
+        return recruitmentList.stream()
+                .map(recruitment -> Recruitment.from(recruitment))
+                .collect(Collectors.toList());
+    }
+
+    public void setProject_recr(Project project_recr){
+        this.project_recr = project_recr;
+    }
 }

@@ -1,7 +1,9 @@
 package com.gbc.codingmates.controller;
 
 import com.gbc.codingmates.annotation.JwtMemberInfo;
+import com.gbc.codingmates.dto.RecruitmentDto;
 import com.gbc.codingmates.dto.member.MemberDto;
+import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
 import com.gbc.codingmates.dto.project.response.ProjectSelectOneResponseDto;
 import com.gbc.codingmates.service.ProjectService;
@@ -29,12 +31,13 @@ public class ProjectController {
     //create project
     @ApiOperation(value = "create Project post")
     @PostMapping("")
-    public ResponseEntity save(@RequestBody @Valid final ProjectDto projectDto,
+    public ResponseEntity<Long> save(@RequestBody @Valid final ProjectCreateDto projectCreateDto,
+//                                     @RequestBody @Valid final List<RecruitmentDto> recruitmentDtoList,
                                      BindingResult bindingResult) {
         ResponseEntity<BindingResult> checkViaBindingResult = checkViaBindingResult(bindingResult);
-        if (checkViaBindingResult != null) return checkViaBindingResult;
-        projectService.saveProject(projectDto);
-        return ResponseEntity.ok(projectDto.getId());
+        if (checkViaBindingResult != null) return ResponseEntity.badRequest().build();
+        Long project_id = projectService.saveProject(projectCreateDto);
+        return ResponseEntity.ok(project_id);
     }
 
     //check via binding result
