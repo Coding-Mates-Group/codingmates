@@ -1,5 +1,6 @@
 package com.gbc.codingmates.service;
 
+import com.gbc.codingmates.domain.project.Project;
 import com.gbc.codingmates.domain.project.ProjectRepository;
 import com.gbc.codingmates.dto.RecruitmentDto;
 import com.gbc.codingmates.dto.project.ProjectCreateDto;
@@ -32,6 +33,9 @@ class ProjectServiceTest {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Autowired
     DataSource dataSource;
@@ -88,10 +92,11 @@ class ProjectServiceTest {
                 .recruitmentDtoList(recruitmentDtoList)
                 .build();
 //        when
-//        Long project_id = projectService.saveProject(projectDto, recruitmentDtoList);
         Long project_id = projectService.saveProject(projectCreateDto);
+//        Project savedProject = projectRepository.findById(project_id).get();
 
         //then
+//        assertThat(savedProject.getId()).isEqualTo(1);
         assertThat(project_id).isEqualTo(1);
     }
 

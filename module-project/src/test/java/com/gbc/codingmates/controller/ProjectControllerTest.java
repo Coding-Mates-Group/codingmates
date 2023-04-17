@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gbc.codingmates.dto.RecruitmentDto;
 import com.gbc.codingmates.dto.project.ProjectCreateDto;
 import com.gbc.codingmates.dto.project.ProjectDto;
-import com.google.gson.Gson;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,12 +40,10 @@ class ProjectControllerTest {
 
     private ObjectMapper objectMapper;
     private MockMvc mockMvc;
-    private Gson gson;
 
 
     @BeforeEach
     public void init(){
-        gson = new Gson();
         mockMvc = MockMvcBuilders.standaloneSetup(projectController)
                 .build();
         objectMapper = new ObjectMapper();

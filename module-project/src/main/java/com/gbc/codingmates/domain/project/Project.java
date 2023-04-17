@@ -46,9 +46,6 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate, endDate;
 
-    @OneToMany(mappedBy = "project_recr", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Recruitment> recruitmentList = new ArrayList<>();
-
     @Email(message = "Please enter a valid email")
     private String email;
 
@@ -57,7 +54,7 @@ public class Project extends BaseTimeEntity {
 
     @Builder
     public Project(Long id, Long member_id, String title, String content, Long views, LocalDateTime startDate,
-                   LocalDateTime endDate, List<Recruitment> recruitmentList, String email, String url) {
+                   LocalDateTime endDate, String email, String url) {
         this.id = id;
         this.member_id = member_id;
         this.title = title;
@@ -65,7 +62,6 @@ public class Project extends BaseTimeEntity {
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.recruitmentList = recruitmentList;
         this.email = email;
         this.url = url;
     }
@@ -76,7 +72,6 @@ public class Project extends BaseTimeEntity {
                 .content(projectDto.getContent())
                 .startDate(projectDto.getStartDate())
                 .endDate(projectDto.getEndDate())
-                .recruitmentList(Recruitment.toEntityList(projectDto.getRecruitmentDtoList()))
                 .email(projectDto.getEmail())
                 .url(projectDto.getUrl())
                 .build();
@@ -88,23 +83,16 @@ public class Project extends BaseTimeEntity {
                 .content(project.getContent())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
-                .recruitmentDtoList(Recruitment.from(project.getRecruitmentList()))
                 .email(project.getEmail())
                 .url(project.getUrl())
                 .build();
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, String email, String url) {
         this.title = title;
         this.content = content;
-    }
-
-    public void addRecruitment(Recruitment recruitment){
-        if(this.recruitmentList!=null){
-            this.recruitmentList.removeIf(r -> r == null || r.getProject_recr() == null);
-        }
-        recruitmentList.add(recruitment);
-        recruitment.setProject_recr(this);
+        this.email = email;
+        this.url = url;
     }
 
     public void updateView(Long views) {

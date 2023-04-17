@@ -15,4 +15,6 @@ public class ProjectCreateDto {
     private ProjectDto projectDto;
 
     private List<RecruitmentDto> recruitmentDtoList;
+
+//    private List<ProjectSkillDto>
 }

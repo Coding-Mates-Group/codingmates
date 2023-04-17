@@ -70,8 +70,6 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.edit(id, memberDto, ProjectDto));
     }
 
-
-
     //delete project
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteById(@PathVariable final Long id, @JwtMemberInfo @Valid MemberDto memberDto,

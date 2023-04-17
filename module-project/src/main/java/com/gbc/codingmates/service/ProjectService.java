@@ -37,10 +37,8 @@ public class ProjectService {
 
     @Transactional
     public Long saveProject(final ProjectCreateDto projectCreateDto){
-//        validateDuplicateProject(projectDto,recruitmentDtoList);
+        validateDuplicateProject(projectCreateDto);
         Project project = Project.toEntity(projectCreateDto.getProjectDto());
-        List<Recruitment> recruitmentList = Recruitment.toEntityList(projectCreateDto.getRecruitmentDtoList());
-        recruitmentList.forEach(recruitment -> project.addRecruitment(recruitment));
         Project savedProject = projectRepository.save(project);
         return savedProject.getId();
     }
@@ -74,10 +72,10 @@ public class ProjectService {
 
     //update/edit project's title and content
     @Transactional
-    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto ProjectDto) throws Exception {
+    public Long edit(final Long id, final MemberDto memberDto, final ProjectDto projectDto) throws Exception {
         Project project = findProjectById(id, new IllegalArgumentException());
         checkEditPermission(project, memberDto);
-        project.update(ProjectDto.getTitle(), ProjectDto.getContent());
+        project.update(projectDto.getTitle(), projectDto.getContent(), projectDto.getEmail(), projectDto.getUrl());
         return id;
     }
 
@@ -104,8 +102,8 @@ public class ProjectService {
     }
 
     //check existing, duplicate project via title
-    private void validateDuplicateProject(ProjectDto ProjectDto, List<RecruitmentDto> recruitmentDtoList){
-        List<Project> findProjects = projectRepository.findByTitle(ProjectDto.getTitle());
+    private void validateDuplicateProject(ProjectCreateDto projectCreateDto){
+        List<Project> findProjects = projectRepository.findByTitle(projectCreateDto.getProjectDto().getTitle());
         if(!findProjects.isEmpty()){
             throw new DuplicateKeyException("already an existing project");
         }
