@@ -43,6 +43,4 @@ public class ProjectDto {
     private String email;
 
     private String url;
-
-    private List<RecruitmentDto> recruitmentDtoList;
 }

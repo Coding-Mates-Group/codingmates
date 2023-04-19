@@ -15,10 +15,10 @@ public class ProjectSkillCreateEventListener {
 
     private final ProjectRepository projectRepository;
 
-    @EventListener
-    @Transactional
-    public void add projectSkillToProject(ProjectSkillCreateEvent projectSkillCreateEvent){
-        final Long projectSkillid = projectSkillCreateEvent.getProjectSkillid();
-        final String skillName = projectSkillCreateEvent.getSkillName();
-    }
+//    @EventListener
+//    @Transactional
+//    public void add projectSkillToProject(ProjectSkillCreateEvent projectSkillCreateEvent){
+//        final Long projectSkillid = projectSkillCreateEvent.getProjectSkillid();
+//        final String skillName = projectSkillCreateEvent.getSkillName();
+//    }
 }

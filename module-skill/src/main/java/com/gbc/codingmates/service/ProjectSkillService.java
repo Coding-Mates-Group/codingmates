@@ -22,5 +22,6 @@ public class ProjectSkillService {
 
         ProjectSkillCreateEvent projectSkillCreateEvent = new ProjectSkillCreateEvent("PROJECT_SKILL_CREATE", projectSkillId, skillName);
         eventPublisher.publishEvent(projectSkillCreateEvent);
+        return null;
     }
 }
