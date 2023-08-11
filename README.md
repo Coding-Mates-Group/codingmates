@@ -9,8 +9,7 @@ Coding Mates is a social network platform where designers and developers come to
 
 | Profile page | Login page |
 | :---:| :---: |
-| ![Slice 2profile](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/fd9fffae-8552-4791-9475-857d55c50a62)
-![Slice 4login](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/30241ece-8ece-42d5-b23c-d29eb1d104de)
+| ![Slice 2profile](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/fd9fffae-8552-4791-9475-857d55c50a62)|![Slice 4login](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/30241ece-8ece-42d5-b23c-d29eb1d104de)
 
 ## Entity Relationship Diagram (ERD)
 ![erd](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/014478df-eae3-4ab0-b448-daec889d8ea5)
