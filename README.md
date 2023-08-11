@@ -1,8 +1,12 @@
 # 🎉Coding Mates🎉
+## About
+Coding Mates is a social network platform where designers and developers come together on the same interest of involing in a group project together. Anyone can post his/her idea and allocate the number of developers and designers. Interested people can then apply for the respective positions listed in the post and Voilà! You have an awesome team to work on the common project goal for the next few weeks!
 
 ## Entity Relationship Diagram (ERD)
 ![erd](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/014478df-eae3-4ab0-b448-daec889d8ea5)
 
+## Architecture 
+![architecture](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/5016a749-6c15-4d78-a214-37735a7990c3)
 
 ## 🛠Tech Stacks
 <table>
