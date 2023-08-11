@@ -6,7 +6,8 @@ Coding Mates is a social network platform where designers and developers come to
 ![erd](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/014478df-eae3-4ab0-b448-daec889d8ea5)
 
 ## Architecture 
-![architecture](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/5016a749-6c15-4d78-a214-37735a7990c3)
+<img width="803" alt="개발 환경" src="https://github.com/Coding-Mates-Group/codingmates/assets/56388433/5016a749-6c15-4d78-a214-37735a7990c3.png">
+![architecture](https://github.com/Coding-Mates-Group/codingmates/assets/56388433/5016a749-6c15-4d78-a214-37735a7990c3) 
 
 ## 🛠Tech Stacks
 <table>
